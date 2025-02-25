@@ -1,3 +1,4 @@
 # mia-tech-progetto-finale
 
-# Sviluppo su branch separato ddd
+### link utili
+[breve tutorial figma](https://www.youtube.com/watch?v=luxx_3-A5-w)
