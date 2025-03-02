@@ -1,3 +1,7 @@
+### link utili
+- [breve tutorial figma](https://www.youtube.com/watch?v=luxx_3-A5-w)
+- [social media app with react, videocourse](https://www.youtube.com/watch?v=1RHDhtbqo94)
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
