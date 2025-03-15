@@ -1,49 +1,63 @@
-import { useState } from "react"
-import { useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 
 
 const SearchBar = () => {
-  const [search, setSearch] = useState(["Non hai ancora fatto una ricerca"]);
+  const [recentSearches, setRecentSearches] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
-    const search = localStorage.getItem("search");
+    const storedSearches = localStorage.getItem("search");
 
-    if(search) {
-      setSearch(JSON.parse(search))
-      console.log(search);
-    };
+    if(storedSearches) {
+      setRecentSearches(JSON.parse(storedSearches));
+    } else {
+        localStorage.setItem("search", JSON.stringify([]));
+      }
+
      setLoading(false);
   }, [])
 
-  //Devono apparire i suggerimenti dal localStorage
+  const saveSearch = (newSearch) => {
+    const updatedSearches = [newSearch, ...recentSearches.filter(item => item !== newSearch)].slice(0, 5);
+    setRecentSearches(updatedSearches);
+    localStorage.setItem("search", JSON.stringify(updatedSearches));
+  };
+
+  //Al click su cerca si aggiorna il localStorage con il nuovo elemento digitato (se non esistente già) e si ripulisce il campo di input
+  const handleChange = (e) => {
+    setQuery(e.target.value);
+  };
+
+  const handleSearchClick = () => {
+    if(query.trim()) {
+      saveSearch(query.trim());
+      setQuery("");
+    }
+  }
+
+  //Al click appare una tendina con i suggerimenti dal localStorage e le categorie
   const handleClick = () => {
     const popUp = document.getElementById("pop-up");
     popUp.classList.add("visible");
   }
-
-  //All'invio si aggiorna il localStorage con il nuovo elemento (se non esistente)
-  const handleChange = () => {
-
-  }
   
     if(loading) {
       return (
-        <p>Caricamento in corso</p>
+        <p>Caricamento in corso...</p>
       )
     }
 
   return (
     <div>
-      <input type="text" placeholder="Cerca" onChange={ handleChange } onClick={ handleClick }/>
+      <input type="text" placeholder="Cerca eventi, categorie, luoghi..." value={ query } onChange={ handleChange } onClick={ handleClick } />
+      <button onClick={ handleSearchClick }>Cerca</button>
       <div className="pop-up" id="pop-up">
-        <h3>Titolo ricerche recenti</h3>
+        <h3>Ricerche recenti</h3>
         <div>
-          { search.map((list, index) => {
-            return (
-              <span key={ index }> { list } </span>
-            )
-          })}
+          { recentSearches.length > 0 ? (recentSearches.map((item, index) => 
+            <span key={ index }> { item } </span>)) : (<p>Ancora nessuna ricerca</p>)
+          }
         </div>
         <h3>Categorie</h3>
         <div>
