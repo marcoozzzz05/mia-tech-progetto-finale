@@ -5,6 +5,10 @@ const SearchBar = () => {
   const [recentSearches, setRecentSearches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
+  const [noResults, setNoResults] = useState(false);
+
+  const popupRef = useRef(null);
 
   useEffect(() => {
     const storedSearches = localStorage.getItem("search");
@@ -29,19 +33,26 @@ const SearchBar = () => {
     setQuery(e.target.value);
   };
 
+  //Avvio la ricerca e chiudo il pop-up
+  const executeSearch = (searchTerm) => {
+    setNoResults(searchTerm);
+    saveSearch(searchTerm);
+    setQuery("");
+    setShowPopup(false);
+  }
+
   //Al premere il tasto invio l'elemento digitato viene salvato nel local storage (se non presente), e mostrato nelle ricerche recenti
   const handleKeyDown = (event) => {
     if(event.key === "Enter" && query.trim() !== "") {
       event.preventDefault();
-      saveSearch(query.trim());
-      setQuery("");
+      executeSearch(query.trim());
     }
   };
 
-  //Al click appare una tendina con i suggerimenti dal localStorage e le categorie
+  //Al click sul campo di input appare una tendina (pop-up) con i suggerimenti dal localStorage e le categorie
   const handleClick = () => {
-    const popUp = document.getElementById("pop-up");
-    popUp.classList.add("visible");
+    console.log("Input cliccato, dovrebbe apparire il pop-up")
+    setShowPopup(true);
   }
   
     if(loading) {
@@ -53,7 +64,8 @@ const SearchBar = () => {
   return (
     <div>
       <input type="text" placeholder="Cerca eventi, categorie, luoghi..." value={ query } onChange={ handleChange } onClick={ handleClick } onKeyDown={ handleKeyDown }/>
-      <div className="pop-up" id="pop-up">
+      { showPopup && (
+        <div className="pop-up" ref={ popupRef }>
         <h3>Ricerche recenti</h3>
         <div>
           { recentSearches.length > 0 ? (recentSearches.map((item, index) => 
@@ -62,11 +74,16 @@ const SearchBar = () => {
         </div>
         <h3>Categorie</h3>
         <div>
-          <div>Immagine1, testo1</div>
-          <div>Immagine2, testo2</div>
-          <div>Immagine3, testo3</div>
+          <div>Categoria 1</div>
+          <div>Categoria 2</div>
+          <div>Categoria 3</div>
         </div>
       </div>
+      )}
+      { noResults && (
+        <p>Nessun risultato trovato per { noResults }</p>
+      )
+      }
     </div>
   )
 }
