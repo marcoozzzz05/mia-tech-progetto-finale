@@ -8,10 +8,14 @@ const SearchBar = () => {
   const [query, setQuery] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [noResults, setNoResults] = useState(false);
+  const [selectedCity, setSelectedCity] = useState("");
+  const [locationPopup, setLocationPopup] = useState(false);
 
   const categories = ["Intrattenimento", "Educazione&Formazione", "Eventi culturali&Arte", "Sport&Fitness", "Tecnologia&Innovazione", "Ristorazione"];
+  const cities = ["Milano", "Bergamo", "Roma", "Cagliari", "Palermo"]
 
   const popupRef = useRef(null);
+  const locationRef = useRef(null);
 
   useEffect(() => {
     const storedSearches = localStorage.getItem("search");
@@ -28,8 +32,12 @@ const SearchBar = () => {
   //Al click in qualunque punto della pagina il pop-up si chiude
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (popupRef.current && !popupRef.current.contains(event.target)) {
+      if(popupRef.current && !popupRef.current.contains(event.target)) {
         setShowPopup(false);
+      }
+
+      if(locationRef.current && !locationRef.current.contains(event.target)) {
+        setLocationPopup(false);
       }
     };
   
@@ -37,7 +45,7 @@ const SearchBar = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [popupRef]);
+  }, [popupRef, locationRef]);
 
   const saveSearch = (newSearch) => {
     const updatedSearches = [newSearch, ...recentSearches.filter(item => item !== newSearch)].slice(0, 5);
@@ -70,6 +78,15 @@ const SearchBar = () => {
   const handleClick = () => {
     setShowPopup(true);
   }
+
+  const handleLocationClick = () => {
+    setLocationPopup(true);
+  }
+  
+  const handleCitySelect = (city) => {
+    setSelectedCity(city);
+    setLocationPopup(false);
+  }
   
     if(loading) {
       return (
@@ -82,6 +99,13 @@ const SearchBar = () => {
       <div className="relative w-3/5 bg-white shadow-lg rounded-2xl flex items-center p-3 border border-gray-300">
         <Search className="text-[#6a0572] ml-3" />
         <input type="text" placeholder="Cerca eventi, categorie, luoghi..." value={ query } onChange={ handleChange } onClick={ handleClick } onKeyDown={ handleKeyDown }/>
+      { query && (
+        <X className="text-gray-500 cursor-pointer mr-3" onClick={ () => setQuery("")} />
+      )}
+      <div className="border-1 border-gray-300 h-6 mx-2"></div>
+      <span ref={ locationRef } className="text-gray-700 ml-2 cursor-pointer" onClick={ handleLocationClick}>
+        { selectedCity || "Luogo" }
+      </span>
       { showPopup && (
         <div className="pop-up" ref={ popupRef }>
         <h3>Ricerche recenti</h3>
@@ -96,6 +120,17 @@ const SearchBar = () => {
             <span key={ index }> { category }</span> 
           ))}
         </div>
+        </div>
+      )}
+      { locationPopup && (
+        <div>
+          <div>
+            { cities.map((city, index) => (
+              <span key={ index } onClick={ () => handleCitySelect (city)}>
+                { city }
+              </span>
+            ))}
+          </div>
         </div>
       )}
       </div>
