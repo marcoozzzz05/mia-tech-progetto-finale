@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react"
+import { Search, MapPin, X } from "lucide-react"
 
 
 const SearchBar = () => {
@@ -77,8 +78,10 @@ const SearchBar = () => {
     }
 
   return (
-    <div className="searchBar">
-      <input type="text" placeholder="Cerca eventi, categorie, luoghi..." value={ query } onChange={ handleChange } onClick={ handleClick } onKeyDown={ handleKeyDown }/>
+    <div className="relative flex justify-center mt-10 w-full bg-[#9b5de5]">
+      <div className="relative w-3/5 bg-white shadow-lg rounded-2xl flex items-center p-3 border border-gray-300">
+        <Search className="text-[#6a0572] ml-3" />
+        <input type="text" placeholder="Cerca eventi, categorie, luoghi..." value={ query } onChange={ handleChange } onClick={ handleClick } onKeyDown={ handleKeyDown }/>
       { showPopup && (
         <div className="pop-up" ref={ popupRef }>
         <h3>Ricerche recenti</h3>
@@ -93,8 +96,9 @@ const SearchBar = () => {
             <span key={ index }> { category }</span> 
           ))}
         </div>
-      </div>
+        </div>
       )}
+      </div>
       { noResults && (
         <p>Nessun risultato trovato per { noResults }</p>
       )
