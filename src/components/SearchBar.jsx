@@ -24,17 +24,19 @@ const SearchBar = () => {
     localStorage.setItem("search", JSON.stringify(updatedSearches));
   };
 
-  //Al click su cerca si aggiorna il localStorage con il nuovo elemento digitato (se non esistente già) e si ripulisce il campo di input
+  //Il campo di input si aggiorna quando l'utente digita
   const handleChange = (e) => {
     setQuery(e.target.value);
   };
 
-  const handleSearchClick = () => {
-    if(query.trim()) {
+  //Al premere il tasto invio l'elemento digitato viene salvato nel local storage (se non presente), e mostrato nelle ricerche recenti
+  const handleKeyDown = (event) => {
+    if(event.key === "Enter" && query.trim() !== "") {
+      event.preventDefault();
       saveSearch(query.trim());
       setQuery("");
     }
-  }
+  };
 
   //Al click appare una tendina con i suggerimenti dal localStorage e le categorie
   const handleClick = () => {
@@ -50,8 +52,7 @@ const SearchBar = () => {
 
   return (
     <div>
-      <input type="text" placeholder="Cerca eventi, categorie, luoghi..." value={ query } onChange={ handleChange } onClick={ handleClick } />
-      <button onClick={ handleSearchClick }>Cerca</button>
+      <input type="text" placeholder="Cerca eventi, categorie, luoghi..." value={ query } onChange={ handleChange } onClick={ handleClick } onKeyDown={ handleKeyDown }/>
       <div className="pop-up" id="pop-up">
         <h3>Ricerche recenti</h3>
         <div>
