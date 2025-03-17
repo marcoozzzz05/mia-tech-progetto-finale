@@ -1,0 +1,8 @@
+.searchBar {
+    position: relative;
+    justify-content: centre;
+    justify-items: centre;
+    padding: 15px;
+    width: 100%;
+    background-color: #9b5de5;
+}

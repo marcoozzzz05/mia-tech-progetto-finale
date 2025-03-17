@@ -8,6 +8,8 @@ const SearchBar = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [noResults, setNoResults] = useState(false);
 
+  const categories = ["Intrattenimento", "Educazione&Formazione", "Eventi culturali&Arte", "Sport&Fitness", "Tecnologia&Innovazione", "Ristorazione"];
+
   const popupRef = useRef(null);
 
   useEffect(() => {
@@ -21,6 +23,20 @@ const SearchBar = () => {
 
      setLoading(false);
   }, [])
+
+  //Al click in qualunque punto della pagina il pop-up si chiude
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        setShowPopup(false);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [popupRef]);
 
   const saveSearch = (newSearch) => {
     const updatedSearches = [newSearch, ...recentSearches.filter(item => item !== newSearch)].slice(0, 5);
@@ -51,7 +67,6 @@ const SearchBar = () => {
 
   //Al click sul campo di input appare una tendina (pop-up) con i suggerimenti dal localStorage e le categorie
   const handleClick = () => {
-    console.log("Input cliccato, dovrebbe apparire il pop-up")
     setShowPopup(true);
   }
   
@@ -62,7 +77,7 @@ const SearchBar = () => {
     }
 
   return (
-    <div>
+    <div className="searchBar">
       <input type="text" placeholder="Cerca eventi, categorie, luoghi..." value={ query } onChange={ handleChange } onClick={ handleClick } onKeyDown={ handleKeyDown }/>
       { showPopup && (
         <div className="pop-up" ref={ popupRef }>
@@ -74,9 +89,9 @@ const SearchBar = () => {
         </div>
         <h3>Categorie</h3>
         <div>
-          <div>Categoria 1</div>
-          <div>Categoria 2</div>
-          <div>Categoria 3</div>
+          { categories.map((category, index) => (
+            <span key={ index }> { category }</span> 
+          ))}
         </div>
       </div>
       )}
