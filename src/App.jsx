@@ -1,12 +1,12 @@
 import './App.css'
-import SearchBar from './components/SearchBar/SearchBar'
+import EventCard from "./components/EventCard/EventCard"
 
 function App() {
 
   return (
     <>
       <div className="flex flex-col min-h-screen">
-        <SearchBar />
+        <EventCard />
       </div>
     </>
   )
