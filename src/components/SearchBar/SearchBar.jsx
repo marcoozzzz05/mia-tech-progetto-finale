@@ -8,7 +8,7 @@ const SearchBar = () => {
   const [query, setQuery] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [noResults, setNoResults] = useState(false);
-  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedCity, setSelectedCity] = useState(null);
   const [locationPopup, setLocationPopup] = useState(false);
 
   const categories = ["Intrattenimento", "Educazione&Formazione", "Eventi culturali&Arte", "Sport&Fitness", "Tecnologia&Innovazione", "Ristorazione"];
@@ -47,6 +47,10 @@ const SearchBar = () => {
     };
   }, [popupRef, locationRef]);
 
+useEffect(() => {
+  console.log("selectedCity aggiornato: ", selectedCity);
+}, [selectedCity]);
+
   const saveSearch = (newSearch) => {
     const updatedSearches = [newSearch, ...recentSearches.filter(item => item !== newSearch)].slice(0, 5);
     setRecentSearches(updatedSearches);
@@ -84,8 +88,9 @@ const SearchBar = () => {
   }
   
   const handleCitySelect = (city) => {
+    console.log("Città selezionata: ", city);
     setSelectedCity(city);
-    setLocationPopup(false);
+    setTimeout(() => setLocationPopup(false), 100);
   }
   
     if(loading) {
@@ -107,13 +112,13 @@ const SearchBar = () => {
       <div className="border-1 border-gray-300 h-6 mx-2"></div>
       <MapPin className="text-[#6a0572]" />
       <span ref={ locationRef } className="text-gray-700 m-4 cursor-pointer" onClick={ handleLocationClick}>
-        { selectedCity || "Luogo" }
+        { selectedCity ? selectedCity : "Luogo" }
       </span>
 
       { showPopup && (
         <div className="absolute top-14 left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-24px)] sm:max-w-[calc(100%-24px)] bg-white shadow-lg rounded-lg p-4" ref={ popupRef }>
-          <h3 className="text-gray-700 text-sm font-semibold m-4 mb-6">Ricerche recenti</h3>
-            <div className="flex flex-wrap m-4 mt-4 gap-2">
+          <h3 className="text-gray-700 text-sm font-semibold m-4 !mb-2">Ricerche recenti</h3>
+            <div className="flex flex-wrap m-4 !mt-2 gap-2">
               { recentSearches.length > 0 ? (recentSearches.map((item, index) => 
                <span key={ index } className="bg-[#F7F1F7] px-2 py-1 m-4 rounded-full text-sm cursor-pointer">
                 { item } 
@@ -121,8 +126,8 @@ const SearchBar = () => {
             )) : (<p>Ancora nessuna ricerca</p>)
           }
             </div>
-          <h3 className="text-gray-700 text-sm font-semibold m-4 mb-6">Categorie</h3>
-          <div className="grid grid-cols-2 gap-2 m-4 mt-4">
+          <h3 className="text-gray-700 text-sm font-semibold m-4 !mt-2 !mb-2">Categorie</h3>
+          <div className="grid grid-cols-2 gap-2 m-4 !mt-2">
             { categories.map((category, index) => (
               <span key={ index } className="bg-[#9b5de5] text-white justify text-center px-3 py-2 rounded-lg text-sm cursor-pointer">
                 { category }
@@ -136,8 +141,12 @@ const SearchBar = () => {
         <div className="absolute top-14 left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-24px)] sm:max-w-[calc(100%-24px)] bg-white shadow-lg rounded-lg p-4">
           <div className="grid grid-cols-2 gap-2 m-2">
             { cities.map((city, index) => (
-              <span key={ index } className="bg-[#F7F1F7] text-gray-700 px-2 py-1 m-1 rounded-full text-sm cursor-pointer" onClick={ () => handleCitySelect (city)}>
-                { city }
+              <span key={ index } className={`px-2 py-1 m-1 rounded-full text-sm cursor-pointer 
+                ${selectedCity === city ? 'bg-[#9b5de5] text-white' : 'bg-[#F7F1F7] text-gray-700'}`}
+                onClick={ () => {
+                console.log("Cliccato su:", city);
+                handleCitySelect(city); }}>
+                  { city }
               </span>
             ))}
           </div>
