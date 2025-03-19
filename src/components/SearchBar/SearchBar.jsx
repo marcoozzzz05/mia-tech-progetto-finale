@@ -12,7 +12,7 @@ const SearchBar = () => {
   const [locationPopup, setLocationPopup] = useState(false);
 
   const categories = ["Intrattenimento", "Educazione&Formazione", "Eventi culturali&Arte", "Sport&Fitness", "Tecnologia&Innovazione", "Ristorazione"];
-  const cities = ["Milano", "Bergamo", "Roma", "Cagliari", "Palermo"]
+  const cities = ["Tutte", "Milano", "Bergamo", "Roma", "Cagliari", "Palermo"]
 
   const popupRef = useRef(null);
   const locationRef = useRef(null);
@@ -35,10 +35,6 @@ const SearchBar = () => {
       if(popupRef.current && !popupRef.current.contains(event.target)) {
         setShowPopup(false);
       }
-
-      if(locationRef.current && !locationRef.current.contains(event.target)) {
-        setLocationPopup(false);
-      }
     };
   
     document.addEventListener("mousedown", handleClickOutside);
@@ -47,9 +43,9 @@ const SearchBar = () => {
     };
   }, [popupRef, locationRef]);
 
-useEffect(() => {
-  console.log("selectedCity aggiornato: ", selectedCity);
-}, [selectedCity]);
+  useEffect(() => {
+    console.log("selectedCity aggiornato: ", selectedCity);
+  }, [selectedCity]);
 
   const saveSearch = (newSearch) => {
     const updatedSearches = [newSearch, ...recentSearches.filter(item => item !== newSearch)].slice(0, 5);
@@ -84,7 +80,8 @@ useEffect(() => {
   }
 
   const handleLocationClick = () => {
-    setLocationPopup(true);
+    console.log("Cliccando ho aperto il pop-up");
+    setLocationPopup(prev => !prev);
   }
   
   const handleCitySelect = (city) => {
@@ -112,7 +109,7 @@ useEffect(() => {
       <div className="border-1 border-gray-300 h-6 mx-2"></div>
       <MapPin className="text-[#6a0572]" />
       <span ref={ locationRef } className="text-gray-700 m-4 cursor-pointer" onClick={ handleLocationClick}>
-        { selectedCity ? selectedCity : "Luogo" }
+        { selectedCity ? selectedCity : "Seleziona città" }
       </span>
 
       { showPopup && (
@@ -141,11 +138,11 @@ useEffect(() => {
         <div className="absolute top-14 left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-24px)] sm:max-w-[calc(100%-24px)] bg-white shadow-lg rounded-lg p-4">
           <div className="grid grid-cols-2 gap-2 m-2">
             { cities.map((city, index) => (
-              <span key={ index } className={`px-2 py-1 m-1 rounded-full text-sm cursor-pointer 
-                ${selectedCity === city ? 'bg-[#9b5de5] text-white' : 'bg-[#F7F1F7] text-gray-700'}`}
-                onClick={ () => {
-                console.log("Cliccato su:", city);
-                handleCitySelect(city); }}>
+              <span key={ index } className={`px-2 py-1 m-1 rounded-lg text-sm cursor-pointer 
+                ${selectedCity === city ? 'bg-[#ffc300] text-white' : 'bg-[#F7F1F7] text-gray-700'}`}
+                onClick={ () => { 
+                  console.log("Ho cliccato su: ", city);
+                  handleCitySelect(city) }}>
                   { city }
               </span>
             ))}
