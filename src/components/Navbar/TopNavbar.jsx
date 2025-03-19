@@ -13,8 +13,6 @@ const TopNavbar = () => {
         <div className="flex space-x-6 gap-8">
           <button className="text-white opacity-70 hover:opacity-100">Home</button>
           <button className="text-white opacity-70 hover:opacity-100"> Favoriti</button>
-          <button className="text-white opacity-70 hover:opacity-100">Reviews</button>
-          <button className="text-white opacity-70 hover:opacity-100">My Theme</button>
         </div>
 
         {/* Icons */}
