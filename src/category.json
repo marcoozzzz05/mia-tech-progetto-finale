@@ -1,0 +1,34 @@
+
+[
+	{
+		"name": "Eventi culturali&Arte",
+		"params": "eventi",
+		"img": "eventi.jpg"
+	},
+	{
+		"name": "Intrattenimento",
+		"params": "intrattenimento",
+		"img": "eventi.jpg"
+	},
+	{
+		"name": "Sport&Fitness",
+		"params": "sport",
+		"img": "eventi.jpg"
+	},
+	{
+		"name": "Educazione&Formazione",
+		"params": "educazione",
+		"img": "eventi.jpg"
+	},
+	{
+		"name": "Tecnologia&Innovazione",
+		"params": "tecnologia",
+		"img": "eventi.jpg"
+	},
+	{
+		"name": "Ristorazione",
+		"params": "ristorazione",
+		"img": "eventi.jpg"
+	}
+
+]
