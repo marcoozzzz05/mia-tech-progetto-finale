@@ -3,32 +3,32 @@
 	{
 		"name": "Eventi culturali&Arte",
 		"params": "eventi",
-		"img": "eventi.jpg"
+		"img": "Eventi&arte.png"
 	},
 	{
 		"name": "Intrattenimento",
 		"params": "intrattenimento",
-		"img": "eventi.jpg"
+		"img": "Intrattenimento.png"
 	},
 	{
 		"name": "Sport&Fitness",
 		"params": "sport",
-		"img": "eventi.jpg"
+		"img": "Sport&fitness.png"
 	},
 	{
 		"name": "Educazione&Formazione",
 		"params": "educazione",
-		"img": "eventi.jpg"
+		"img": "Educazione&formazione.png"
 	},
 	{
 		"name": "Tecnologia&Innovazione",
 		"params": "tecnologia",
-		"img": "eventi.jpg"
+		"img": "Tecnologia&innovazione.png"
 	},
 	{
 		"name": "Ristorazione",
 		"params": "ristorazione",
-		"img": "eventi.jpg"
+		"img": "Ristorazione.png"
 	}
 
 ]
