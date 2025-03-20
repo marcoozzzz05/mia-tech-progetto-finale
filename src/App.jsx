@@ -2,6 +2,10 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import Footer from './Footer'
+import Button1 from './Button1'
+import Button2 from './Button2'
+import Button3 from './Button3'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -31,6 +35,16 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      <Footer />
+      <div className='mt-4'>
+        <Button1 text={"Settings"}/>
+      </div>
+      <div className='mt-4'>
+        <Button2 text={"Sign Up"}/>
+      </div>
+      <div className='mt-4'>
+        <Button3 text={"See More"}/>
+      </div>
     </>
   )
 }
