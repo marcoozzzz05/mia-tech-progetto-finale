@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react"
 import { Search, MapPin, X } from "lucide-react"
 import category from "../../category.json"
+import EventCard from "../EventCard/EventCard"
 
 
 const SearchBar = () => {
@@ -11,8 +12,10 @@ const SearchBar = () => {
   const [noResults, setNoResults] = useState(false);
   const [selectedCity, setSelectedCity] = useState(null);
   const [locationPopup, setLocationPopup] = useState(false);
+  const [results, setResults] = useState(null);
 
   const cities = ["Tutte", "Milano", "Bergamo", "Roma", "Cagliari", "Palermo"]
+  const [events, setEvents] = useState(["Maratona milano", "Maratona Roma", "Concerto al parco", "Concerto a Milano"]);
 
   const popupRef = useRef(null);
   const locationRef = useRef(null);
@@ -59,7 +62,18 @@ const SearchBar = () => {
 
   //Avvio la ricerca e chiudo il pop-up
   const executeSearch = (searchTerm) => {
-    setNoResults(searchTerm);
+    setEvents(["Maratona milano", "Maratona Roma", "Concerto al parco", "Concerto a Milano"]);
+    const result = events.filter(event => event.toLowerCase().includes(searchTerm.toLowerCase()))
+    console.log(searchTerm);
+    if(result.length > 0) {
+      setResults(true);
+      setEvents(result);
+      setNoResults(false);
+    } else {
+      setResults(false);
+      setNoResults(searchTerm);
+    }
+  
     saveSearch(searchTerm);
     setQuery("");
     setShowPopup(false);
@@ -147,11 +161,23 @@ const SearchBar = () => {
       )}
       </div>
     </div>
-    <div>
-      { noResults && 
+    { noResults &&
+    <div className="container mx-auto px-6">
       <p>Nessun risultato trovato per {noResults}</p>
-      }
     </div>
+    }
+    { results &&
+    <div className="container mx-auto px-6">
+      <h2 className="text-2xl font-bold mt-10 forced-colors:[#2e2e2e]">Risultati della ricerca</h2>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-center gap-6 mt-10 mb-20 cursor-pointer max-w-full">
+        { events.map((event, index) => {
+          return (
+            <span key={ index }> <EventCard title={ event }/> </span>
+          )
+        })}
+      </div>
+    </div>
+    }
     </>
   )
 }

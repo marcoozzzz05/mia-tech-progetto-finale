@@ -30,9 +30,7 @@ function Home() {
         <EventCard />
     </div>
     <div className="flex justify-center mb-20">
-        <Button1 />
-        <Button2 />
-        <Button3 />
+        <Button3 text={"Scopri di più"} />
     </div>
     </div>
     </>
