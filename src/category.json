@@ -1,7 +1,7 @@
 
 [
 	{
-		"name": "Eventi culturali&Arte",
+		"name": "Eventi culturali & Arte",
 		"params": "eventi",
 		"img": "Eventi&arte.png"
 	},
@@ -11,17 +11,17 @@
 		"img": "Intrattenimento.png"
 	},
 	{
-		"name": "Sport&Fitness",
+		"name": "Sport & Fitness",
 		"params": "sport",
 		"img": "Sport&fitness.png"
 	},
 	{
-		"name": "Educazione&Formazione",
+		"name": "Educazione & Formazione",
 		"params": "educazione",
 		"img": "Educazione&formazione.png"
 	},
 	{
-		"name": "Tecnologia&Innovazione",
+		"name": "Tecnologia & Innovazione",
 		"params": "tecnologia",
 		"img": "Tecnologia&innovazione.png"
 	},
