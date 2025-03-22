@@ -6,6 +6,7 @@ import Footer from './Footer'
 import Button1 from './Button1'
 import Button2 from './Button2'
 import Button3 from './Button3'
+import RegisterPage from './RegisterPage'
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
       <div className="flex flex-col min-h-screen">
         <SearchBar />
         <EventCard />
+        <RegisterPage />
       </div>
       <Footer />
       <div className='mt-4'>
