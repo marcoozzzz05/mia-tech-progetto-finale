@@ -1,3 +1,5 @@
+import SearchBar from "../components/SearchBar/SearchBar";
+import Footer from "../Footer";
 import category from "../category.json"
 import EventCard from "../components/EventCard/EventCard";
 import Button3 from "../Button3";
@@ -6,6 +8,7 @@ function Home() {
     console.log(category);
   return (
     <>
+    <SearchBar />
     <div className="container mx-auto px-6">
         <h2 className="text-2xl font-bold mt-10 forced-colors:[#2e2e2e]">Esplora le categorie</h2>
     <div className="flex flex-wrap justify-center text-center mt-10 mb-20 gap-20 md:gap-20 max-w-full">
@@ -42,6 +45,7 @@ function Home() {
     <div className="flex justify-center mb-20">
         <Button3 text={"Scopri di più"} />
     </div>
+    <Footer />
     </div>
     </>
   )
