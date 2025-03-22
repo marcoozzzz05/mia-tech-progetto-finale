@@ -1,3 +1,10 @@
 @import "tailwindcss";
 
+<<<<<<< HEAD
 
+=======
+* {
+  margin: 0;
+  font-family: Poppins, sans-serif;
+}
+>>>>>>> 29-create-login-and-register-page
