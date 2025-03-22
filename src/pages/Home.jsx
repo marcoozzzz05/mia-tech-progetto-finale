@@ -2,7 +2,7 @@ import SearchBar from "../components/SearchBar/SearchBar";
 import Footer from "../Footer";
 import category from "../category.json"
 import EventCard from "../components/EventCard/EventCard";
-import Button3 from "../Button3";
+import Button3 from "../components/Buttons/Button3";
 
 function Home() {
     console.log(category);
@@ -45,7 +45,6 @@ function Home() {
     <div className="flex justify-center mb-20">
         <Button3 text={"Scopri di più"} />
     </div>
-    <Footer />
     </div>
     </>
   )

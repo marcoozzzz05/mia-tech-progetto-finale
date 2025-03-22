@@ -1,5 +1,5 @@
 import { useState } from "react"
-import Button1 from "./Button1"
+import Button1 from "./components/Buttons/Button1"
 
 
 const RegisterPage = () => {
@@ -86,8 +86,8 @@ const RegisterPage = () => {
     };
     
     return (
-        <>
-            <div className="flex flex-col items-center gap-4 w-full max-w-lg mx-auto p-4 bg-white shadow-lg rounded-2xl">
+        <>  
+                <div className="flex flex-col items-center gap-4 w-full max-w-lg m-28 mx-auto p-6 bg-white shadow-2xl rounded-2xl">
 
                 <div className="font-bold text-3xl p-4">Create New Account</div>
                 <div className="text-lg font-semibold text-gray-700 mb-1.5 w-full text-left pl-2">First Name</div>
@@ -112,7 +112,8 @@ const RegisterPage = () => {
                 
                 {message}
                 <Button1 onClick={handleButton} text={"Sign Up"}/>
-            </div>
+            </div>      
+ 
         </>
     )
 }
