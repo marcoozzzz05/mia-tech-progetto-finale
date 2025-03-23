@@ -3,13 +3,14 @@ import Footer from "../Footer";
 import category from "../category.json"
 import EventCard from "../components/EventCard/EventCard";
 import Button3 from "../components/Buttons/Button3";
+import TopNavbar from "../components/Navbar/TopNavbar";
 
 function Home() {
     console.log(category);
   return (
     <>
-    <SearchBar />
-    <div className="container mx-auto px-6">
+    <TopNavbar />
+    <div className="container mx-auto px-6 py-2">
         <h2 className="text-2xl font-bold mt-10 forced-colors:[#2e2e2e]">Esplora le categorie</h2>
     <div className="flex flex-wrap justify-center text-center mt-10 mb-20 gap-20 md:gap-20 max-w-full">
         {category.map((item, index) => { 
