@@ -1,8 +1,10 @@
 import Button1 from "../../Button1"
+import Layout from "../../components/Layout"
 
 const FavoritePage = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-purple-800 to-orange-400 px-6">
+    <Layout>
+      <div className="flex flex-col items-center justify-center min-h-screen px-6">
       <div className="flex flex-col items-center text-center">
         <div className="bg-white p-4 rounded-full shadow-lg">
           <svg
@@ -15,15 +17,17 @@ const FavoritePage = () => {
           </svg>
         </div>
 
-        <h2 className="text-white font-semibold text-lg mt-4">NO FAVOURITES YET</h2>
-        <p className="text-white text-sm mt-2">
-          Make sure you have added event’s in this section
+        <h2 className="text-white font-semibold text-lg mt-4">Non hai ancora nessun preferito</h2>
+        <p className="text-white text-sm mt-2 mb-2">
+          Scopri gli eventi più interessanti vicino a te!
         </p>
-
-        <Button1 className="mt-6 px-6 py-3 bg-purple-500 text-white rounded-full shadow-lg hover:bg-purple-600 transition" text={"ADD FAVOURITES"} />
+        <a href="/">
+          <Button1 text={"Esplora"} />
+        </a>
 
       </div>
     </div>
+    </Layout>
   )
 }
 

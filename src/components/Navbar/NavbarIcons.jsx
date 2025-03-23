@@ -38,10 +38,11 @@ const NavbarIcons = ({ isSearchOpen, setIsSearchOpen }) => {
           <Home size={24} />
         </button>
       </a>
-
+      <a href="/favorite">
       <button className="text-white opacity-70 hover:text-[#ffc300]">
         <Heart size={24} />
       </button>
+      </a>
 
       <button className="text-white opacity-70 hover:text-[#ffc300]">
         <Bookmark size={24} />
