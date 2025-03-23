@@ -13,11 +13,12 @@ const NavbarIcons = ({ isSearchOpen, setIsSearchOpen }) => {
           <Search size={24} />
         </button>
       )}
-
-      {/* Icone comuni (mostrate sempre) */}
+      <a href="/">
       <button className="text-white opacity-70 hover:text-[#ffc300]">
         <Home size={24} />
       </button>
+      </a>
+      
       <button className="text-white opacity-70 hover:text-[#ffc300]">
         <Heart size={24} />
       </button>
