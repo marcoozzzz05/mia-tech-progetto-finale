@@ -1,4 +1,5 @@
 import { Search, User } from "lucide-react";
+import { Link } from "react-router-dom"
 
 const TopNavbar = () => {
   return (
@@ -11,17 +12,17 @@ const TopNavbar = () => {
 
         {/* Menu Items */}
         <div className="flex space-x-6 gap-8">
-          <button className="text-white opacity-70 hover:opacity-100">Home</button>
+        <Link to="/">  <button className="text-white opacity-70 hover:opacity-100">Home</button></Link>
           <button className="text-white opacity-70 hover:opacity-100"> Favoriti</button>
         </div>
 
         {/* Icons */}
         <div className="flex space-x-4 gap-4">
           <button className="text-white opacity-70 hover:opacity-100">
-            <Search size={24} />
+          <Link to="/search">   <Search size={24} /> </Link>
           </button>
           <button className="text-white opacity-70 hover:opacity-100">
-            <User size={24} />
+          <Link to="/profile"> <User size={24} /></Link> 
           </button>
         </div>
       </div>
