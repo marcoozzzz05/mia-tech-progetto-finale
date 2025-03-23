@@ -6,7 +6,6 @@ import Button3 from "../../components/Buttons/Button3";
 function Home() {
   return (
     <>
-    <Layout>
     <div className="container mx-auto px-6 py-2">
         <h2 className="text-2xl text-white font-bold mt-10 forced-colors:[#2e2e2e]">Esplora le categorie</h2>
     <div className="flex flex-wrap justify-center text-center text-white mt-10 mb-20 gap-20 md:gap-20 max-w-full">
@@ -44,8 +43,6 @@ function Home() {
         <Button3 text={"Scopri di più"} />
     </div>
     </div>
-    </Layout>
-    
     </>
   )
 }
