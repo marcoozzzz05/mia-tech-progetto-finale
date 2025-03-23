@@ -11,9 +11,10 @@ import Button3 from '../../Button3'
 const Home = () => {
     return (
         <div className="m-0">
-            <TopNavbar />
-            <SearchBar />
-            <Navbar />
+            <div className="fixed top-0 w-full z-10">
+                <TopNavbar />
+            </div>
+
             <EventCard />
 
             <div className='mt-4'>
@@ -26,6 +27,9 @@ const Home = () => {
                 <Link to="/seemore"><Button3 text={"See More"} /></Link>
             </div>
 
+            <div className="fixed top-0 w-full z-10">
+                <Navbar />
+            </div>
             <Footer />
         </div>
     );
