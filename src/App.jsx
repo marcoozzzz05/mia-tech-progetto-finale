@@ -6,6 +6,7 @@ import ProfileBusiness from './pages/ProfileBusiness/ProfileBusiness';
 import FavoritePage from './pages/Favoritepage/FavoritePage';
 import SavedPostsPage from './pages/SavedPostsPage';
 import Layout from './components/Layout';
+import LoginPage from './LoginPage';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/profile/*" element={<Layout><ProfileBusiness /></Layout>} />
         <Route path="/favorite" element={<Layout><FavoritePage /></Layout>} />
         <Route path="/saved-posts" element={<Layout><SavedPostsPage /></Layout>} />
+        <Route path="/login" element={<Layout><LoginPage /></Layout>} />
       </Routes>
     </>
   );

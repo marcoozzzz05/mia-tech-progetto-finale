@@ -3,7 +3,7 @@ import { MessageCircle, FileText, Mail, Instagram, Facebook, Linkedin } from 'lu
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 text-white py-4 fixed bottom-0 left-0 right-0 md:static">
+    <footer className="bg-gray-800 text-white py-8 w-full">
       <div className="container mx-auto px-6">
         <div className="md:hidden flex justify-between items-center">
           <div className="flex space-x-6">
