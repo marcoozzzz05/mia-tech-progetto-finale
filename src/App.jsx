@@ -5,6 +5,7 @@ import RegisterPage from './RegisterPage'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProfileBusiness from './pages/ProfileBusiness/ProfileBusiness';
 import SearchBar from './components/SearchBar/SearchBar';
+import FavoritePage from './pages/Favoritepage/FavoritePage';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/register-page" element={<RegisterPage />}/>
             <Route path="/profile/*" element={<ProfileBusiness />} />
+            <Route path="/favorite" element={<FavoritePage />} />
             <Route path="/search" element={<SearchBar />} />
           </Routes>
           <Footer />
