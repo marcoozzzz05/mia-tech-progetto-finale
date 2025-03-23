@@ -1,30 +1,36 @@
-import { Home, Search, Heart, Bookmark, User } from "lucide-react";
-import { Link } from "react-router-dom"
+import SearchBar from "../SearchBar/SearchBar";
+import NavbarIcons from "./NavbarIcons";
 
-//md:hidden serve per gli smartphone
-const Navbar = () => {
-    return (
-        <nav className="md:hidden fixed bottom-0 left-0 w-full bg-gradient-to-b from-purple-500 to-purple-400 py-4 flex justify-around items-center shadow-lg border-t border-purple-300">
-            <div className="container mx-auto flex justify-around items-center max-w-md">
-                <button className="flex flex-col items-center text-white opacity-70 hover:opacity-100">
-                <Link to="/">   <Home size={24} /></Link>
-                </button>
-                <button className="flex flex-col items-center text-white opacity-70 hover:opacity-100">
-                <Link to="/search">   <Search size={24} /> </Link>
-                </button>
-                <button className="flex flex-col items-center text-white opacity-70 hover:opacity-100">
-                    <Heart size={24} />
-                    
-                </button>
-                <button className="flex flex-col items-center text-white opacity-70 hover:opacity-100">
-                    <Bookmark size={24} />
-                </button>
-                <button className="flex flex-col items-center text-white opacity-70 hover:opacity-100">
-                <Link to="/profile"> <User size={24} /></Link> 
-                </button>
+const Navbar = ({ isSearchOpen, setIsSearchOpen, searchRef, logo }) => {
+  return (
+    <>
+      {/*Navbar quando la search è chiusa*/}
+      {!isSearchOpen && (
+        <div className="w-full flex items-center justify-between">
+          <img src={logo} className="h-10 w-auto ml-1 md:ml-7" alt="Logo" />
+          <div className="hidden md:flex flex-grow justify-center">
+            <SearchBar />
+          </div>
+          <NavbarIcons isSearchOpen={isSearchOpen} setIsSearchOpen={setIsSearchOpen} />
+        </div>
+      )}
+
+      {/*Navbar quando la search è aperta*/}
+      {isSearchOpen && (
+        <div className="w-full flex flex-col">
+          <div ref={searchRef} className="w-full flex items-center justify-start">
+            <img src={logo} className="h-10 w-auto ml-1" alt="Logo" />
+            <div className="flex-grow ml-0 w-auto justify-end transition-all duration-300">
+              <SearchBar />
             </div>
-        </nav>
-    );
+          </div>
+          <div className="w-full flex justify-end mt-3">
+            <NavbarIcons isSearchOpen={isSearchOpen} setIsSearchOpen={setIsSearchOpen} />
+          </div>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default Navbar;

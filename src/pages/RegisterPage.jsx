@@ -1,5 +1,5 @@
 import { useState } from "react"
-import Button1 from "./components/Buttons/Button1"
+import Button1 from "../components/Buttons/Button1"
 
 
 const RegisterPage = () => {

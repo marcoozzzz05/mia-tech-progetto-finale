@@ -109,9 +109,9 @@ const SearchBar = () => {
 
   return (
     <>
-    <div className="relative flex justify-center w-full bg-[#9b5de5] py-4">
-      <div className="relative w-3/5 bg-white shadow-lg rounded-2xl flex items-center p-3 border border-gray-300 my-3">
-        <Search className="text-[#6a0572] ml-3" />
+    <div className="flex justify-end md:justify-center w-full">
+      <div className="relative w-4/5 md:w-3/5 bg-white shadow-lg rounded-2xl flex items-center p-2 border border-gray-300 my-3 h-10">
+        <Search className="text-[#6a0572]" />
         <input type="text" placeholder="Cerca eventi, categorie, luoghi..." value={ query } onChange={ handleChange } onClick={ handleClick } onKeyDown={ handleKeyDown } className="w-full px-3 py-2 text-gray-700 focus:outline-none"/>
       
       { query && (
@@ -126,9 +126,9 @@ const SearchBar = () => {
       { showPopup && (
         <div className="absolute top-14 left-1/2 transform -translate-x-1/2 w-full max-w-[calc(100%-24px)] sm:max-w-[calc(100%-24px)] bg-white shadow-lg rounded-lg p-4" ref={ popupRef }>
           <h3 className="text-gray-700 text-sm font-semibold m-4 !mb-2">Ricerche recenti</h3>
-            <div className="flex flex-wrap m-4 !mt-2 gap-2">
+            <div className="flex flex-wrap m-4 !mt-2 gap-2 justify-center">
               { recentSearches.length > 0 ? (recentSearches.map((item, index) => 
-               <span key={ index } className="bg-[#F7F1F7] px-2 py-1 m-4 rounded-full text-sm cursor-pointer">
+               <span key={ index } className="bg-[#F7F1F7] px-1 py-1 m-4 rounded-full text-sm cursor-pointer">
                 { item } 
               </span>
             )) : (<p>Ancora nessuna ricerca</p>)

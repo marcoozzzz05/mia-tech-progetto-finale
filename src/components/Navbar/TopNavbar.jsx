@@ -1,31 +1,35 @@
-import { Search, User } from "lucide-react";
-import { Link } from "react-router-dom"
+import { useState, useRef, useEffect } from "react";
+import Navbar from "./Navbar";
+import logo from "../../assets/img/logo/Glokal_white_logo.png";
 
 const TopNavbar = () => {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const searchRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setIsSearchOpen(false);
+      }
+    };
+
+    if (isSearchOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isSearchOpen]);
+
   return (
-    <div className="nav hidden md:flex fixed top-0 left-0 w-full bg-gradient-to-b from-purple-500 to-purple-400 py-4 shadow-lg border-b border-purple-300 rounded-b-3xl">
-      <div className="container mx-auto flex justify-between items-center px-6 max-w-6xl">
-        {/* Logo */}
-        <div className="text-white font-bold text-xl flex items-center">
-          <span className="mr-2">Gruppo 4</span>
-        </div>
-
-        {/* Menu Items */}
-        <div className="flex space-x-6 gap-8">
-        <Link to="/">  <button className="text-white opacity-70 hover:opacity-100">Home</button></Link>
-          <button className="text-white opacity-70 hover:opacity-100"> Favoriti</button>
-        </div>
-
-        {/* Icons */}
-        <div className="flex space-x-4 gap-4">
-          <button className="text-white opacity-70 hover:opacity-100">
-          <Link to="/search">   <Search size={24} /> </Link>
-          </button>
-          <button className="text-white opacity-70 hover:opacity-100">
-          <Link to="/profile"> <User size={24} /></Link> 
-          </button>
-        </div>
-      </div>
+    <div className="w-full bg-[#9b5de5] shadow-lg px-4 py-2 transition-all duration-300 fixed top-0 left-0 right-0 z-50">
+      <Navbar 
+        isSearchOpen={isSearchOpen} 
+        setIsSearchOpen={setIsSearchOpen} 
+        searchRef={searchRef} 
+        logo={logo} 
+      />
     </div>
   );
 };
