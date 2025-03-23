@@ -1,10 +1,21 @@
 @import "tailwindcss";
 
-<<<<<<< HEAD
-
-=======
 * {
-  margin: 0;
   font-family: Poppins, sans-serif;
 }
->>>>>>> 29-create-login-and-register-page
+
+.input-with-icon {
+  background: url('icon.svg') no-repeat 10px center;
+  background-size: 16px; 
+  padding-left: 40px; 
+  padding-bottom: 10px;
+}
+
+.lock {
+  background: url('lock.svg') no-repeat 9px center;
+  background-size:20px; 
+  padding-left: 40px; 
+  padding-bottom: 10px;
+}
+
+

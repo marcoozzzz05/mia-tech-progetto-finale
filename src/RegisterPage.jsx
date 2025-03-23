@@ -1,17 +1,17 @@
 import { useState } from "react"
 import Button1 from "./components/Buttons/Button1"
-
+import { Link } from "react-router-dom"
 
 const RegisterPage = () => {
-    const [firstName, setFirstName] = useState("")
-    const [lastName, setLastName] = useState("")
+    const [fullName, setFullName] = useState("")
+    const [username, setUserName] = useState("")
     const [address, setAddress] = useState("")
     const [password, setPassword] = useState("")
     const [repeatPassword, setRepeatPassword] = useState("")
     const [message, setMessage] = useState("")
 
     const validateForm = () => {
-        if (![firstName, lastName, address, password, repeatPassword].every(Boolean)) {
+        if (![fullName, username, address, password, repeatPassword].every(Boolean)) {
             return "Compila tutti i campi!";
         }
         
@@ -70,8 +70,8 @@ const RegisterPage = () => {
         } else {
             setMessage("")
             const user = {
-                firstName: firstName,
-                lastName: lastName,
+                fullName: fullName,
+                username: username,
                 address: address,
                 password: password
             }
@@ -89,29 +89,30 @@ const RegisterPage = () => {
         <>  
                 <div className="flex flex-col items-center gap-4 w-full max-w-lg m-28 mx-auto p-6 bg-white shadow-2xl rounded-2xl">
 
-                <div className="font-bold text-3xl p-4">Create New Account</div>
-                <div className="text-lg font-semibold text-gray-700 mb-1.5 w-full text-left pl-2">First Name</div>
-                <input type="text" placeholder="Enter your name" onChange={(e) => { setFirstName(e.target.value); handleChange() }}
+                <div className="font-bold text-3xl p-4">Crea un nuovo Account</div>
+                <div className="text-lg font-semibold mb-1.5 w-full relative top-3 left-2">Nome e Cognome</div>
+                <input type="text" placeholder="Inserisci il tuo nome e cognome" onChange={(e) => { setFullName(e.target.value); handleChange() }}
                     className="w-full p-4 border border-gray-400 rounded-lg mb-4"/>
 
-                <div className="text-lg font-semibold text-gray-700 mb-1.5 w-full text-left pl-2">Last Name</div>
-                <input type="text" placeholder="Enter your name" onChange={(e) => { setLastName(e.target.value); handleChange() }}
+                <div className="text-lg font-semibold mb-1.5 w-full relative top-3 left-2">Username</div>
+                <input type="text" placeholder="Inserisci il tuo username" onChange={(e) => { setUserName(e.target.value); handleChange() }}
                     className="w-full p-4 border border-gray-400 rounded-lg mb-4"/>
 
-                <div className="text-lg font-semibold text-gray-700 mb-1.5 w-full text-left pl-2">Email address</div>
+                <div className="text-lg font-semibold mb-1.5 w-full relative top-3 left-2">Indirizzo email</div>
                 <input type="email" placeholder="name@example.com" onChange={(e) => { setAddress(e.target.value); handleChange() }}
                     className="w-full p-4 border border-gray-400 rounded-lg mb-4"/>
 
-                <div className="text-lg font-semibold text-gray-700 mb-1.5 w-full text-left pl-2">Create Password</div>
-                <input type="password" placeholder="Enter your Password" onChange={(e) => { setPassword(e.target.value); handleChange() }}
+                <div className="text-lg font-semibold mb-1.5 w-full relative top-3 left-2">Crea Password</div>
+                <input type="password" placeholder="Inserisci la tua password" onChange={(e) => { setPassword(e.target.value); handleChange() }}
                     className="w-full p-4 border border-gray-400 rounded-lg mb-4"/>
 
-                <div className="text-lg font-semibold text-gray-700 mb-1.5 w-full text-left pl-2">Repeat Password</div>
-                <input type="password" placeholder="Repeat new password" onChange={(e) => { setRepeatPassword(e.target.value); handleChange() }}
+                <div className="text-lg font-semibold mb-1.5 w-full relative top-3 left-2">Ripeti Password</div>
+                <input type="password" placeholder="Ripeti la nuova password" onChange={(e) => { setRepeatPassword(e.target.value); handleChange() }}
                     className="w-full p-4 border border-gray-400 rounded-lg mb-6"/>
                 
                 {message}
-                <Button1 onClick={handleButton} text={"Sign Up"}/>
+                <Button1 onClick={handleButton} text={"Registrati"}/>
+                <div className="font-semibold ">Hai già un account? <Link to="/login">Accedi</Link></div>
             </div>      
  
         </>
