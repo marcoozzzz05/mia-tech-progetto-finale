@@ -1,10 +1,8 @@
 import './App.css'
 import Home from './pages/Home';
-import { Routes, Route } from "react-router-dom";
 import Footer from './Footer'
 import RegisterPage from './RegisterPage'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from './pages/Home/Home';
 import ProfileBusiness from './pages/ProfileBusiness/ProfileBusiness';
 import SearchBar from './components/SearchBar/SearchBar';
 
