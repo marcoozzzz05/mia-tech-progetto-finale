@@ -3,7 +3,6 @@ import Layout from "../../components/Layout"
 
 const FavoritePage = () => {
   return (
-    <Layout>
       <div className="flex flex-col items-center justify-center min-h-screen px-6">
       <div className="flex flex-col items-center text-center">
         <div className="bg-white p-4 rounded-full shadow-lg">
@@ -27,7 +26,6 @@ const FavoritePage = () => {
 
       </div>
     </div>
-    </Layout>
   )
 }
 

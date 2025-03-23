@@ -39,14 +39,15 @@ const NavbarIcons = ({ isSearchOpen, setIsSearchOpen }) => {
         </button>
       </a>
       <a href="/favorite">
-      <button className="text-white opacity-70 hover:text-[#ffc300]">
-        <Heart size={24} />
-      </button>
+        <button className="text-white opacity-70 hover:text-[#ffc300]">
+          <Heart size={24} />
+        </button>
       </a>
-
-      <button className="text-white opacity-70 hover:text-[#ffc300]">
-        <Bookmark size={24} />
-      </button>
+      <a href="/saved-posts">
+        <button className="text-white opacity-70 hover:text-[#ffc300]">
+          <Bookmark size={24} />
+        </button>
+      </a>
 
       <div className="relative" ref={userMenuRef}>
         <button className="text-white opacity-70 hover:text-[#ffc300]" onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}>
