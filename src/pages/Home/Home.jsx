@@ -12,7 +12,7 @@ const Home = () => {
     return (
         <div className="m-0">
             <div className="fixed top-0 w-full z-10">
-                <TopNavbar />
+                {/*TopNavbar*/}
             </div>
 
             <EventCard />
@@ -28,7 +28,7 @@ const Home = () => {
             </div>
 
             <div className="fixed top-0 w-full z-10">
-                <Navbar />
+                 {/*Navbar*/}
             </div>
             <Footer />
         </div>

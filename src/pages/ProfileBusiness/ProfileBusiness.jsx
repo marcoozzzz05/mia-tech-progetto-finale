@@ -22,7 +22,7 @@ const ProfileBusiness = () => {
     return (
         <div className="bg-gradient-to-b from-purple-800 to-yellow-500 min-h-screen p-6 relative ">
             <div className="fixed top-0 w-full z-10">
-                <TopNavbar />
+               {/*TopNavbar*/}
             </div>
             <div className="max-w-lg mx-auto rounded-2xl shadow-lg overflow-hidden mt-0">
                 <img
@@ -88,7 +88,7 @@ const ProfileBusiness = () => {
                 </div>
             </div>
             <div className="fixed bottom-0 w-full z-10">
-                <Navbar />
+                 {/*Navbar*/}
             </div>
         </div>
     );
