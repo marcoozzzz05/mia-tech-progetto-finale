@@ -23,7 +23,7 @@ const TopNavbar = () => {
   }, [isSearchOpen]);
 
   return (
-    <div className="w-full bg-[#9b5de5] shadow-lg px-4 py-2 transition-all duration-300">
+    <div className="w-full bg-[#9b5de5] shadow-lg px-4 py-2 transition-all duration-300 fixed top-0 left-0 right-0 z-50">
       <Navbar 
         isSearchOpen={isSearchOpen} 
         setIsSearchOpen={setIsSearchOpen} 

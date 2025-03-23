@@ -6,11 +6,10 @@ import Button3 from "../components/Buttons/Button3";
 import TopNavbar from "../components/Navbar/TopNavbar";
 
 function Home() {
-    console.log(category);
   return (
     <>
     <TopNavbar />
-    <div className="container mx-auto px-6 py-2">
+    <div className="container mx-auto px-6 py-2 pt-20">
         <h2 className="text-2xl font-bold mt-10 forced-colors:[#2e2e2e]">Esplora le categorie</h2>
     <div className="flex flex-wrap justify-center text-center mt-10 mb-20 gap-20 md:gap-20 max-w-full">
         {category.map((item, index) => { 
