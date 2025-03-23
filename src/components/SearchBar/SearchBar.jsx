@@ -110,7 +110,7 @@ const SearchBar = () => {
   return (
     <>
     <div className="relative flex justify-center w-full">
-      <div className="relative w-3/5 bg-white shadow-lg rounded-2xl flex items-center p-3 border border-gray-300 my-3">
+      <div className="relative w-3/5 bg-white shadow-lg rounded-2xl flex items-center p-3 border border-gray-300 my-3 h-15">
         <Search className="text-[#6a0572] ml-3" />
         <input type="text" placeholder="Cerca eventi, categorie, luoghi..." value={ query } onChange={ handleChange } onClick={ handleClick } onKeyDown={ handleKeyDown } className="w-full px-3 py-2 text-gray-700 focus:outline-none"/>
       
