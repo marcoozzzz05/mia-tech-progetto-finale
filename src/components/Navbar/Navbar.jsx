@@ -1,29 +1,44 @@
-import { Home, Search, Heart, Bookmark, User } from "lucide-react";
+import SearchBar from "../SearchBar/SearchBar";
+import NavbarIcons from "./NavbarIcons";
 
-//md:hidden serve per gli smartphone
-const Navbar = () => {
-    return (
-        <nav className="md:hidden fixed bottom-0 left-0 w-full bg-gradient-to-b from-purple-500 to-purple-400 py-4 flex justify-around items-center shadow-lg border-t border-purple-300">
-            <div className="container mx-auto flex justify-around items-center max-w-md">
-                <button className="flex flex-col items-center text-white opacity-70 hover:opacity-100">
-                    <Home size={24} />
-                </button>
-                <button className="flex flex-col items-center text-white opacity-70 hover:opacity-100">
-                    <Search size={24} />
-                </button>
-                <button className="flex flex-col items-center text-white opacity-70 hover:opacity-100">
-                    <Heart size={24} />
-                    
-                </button>
-                <button className="flex flex-col items-center text-white opacity-70 hover:opacity-100">
-                    <Bookmark size={24} />
-                </button>
-                <button className="flex flex-col items-center text-white opacity-70 hover:opacity-100">
-                    <User size={24} />
-                </button>
+const Navbar = ({ isSearchOpen, setIsSearchOpen, searchRef, logo }) => {
+  return (
+    <>
+      {/* 📌 NAVBAR CHIUSA (Mostrata SOLO se la search NON è aperta) */}
+      {!isSearchOpen && (
+        <div className="w-full flex items-center justify-between">
+          {/* 1️⃣ Logo */}
+          <img src={logo} className="h-10 w-auto ml-1 md:ml-7" alt="Logo" />
+
+          {/* 2️⃣ DESKTOP: SearchBar visibile sempre */}
+          <div className="hidden md:flex flex-grow justify-center">
+            <SearchBar />
+          </div>
+
+          {/* 3️⃣ Icone Menu (Search/X inclusa in mobile) */}
+          <NavbarIcons isSearchOpen={isSearchOpen} setIsSearchOpen={setIsSearchOpen} />
+        </div>
+      )}
+
+      {/* 📌 NAVBAR APERTA (Mostrata SOLO se la search È aperta) */}
+      {isSearchOpen && (
+        <div className="w-full flex flex-col">
+          {/* 🔹 Riga 1: Logo e SearchBar accanto (ora più lunga) */}
+          <div ref={searchRef} className="w-full flex items-center justify-start">
+            <img src={logo} className="h-10 w-auto ml-1" alt="Logo" />
+            <div className="flex-grow ml-0 w-auto justify-end transition-all duration-300">
+              <SearchBar />
             </div>
-        </nav>
-    );
+          </div>
+
+          {/* 🔹 Riga 2: Icone allineate a destra sotto la SearchBar */}
+          <div className="w-full flex justify-end mt-3">
+            <NavbarIcons isSearchOpen={isSearchOpen} setIsSearchOpen={setIsSearchOpen} />
+          </div>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default Navbar;
