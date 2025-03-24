@@ -1,5 +1,4 @@
 import Button1 from "../../Button1"
-import Layout from "../../components/Layout"
 
 const FavoritePage = () => {
   return (
@@ -16,8 +15,8 @@ const FavoritePage = () => {
           </svg>
         </div>
 
-        <h2 className="text-white font-semibold text-lg mt-4">Non hai ancora nessun preferito</h2>
-        <p className="text-white text-sm mt-2 mb-2">
+        <h2 className="text-[#2e2e2e] font-semibold text-lg mt-4">Non hai ancora nessun preferito</h2>
+        <p className="text-[#2e2e2e] text-sm mt-2 mb-2">
           Scopri gli eventi più interessanti vicino a te!
         </p>
         <a href="/">
