@@ -4,7 +4,7 @@ import category from "../../category.json"
 import EventCard from "../EventCard/EventCard"
 
 
-const SearchBar = () => {
+const SearchBar = ({ onSearch }) => {
   const [recentSearches, setRecentSearches] = useState([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
@@ -64,14 +64,11 @@ const SearchBar = () => {
   const executeSearch = (searchTerm) => {
     setEvents(["Maratona milano", "Maratona Roma", "Concerto al parco", "Concerto a Milano"]);
     const result = events.filter(event => event.toLowerCase().includes(searchTerm.toLowerCase()))
-    console.log(searchTerm);
+    
     if(result.length > 0) {
-      setResults(true);
-      setEvents(result);
-      setNoResults(false);
+      onSearch(result, null);
     } else {
-      setResults(false);
-      setNoResults(searchTerm);
+      onSearch(null, searchTerm);
     }
   
     saveSearch(searchTerm);
@@ -161,23 +158,6 @@ const SearchBar = () => {
       )}
       </div>
     </div>
-    { noResults &&
-    <div className="container mx-auto px-6">
-      <p>Nessun risultato trovato per {noResults}</p>
-    </div>
-    }
-    { results &&
-    <div className="container mx-auto px-6">
-      <h2 className="text-2xl font-bold mt-10 forced-colors:[#2e2e2e]">Risultati della ricerca</h2>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 justify-center gap-6 mt-10 mb-20 cursor-pointer max-w-full">
-        { events.map((event, index) => {
-          return (
-            <span key={ index }> <EventCard title={ event }/> </span>
-          )
-        })}
-      </div>
-    </div>
-    }
     </>
   )
 }
