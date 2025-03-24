@@ -1,7 +1,8 @@
-const Button1 = ({text}) => {
+const Button1 = ({text, icon}) => {
     return (
         <>
-            <button className="bg-[#9B5DE5] rounded-2xl p-2 text-white cursor-pointer px-2 py-1 hover:px-2.5 hover:py-1.5 hover:text-xl hover:bg-purple-600">{text}</button>
+            <button className="bg-[#9B5DE5] rounded-2xl p-2 text-white cursor-pointer px-2 py-1 hover:px-2.5 hover:py-1.5 hover:text-xl hover:bg-purple-600">  {icon}
+            <span className="mt-1 text-sm">{text}</span></button>
         </>
     )
 }
