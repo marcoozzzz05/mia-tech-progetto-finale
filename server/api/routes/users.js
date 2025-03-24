@@ -22,8 +22,6 @@ app.post("/", async (req, res) => {
 
         data.password = await hashPassword(data.password);
 
-        data.role = "USER";
-
         const user = (await new User(data).save()).toObject();
 
         return res.status(201).json(user);
