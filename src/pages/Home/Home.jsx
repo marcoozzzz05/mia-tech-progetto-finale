@@ -7,8 +7,8 @@ function Home() {
   return (
     <>
     <div className="container mx-auto px-6 py-2">
-        <h2 className="text-2xl text-white font-bold mt-10 forced-colors:[#2e2e2e]">Esplora le categorie</h2>
-    <div className="flex flex-wrap justify-center text-center text-white mt-10 mb-20 gap-20 md:gap-20 max-w-full">
+        <h2 className="text-2xl text-[#2e2e2e] font-bold mt-10">Esplora le categorie</h2>
+    <div className="flex flex-wrap justify-center text-center text-[#2e2e2e] mt-10 mb-20 gap-20 md:gap-20 max-w-full">
         {category.map((item, index) => { 
             return (
             <div key={ index } className="flex flex-col items-center">
@@ -19,7 +19,7 @@ function Home() {
         })}
     </div>
     <div>
-        <h2 className="text-2xl text-white font-bold mt-10 forced-colors:[#2e2e2e]">Ultimi post aggiunti</h2>
+        <h2 className="text-2xl text-[#2e2e2e] font-bold mt-10">Ultimi post aggiunti</h2>
     </div>
     <div className="flex flex-wrap justify-center text-center mt-10 mb-20 gap-12 md:gap-16 cursor-pointer max-w-full">
         <EventCard title={"Saturday Jazz: un concerto imperdibile nel cuore di Milano"} category={ "Intrattenimento" }/>
@@ -31,7 +31,7 @@ function Home() {
         <Button3 text={"Scopri di più"} />
     </div>
     <div>
-        <h2 className="text-2xl text-white font-bold mt-10 forced-colors:[#2e2e2e]">Potrebbero interessarti</h2>
+        <h2 className="text-2xl text-[#2e2e2e] font-bold mt-10">Potrebbero interessarti</h2>
     </div>
     <div className="flex flex-wrap justify-center text-center mt-10 mb-20 gap-12 md:gap-16 cursor-pointer max-w-full">
         <EventCard title={"Masterclass di Public Speaking: Comunica con Impatto"} category={ "Educazione & Formazione" }/>
