@@ -52,7 +52,7 @@ const Profile = () => {
 
     return (
         <div className="bg-gradient-to-b from-purple-800 to-yellow-500 min-h-screen p-6 text-white">
-            <div className="max-w-lg mx-auto rounded-2xl shadow-lg overflow-hidden">
+            <div className="mmax-w-lg lg:max-w-4xl mx-auto rounded-2xl shadow-lg overflow-hidden">
                 <div className="relative text-center p-6">
                     <img
                         src={profile.avatar}
