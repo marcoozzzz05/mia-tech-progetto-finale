@@ -34,7 +34,18 @@ const UserSchema = new Schema({
         default: true,
     },
     liked_post: [{postId: mongoose.Schema.Types.ObjectId}],
-    profile_image: String
+    profile_image: {
+        type: String,
+        default: null
+    },
+    following: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    followers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }]
 }, { strict: true, timestamps: true, versionKey: false });
 
 const User = model("User", UserSchema);

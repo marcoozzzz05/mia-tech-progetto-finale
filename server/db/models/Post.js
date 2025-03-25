@@ -2,15 +2,40 @@ const { Schema, model, default: mongoose } = require("mongoose");
 
 const PostSchema = new Schema(
   {
-    userId: mongoose.Schema.Types.ObjectId,
-    content: String,
-    comments: [{ userId: mongoose.Schema.Types.ObjectId, text: String }],
-    place: {
-      type: "String",
-      enum: ["MILANO", "BERGAMO", "ROMA", "TORINO", "CAGLIARI", "PALERMO"]
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
     },
-    image: String,
-    createdAt: { type: Date, default: Date.now },
+    title: {
+      type: String,
+      required: true
+    },
+    content: {
+      type: String,
+      required: true
+    },
+    comments: [{
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+      },
+      text: String,
+      createdAt: { type: Date, default: Date.now }
+    }],
+    place: {
+      type: String,
+      enum: ["MILANO", "BERGAMO", "ROMA", "TORINO", "CAGLIARI", "PALERMO"],
+      required: true
+    },
+    image: {
+      type: String,
+      default: null
+    },
+    likes: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }]
   },
   { strict: true, timestamps: true, versionKey: false }
 );
