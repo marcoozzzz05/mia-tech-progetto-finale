@@ -1,8 +1,27 @@
-import { Heart, Star, Briefcase, MessageCircle, Share2 } from "lucide-react";
+import { Heart, Star, Briefcase, MessageCircle, Share2, Settings } from "lucide-react";
 import Button1 from "../../Button1"
+import { useEffect, useState } from "react";
 
 const Profile = () => {
-    // Dati fittizi per testare il layout senza server
+    const [data, setData] = useState({})
+
+    useEffect(() => {
+        const profile1 = async () => {
+            try {
+                const response = await fetch("")
+                const dati = await response.json();
+                setData(dati)
+
+            } catch (err) {
+                console.error(err)
+            }
+
+        };
+
+        profile1();
+
+    }, []);
+
     const profile = {
         avatar: "https://media.licdn.com/dms/image/v2/C4D03AQHndSyrLVoL7Q/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1556275063302?e=2147483647&v=beta&t=R6emfX0iQFgEdQNALPOmbrMjXeMlvHcaRYi4We60R6E",
         name: "Vincent Santana",
@@ -40,6 +59,9 @@ const Profile = () => {
                         alt="Avatar"
                         className="w-24 h-24 border-4 border-white rounded-full mx-auto"
                     />
+                    <button className="absolute ml-3 -mt-7 p-2 rounded-full">
+                        <Settings className="w-5 h-5 p-0.5 bg-purple-700 rounded-full text-yellow-500 cursor-pointer" />
+                    </button>
                     <h2 className="text-2xl font-bold mt-2">{profile.name}</h2>
                     <p className="text-sm text-gray-300">{profile.location}</p>
                 </div>
@@ -58,12 +80,12 @@ const Profile = () => {
                     </div>
 
                 </div>
-                    <div className="flex justify-center gap-4 p-6">
-                        <Button1 text="Request" icon={<Briefcase className="w-20 h-6" />} />
-                        <Button1 text="Chat" icon={<MessageCircle className="w-20 h-6" />} />
-                        <Button1 text="Favorite" icon={<Heart className="w-20 h-6" />} />
-                        <Button1 text="Share" icon={<Share2 className="w-20 h-6" />} />
-                    </div>
+                <div className="flex justify-center gap-4 p-6">
+                    <Button1 text="Request" icon={<Briefcase className="w-20 h-6" />} />
+                    <Button1 text="Chat" icon={<MessageCircle className="w-20 h-6" />} />
+                    <Button1 text="Favorite" icon={<Heart className="w-20 h-6" />} />
+                    <Button1 text="Share" icon={<Share2 className="w-20 h-6" />} />
+                </div>
 
                 <div className="p-6">
                     <h3 className="text-lg font-semibold">Services</h3>
