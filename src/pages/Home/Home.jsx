@@ -1,4 +1,3 @@
-import Layout from "../../components/Layout";
 import category from "../../category.json";
 import EventCard from "../../components/EventCard/EventCard";
 import Button3 from "../../components/Buttons/Button3";
