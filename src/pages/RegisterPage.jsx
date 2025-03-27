@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Button1 from "../components/Buttons/Button1";
 import { Link, useNavigate } from "react-router-dom";
-import { createUser } from "../services/userService";
+import { createUser, uploadProfilePicture } from "../services/userService";
 
 const RegisterPage = () => {
   const [fullName, setFullName] = useState("");
@@ -10,20 +10,36 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [role, setRole] = useState("USER");
+  const [businessName, setBusinessName] = useState("");
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (localStorage.getItem("glokal_user")) {
-        navigate("/")
+      navigate("/");
     }
-  }, [])
+  }, []);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setProfilePicture(file);
+      // Create preview URL
+      const previewUrl = URL.createObjectURL(file);
+      setPreviewUrl(previewUrl);
+    }
+  };
 
   const validateForm = () => {
-    if (
-      ![fullName, username, address, password, repeatPassword].every(Boolean)
-    ) {
+    if (![fullName, username, address, password, repeatPassword].every(Boolean)) {
       return "Compila tutti i campi!";
+    }
+
+    if (role === "BUSINESS" && !businessName) {
+      return "Inserisci il nome dell'attività!";
     }
 
     const emailError = validateEmail(address);
@@ -81,26 +97,53 @@ const RegisterPage = () => {
     }
     
     setMessage("");
-    const user = {
+    
+    // Create user data object
+    const userData = {
       first_name: fullName.split(" ")[0],
       last_name: fullName.split(" ")[1],
       email: address,
       password: password,
+      role: role,
+      metadata: role === "BUSINESS" ? { business_name: businessName } : {}
     };
-    console.log(user);
 
-    createUser(user)
-    .then((response) => {
-      if (response.status == 201) {
-        // localStorage
-        localStorage.setItem("glokal_user", JSON.stringify(user))
-        // navigate
+    // First create the user
+    createUser(userData)
+      .then((response) => {
+        if (response.status === 201) {
+          const userData = response.data;
+          
+          // If a profile picture was selected, upload it
+          if (profilePicture) {
+            return uploadProfilePicture(userData._id, profilePicture)
+              .then((uploadResponse) => {
+                // Update user data with the new profile picture URL
+                userData.profile_image = uploadResponse.data.profile_image;
+                // Store updated user data in localStorage
+                localStorage.setItem("glokal_user", JSON.stringify(userData));
+                return userData;
+              })
+              .catch((err) => {
+                console.error('Error uploading profile picture:', err);
+                // Store user data in localStorage even if profile picture upload fails
+                localStorage.setItem("glokal_user", JSON.stringify(userData));
+                return userData;
+              });
+          } else {
+            // If no profile picture, store user data in localStorage
+            localStorage.setItem("glokal_user", JSON.stringify(userData));
+            return userData;
+          }
+        }
+      })
+      .then(() => {
         navigate("/");
-      }
-    })
-    .catch((err) => {
-        console.error(err)
-    })
+      })
+      .catch((err) => {
+        console.error(err);
+        setMessage(err.response?.data?.message || "Errore durante la registrazione");
+      });
   };
 
   const handleChange = () => {
@@ -113,6 +156,31 @@ const RegisterPage = () => {
     <>
       <div className="flex flex-col items-center gap-4 w-full max-w-lg mb-28 mx-auto p-6 bg-white shadow-2xl rounded-2xl">
         <div className="font-bold text-3xl p-4">Crea un nuovo Account</div>
+        
+        {/* Profile Picture Upload */}
+        <div className="w-full flex flex-col items-center gap-2">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="hidden"
+            id="profile-picture"
+          />
+          <label
+            htmlFor="profile-picture"
+            className="cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          >
+            Seleziona Foto Profilo
+          </label>
+          {previewUrl && (
+            <img
+              src={previewUrl}
+              alt="Preview"
+              className="w-32 h-32 object-cover rounded-full"
+            />
+          )}
+        </div>
+
         <div className="text-lg font-semibold mb-1.5 w-full relative top-3 left-2">
           Nome e Cognome
         </div>
@@ -153,6 +221,39 @@ const RegisterPage = () => {
         />
 
         <div className="text-lg font-semibold mb-1.5 w-full relative top-3 left-2">
+          Tipo di Account
+        </div>
+        <select
+          value={role}
+          onChange={(e) => {
+            setRole(e.target.value);
+            handleChange();
+          }}
+          className="w-full p-4 border border-gray-400 rounded-lg mb-4"
+        >
+          <option value="USER">Utente</option>
+          <option value="BUSINESS">Attività Commerciale</option>
+        </select>
+
+        {role === "BUSINESS" && (
+          <>
+            <div className="text-lg font-semibold mb-1.5 w-full relative top-3 left-2">
+              Nome Attività
+            </div>
+            <input
+              type="text"
+              placeholder="Inserisci il nome della tua attività"
+              value={businessName}
+              onChange={(e) => {
+                setBusinessName(e.target.value);
+                handleChange();
+              }}
+              className="w-full p-4 border border-gray-400 rounded-lg mb-4"
+            />
+          </>
+        )}
+
+        <div className="text-lg font-semibold mb-1.5 w-full relative top-3 left-2">
           Crea Password
         </div>
         <input
@@ -178,9 +279,9 @@ const RegisterPage = () => {
           className="w-full p-4 border border-gray-400 rounded-lg mb-6"
         />
 
-        {message}
+        {message && <p className="text-red-500 mb-4">{message}</p>}
         <Button1 onClick={handleButton} text={"Registrati"} />
-        <div className="font-semibold ">
+        <div className="font-semibold">
           Hai già un account? <Link to="/login">Accedi</Link>
         </div>
       </div>
