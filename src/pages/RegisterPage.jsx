@@ -111,7 +111,7 @@ const RegisterPage = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center gap-4 w-full max-w-lg m-28 mx-auto p-6 bg-white shadow-2xl rounded-2xl">
+      <div className="flex flex-col items-center gap-4 w-full max-w-lg mb-28 mx-auto p-6 bg-white shadow-2xl rounded-2xl">
         <div className="font-bold text-3xl p-4">Crea un nuovo Account</div>
         <div className="text-lg font-semibold mb-1.5 w-full relative top-3 left-2">
           Nome e Cognome
