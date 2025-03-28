@@ -2,9 +2,25 @@ import { useState } from "react"
 import EventCard from "../../components/EventCard/EventCard"
 import avatar from "../../assets/img/User-avatar.png";
 import bgImage from "../../assets/img/bg-profile.png"
+import ReviewCard from "../../components/Reviews/ReviewCard";
 
 const UserProfile = () => {
   const [activeTab, setActiveTab] = useState("saved");
+
+  const userReviews = [
+    {
+      eventId: "1",
+      eventName: "Concerto Rock Night",
+      rating: 5,
+      comment: "Fantastico evento, ottima organizzazione!",
+    },
+    {
+      eventId: "2",
+      eventName: "Mostra d'Arte Moderna",
+      rating: 4,
+      comment: "Bellissima esperienza, ma un po' affollata.",
+    },
+  ];
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -43,13 +59,14 @@ const UserProfile = () => {
         <div className="flex flex-wrap justify-center text-center mt-10 mb-20 gap-12 md:gap-16 cursor-pointer max-w-full">
           {activeTab === "saved" ? (
             [1, 2, 3].map((item) => <EventCard key={item} title="Saved Post" content="Saved post content..." />)
+            ) : userReviews.length > 0 ? (
+            userReviews.map((review, index) => (
+            <ReviewCard key={index} review={review} />
+            ))
             ) : (
-           <div className="col-span-full text-center py-10">
-              <span className="text-gray-500 text-lg">Non hai ancora lasciato recensioni</span>
-            </div>
+            <p className="text-center py-10">Nessuna recensione disponibile.</p>
             )}
         </div>
-      
     </div>
   )
 }

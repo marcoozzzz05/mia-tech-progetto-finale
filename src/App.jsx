@@ -8,6 +8,7 @@ import SavedPostsPage from './pages/SavedPostsPage';
 import Layout from './components/Layout';
 import LoginPage from './LoginPage';
 import UserProfile from './pages/UserProfile/UserProfile';
+import ReviewForm from './components/Reviews/ReviewForm';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Route path="/favorite" element={<FavoritePage />} />
           <Route path="/saved-posts" element={<SavedPostsPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/review-form" element={<ReviewForm />} />
         </Route>
       </Routes>
     </>
