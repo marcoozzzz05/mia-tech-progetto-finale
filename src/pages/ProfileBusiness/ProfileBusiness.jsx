@@ -10,10 +10,11 @@ const Profile = () => {
     useEffect(() => {
         const profile1 = async () => {
             try {
-                const response = await fetch("")
+                const response = await fetch("http://localhost:3001/api/users/")
                 const dati = await response.json();
                 setData(dati)
-
+                
+                
             } catch (err) {
                 console.error(err)
             }
