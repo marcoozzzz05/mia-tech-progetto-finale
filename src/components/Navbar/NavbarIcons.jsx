@@ -67,10 +67,12 @@ const NavbarIcons = ({ isSearchOpen, setIsSearchOpen }) => {
               <span className={`block bg-[#F7F1F7] px-1 py-1 m-4 rounded-full text-sm cursor-pointer ${selectedItem === "login" ? "text-[#ffc300]" : "text-gray-800"}`} onClick={() => handleItemClick("login")}>
                 Login
               </span>   
-              </a>
+              </a >
+              <a href="/profile">
               <span className={`block bg-[#F7F1F7] px-1 py-1 m-4 rounded-full text-sm cursor-pointer ${selectedItem === "profile" ? "text-[#ffc300]" : "text-gray-800"}`} onClick={() => handleItemClick("profile")}>
                 Profilo
               </span>
+              </a>
             </div>
           </div>
         )}
