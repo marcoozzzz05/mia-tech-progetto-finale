@@ -10,6 +10,7 @@ import LoginPage from './LoginPage';
 import UserProfile from './pages/UserProfile/UserProfile';
 import ReviewForm from './components/Reviews/ReviewForm';
 import PostForm from './components/Post/PostForm';
+import PostDetailPage from './pages/PostDetailPage';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="/saved-posts" element={<SavedPostsPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/post-form" element={<PostForm />} />
+          <Route path="/post-detail" element={<PostDetailPage />} />
         </Route>
       </Routes>
     </>
