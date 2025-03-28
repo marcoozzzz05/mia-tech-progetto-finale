@@ -7,11 +7,8 @@ import FavoritePage from './pages/Favoritepage/FavoritePage';
 import SavedPostsPage from './pages/SavedPostsPage';
 import Layout from './components/Layout';
 import LoginPage from './LoginPage';
-<<<<<<< HEAD
 import LandingPage from './pages/LandingPage';
-=======
 import UserProfile from './pages/UserProfile/UserProfile';
->>>>>>> 94f5ecaa4d3aa4fd0ed5fa98881ace0e9ba7fcda
 import PostDetailPage from './pages/PostDetailPage';
 
 
