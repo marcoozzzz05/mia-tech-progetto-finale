@@ -28,7 +28,7 @@ const EditProfile = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen p-4 -mt-30">
+        <div className="flex items-center justify-center min-h-screen p-4">
             <div className="w-full max-w-md sm:max-w-lg rounded-2xl shadow-lg overflow-hidden">
                 {/* Cover Photo */}
                 <h2 className="text-gray-700 text-center text-xl font-semibold mb-4 mt-4">EDIT PROFILE</h2>

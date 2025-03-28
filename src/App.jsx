@@ -10,7 +10,7 @@ import LoginPage from './LoginPage';
 import LandingPage from './pages/LandingPage';
 import UserProfile from './pages/UserProfile/UserProfile';
 import PostDetailPage from './pages/PostDetailPage';
-
+import PostForm from "../src/components/Post/PostForm"
 import Settings from './pages/Settings/Settings';
 import LanguageCity from './pages/Settings/LanguageCity';
 import Terms from './pages/Settings/Terms';
@@ -32,6 +32,7 @@ function App() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/language" element={<LanguageCity />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/crea-post" element={<PostForm />} />
           <Route path="/edit-profile" element={<EditProfile />} />
         </Route>
         <Route path='/landing-page' element={<LandingPage />}/>
