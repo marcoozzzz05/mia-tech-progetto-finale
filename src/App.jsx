@@ -1,4 +1,4 @@
-import './App.css'
+import './App.css';
 import { Routes, Route } from "react-router-dom";
 import Home from './pages/Home/Home';
 import RegisterPage from '../src/pages/RegisterPage';
@@ -11,9 +11,12 @@ import LandingPage from './pages/LandingPage';
 import UserProfile from './pages/UserProfile/UserProfile';
 import PostDetailPage from './pages/PostDetailPage';
 
+import Settings from './pages/Settings/Settings';
+import LanguageCity from './pages/Settings/LanguageCity';
+import Terms from './pages/Settings/Terms';
+import EditProfile from './pages/Settings/EditProfile';
 
 function App() {
-
   return (
     <>
       <Routes>
@@ -26,6 +29,10 @@ function App() {
           <Route path="/saved-posts" element={<SavedPostsPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/post-detail" element={<PostDetailPage />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/language" element={<LanguageCity />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
         </Route>
         <Route path='/landing-page' element={<LandingPage />}/>
       </Routes>
@@ -33,4 +40,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

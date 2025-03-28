@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { NavLink, Route, Routes, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { NavLink, Route, Routes, Navigate, useLocation, useNavigate, Link } from "react-router-dom";
 import Button1 from "../../Button1";
 import Navbar from "../../components/Navbar/Navbar";
 import TopNavbar from "../../components/Navbar/TopNavbar";
@@ -56,7 +56,9 @@ const ProfileBusiness = () => {
 
                     <div className="flex items-center gap-4">
                         <div className="absolute right-4">
-                            <Button1 className=" text-purple-900 rounded-full" text={"SETTINGS"} />
+                        <Link to="/settings">
+    <Button1 className="text-purple-900 rounded-full" text={"SETTINGS"} />
+  </Link>
                         </div>
 
                         <div>
