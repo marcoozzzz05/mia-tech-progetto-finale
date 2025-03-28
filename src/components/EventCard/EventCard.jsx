@@ -48,7 +48,7 @@ const EventCard = ({ title, category }) => {
                         ))}
                         <span className="bg-gray-200 text-sm font-semibold px-2 py-1 rounded-full">+15</span>
                     </div>
-                    <span className="text-yellow-500 font-semibold">$30.00</span>
+                    <span className="text-[#ffc300] font-semibold">$30.00</span>
                 </div>
             </div>
         </div>

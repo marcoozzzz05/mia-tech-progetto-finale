@@ -7,11 +7,9 @@ import FavoritePage from './pages/Favoritepage/FavoritePage';
 import SavedPostsPage from './pages/SavedPostsPage';
 import Layout from './components/Layout';
 import LoginPage from './LoginPage';
-<<<<<<< HEAD
 import LandingPage from './pages/LandingPage';
-=======
 import UserProfile from './pages/UserProfile/UserProfile';
->>>>>>> 94f5ecaa4d3aa4fd0ed5fa98881ace0e9ba7fcda
+import PostDetailPage from './pages/PostDetailPage';
 
 
 function App() {
@@ -27,6 +25,7 @@ function App() {
           <Route path="/favorite" element={<FavoritePage />} />
           <Route path="/saved-posts" element={<SavedPostsPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/post-detail" element={<PostDetailPage />} />
         </Route>
         <Route path='/landing-page' element={<LandingPage />}/>
       </Routes>
