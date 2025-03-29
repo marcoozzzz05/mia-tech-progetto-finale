@@ -16,13 +16,8 @@ const EventCard = ({ title, category }) => {
                     alt="Concert"
                     className="w-full h-48 object-cover"
                 />
-                <span className="absolute top-3 left-3 bg-white text-gray-700 text-xs font-semibold px-3 py-1 rounded-full shadow">
-                    { category }
-                </span>
-                  {/* btn in forma di cuore presso da la libreria di react */}
-                <button className="absolute top-3 right-3 bg-white p-2 rounded-full shadow">
-                    <Heart className="text-red-500 w-5 h-5" fill="currentColor" />
-                </button>
+               
+               
             </div>
           {/* contiene l'imagine con affianco il mio nome in questo caso ed il resto d'informazioni sull'evento */}
             <div className="p-4">
@@ -48,7 +43,7 @@ const EventCard = ({ title, category }) => {
                         ))}
                         <span className="bg-gray-200 text-sm font-semibold px-2 py-1 rounded-full">+15</span>
                     </div>
-                    <span className="text-[#ffc300] font-semibold">$30.00</span>
+                   
                 </div>
             </div>
         </div>

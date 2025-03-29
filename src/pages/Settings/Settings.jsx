@@ -6,13 +6,12 @@ import Button1 from "../../components/Buttons/Button1";
 import Terms from "./Terms";
 
 const settingsOptions = [
-  { name: "Lingua e Area Geografica", path: "/language" },
-  { name: "Termini e Condizioni", path: "/terms" },
   { name: "Edita Profilo", path: "/edit-profile" },
+  { name: "Lingua e Area Geografica", path: "/language" },
 ];
 
 export default function Settings() {
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState("/edit-profile");
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const navigate = useNavigate();
 

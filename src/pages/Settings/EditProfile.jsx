@@ -28,7 +28,7 @@ const EditProfile = () => {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-screen p-4">
+        <div className="flex items-center justify-center min-h-screen -mt-25 p-4">
             <div className="w-full max-w-md sm:max-w-lg rounded-2xl shadow-lg overflow-hidden">
                 {/* Cover Photo */}
                 <h2 className="text-gray-700 text-center text-xl font-semibold mb-4 mt-4">EDIT PROFILE</h2>
@@ -57,17 +57,17 @@ const EditProfile = () => {
                                 <Camera size={16} className="text-gray-700" />
                             </button>
                         </div>
+                        {/* Pulsanti Cancel e Save */}
+                        <div className="flex justify-between mt-6 gap-3 mb-4">
+                            <Button1 className="bg-gray-700 text-white" text={"Cancel"} />
+                            <Button1
+                                className="bg-purple-500 hover:bg-purple-600 text-white"
+                                text={"Save"}
+                                disabled={passwordError !== ""}
+                            />
+                        </div>
                     </div>
 
-                    {/* Pulsanti Cancel e Save */}
-                    <div className="flex justify-between mt-6 gap-3 mb-4">
-                        <Button1 className="bg-gray-700 text-white" text={"Cancel"} />
-                        <Button1
-                            className="bg-purple-500 hover:bg-purple-600 text-white"
-                            text={"Save"}
-                            disabled={passwordError !== ""}
-                        />
-                    </div>
 
                     {/* Form di modifica */}
                     <div className="space-y-4">

@@ -110,14 +110,7 @@ const PostDetail = () => {
               </button>
             </div>
   
-            {/* Form recensione */}
-            <div className="mb-8">
-              <ReviewForm 
-                onSubmit={handleReviewSubmit} 
-                userId="user123" 
-                eventName={post.title} 
-              />
-            </div>
+           
   
             {/* Sezione recensioni */}
             <div>
@@ -136,6 +129,14 @@ const PostDetail = () => {
                   Questo evento non ha ancora ricevuto recensioni. Lascia tu la prima!
                 </p>
               )}
+            </div>
+             {/* Form recensione */}
+             <div className="mb-8">
+              <ReviewForm 
+                onSubmit={handleReviewSubmit} 
+                userId="user123" 
+                eventName={post.title} 
+              />
             </div>
           </div>
         </div>
