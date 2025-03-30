@@ -235,8 +235,13 @@ const RegisterPage = () => {
           <option value="BUSINESS">Attività Commerciale</option>
         </select>
 
+        {role === "USER" && (
+           <div className="text-gray-500 m-1 -mt-4">Un utente normale può scoprire, partecipare agli eventi, salvare nei preferiti, lasciare recensioni e seguire gli organizzatori per non perdere nulla!</div>
+        )}
+
         {role === "BUSINESS" && (
-          <>
+          <> 
+            <div className="text-gray-500 m-1 -mt-4">Un utente business può creare, promuovere e gestire i suoi eventi, interagire con il pubblico e aumentare la sua visibilità con recensioni e iscrizioni!</div>
             <div className="text-lg font-semibold mb-1.5 w-full relative top-3 left-2">
               Nome Attività
             </div>
@@ -250,6 +255,7 @@ const RegisterPage = () => {
               }}
               className="w-full p-4 border border-gray-400 rounded-lg mb-4"
             />
+           
           </>
         )}
 
