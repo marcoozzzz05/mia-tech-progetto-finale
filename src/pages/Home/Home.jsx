@@ -1,4 +1,3 @@
-import category from "../../category.json";
 import EventCard from "../../components/EventCard/EventCard";
 import Button3 from "../../components/Buttons/Button3";
 import { Link } from "react-router";
@@ -7,19 +6,8 @@ function Home() {
     return (
         <>
             <div className="container mx-auto px-6 py-2">
-                <h2 className="text-2xl text-[#2e2e2e] font-bold mt-10">Esplora le categorie</h2>
-                <div className="flex flex-wrap justify-center text-center text-[#2e2e2e] mt-10 mb-20 gap-20 md:gap-20 max-w-full">
-                    {category.map((item, index) => {
-                        return (
-                            <div key={index} className="flex flex-col items-center">
-                                <img className="w-24 -24 md:w-28 md:h-28 lg:w-32 lg:h-32 cursor-pointer max-w-full" src={`/src/assets/img/category/${item.img}`} />
-                                <span className="mt-2 text-xs md:text-sm lg:text-sm text-center break-words cursor-pointer forced-colors:[#2e2e2e]"> {item.name} </span>
-                            </div>
-                        )
-                    })}
-                </div>
                 <div>
-                    <h2 className="text-2xl text-[#2e2e2e] font-bold mt-10">Ultimi post aggiunti</h2>
+                    <h2 className="text-2xl text-[#2e2e2e] font-bold">Ultimi post aggiunti</h2>
                 </div>
 
                 <div className="flex flex-wrap justify-center text-center mt-10 mb-20 gap-12 md:gap-16 cursor-pointer max-w-full">

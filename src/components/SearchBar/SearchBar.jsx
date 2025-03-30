@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef } from "react"
 import { Search, MapPin, X } from "lucide-react"
-import category from "../../category.json"
-import EventCard from "../EventCard/EventCard"
 
 
 const SearchBar = ({ onSearch }) => {
@@ -128,17 +126,9 @@ const SearchBar = ({ onSearch }) => {
                <span key={ index } className="bg-[#F7F1F7] px-1 py-1 m-4 rounded-full text-sm cursor-pointer">
                 { item } 
               </span>
-            )) : (<p>Ancora nessuna ricerca</p>)
-          }
+              )) : (<p>Ancora nessuna ricerca</p>)
+              }
             </div>
-          <h3 className="text-gray-700 text-sm font-semibold m-4 !mt-2 !mb-2">Categorie</h3>
-          <div className="grid grid-cols-2 gap-2 m-4 !mt-2">
-            { category.map((item, index) => (
-              <span key={ index } className="bg-[#9b5de5] text-white justify text-center px-3 py-2 rounded-lg text-sm cursor-pointer"> 
-                { item.name }
-              </span> 
-            ))}
-          </div>
         </div>
       )}
 

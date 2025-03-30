@@ -1,4 +1,4 @@
-import './App.css';
+import './App.css'
 import { Routes, Route } from "react-router-dom";
 import Home from './pages/Home/Home';
 import RegisterPage from '../src/pages/RegisterPage';
@@ -17,6 +17,7 @@ import Terms from './pages/Settings/Terms';
 import EditProfile from './pages/Settings/EditProfile';
 
 function App() {
+
   return (
     <>
       <Routes>
@@ -41,4 +42,4 @@ function App() {
   );
 }
 
-export default App;
+export default App
