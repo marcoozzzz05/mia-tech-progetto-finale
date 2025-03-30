@@ -1,5 +1,6 @@
 import { Star } from "lucide-react";
 import Button2 from "../Buttons/Button2"
+import { Link } from "react-router";
 
 const ReviewCard = ({ review }) => {
     return (
@@ -16,7 +17,9 @@ const ReviewCard = ({ review }) => {
             <p className="text-gray-500 text-sm mt-2">{review.comment}</p>
 
             <div className="mt-8 flex justify-center">
-                <Button2 text={"Vedi Post"} />
+                <Link to={ "/post-detail" }>
+                    <Button2 text={"Vedi Post"} />
+                </Link>
             </div>
         </div>
         );

@@ -46,7 +46,7 @@ const Profile = () => {
     ];
 
     return (
-        <div className="min-h-screen p-6 text-[#2e2e2e] flex justify-center">
+        <div className="min-h-screen p-6 text-[#2e2e2e] flex justify-center mb-20">
             <div className="max-w-4xl w-full bg-white rounded-2xl shadow-lg p-6">
                 <div className="relative text-center">
                     <img
@@ -125,7 +125,7 @@ const Profile = () => {
                     </button>
                 </div>
 
-                <div className="flex flex-wrap justify-center text-center mt-10 mb-20 gap-12 md:gap-16 cursor-pointer max-w-full">
+                <div className="flex flex-wrap justify-center text-center mt-10 mb-10 gap-12 md:gap-16 cursor-pointer max-w-full">
                     {activeTab === "created" ? (
                         [1, 2, 3].map((item) => <EventCard key={item} title="Cena" content="Saved post content..." />)
                     ) : userReviews.length > 0 ? (
