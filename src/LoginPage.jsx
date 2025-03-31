@@ -22,6 +22,7 @@ const LoginPage = () => {
             password: passwordValue
         }).then((response) => {
             localStorage.setItem("glokal_user", JSON.stringify(response.data.user))
+            
             navigate("/")
         }).catch((err) => {
             console.error(err);

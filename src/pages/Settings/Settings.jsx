@@ -13,6 +13,7 @@ const settingsOptions = [
 export default function Settings() {
   const [selectedOption, setSelectedOption] = useState("/edit-profile");
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [profilo, setProfilo] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,6 +21,18 @@ export default function Settings() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  
+  useEffect(() => {
+    const storedUser = localStorage.getItem("glokal_user");
+    if (storedUser) {
+        const user = JSON.parse(storedUser);
+        setProfilo(user);
+    } else {
+        console.warn("Nessun utente loggato trovato in localStorage");
+        navigate("/");
+    }
+}, [navigate]);
 
   const handleLogout = () => {
     // Aggiungi la logica per il logout (ad esempio, rimuovendo un token)
@@ -41,9 +54,7 @@ export default function Settings() {
       return <EditProfile />;
     } else if (selectedOption === "/language") {
       return <LanguageCity />;
-    } else if (selectedOption === "/terms") {
-      return <Terms />;
-    }
+    } 
     return (
       <div>
         <h2 className="text-xl font-semibold">Welcome to the Settings Page</h2>
@@ -54,18 +65,21 @@ export default function Settings() {
     );
   };
 
+  
+
+
   return (
     <div className="flex min-h-screen p-6 text-black">
       {/* Sidebar settings */}
       <div className="w-full md:w-1/3 lg:w-1/4 bg-opacity-20 p-6 rounded-lg">
         <div className="text-center">
           <img
-            src="https://cdn.wallpapersafari.com/5/85/7SkDjy.jpg"
+            src={'http://localhost:3000/assets/' + profilo.profile_image || "/path/to/default-avatar.jpg"}
             alt="Avatar"
             className="w-24 h-24 border-4 border-purple-800 rounded-full mx-auto"
           />
-          <h2 className="text-xl font-bold mt-2">Peter Parker</h2>
-          <p className="text-sm text-gray-500">@spiderman2000</p>
+          <h2 className="text-xl font-bold mt-2">{profilo.first_name} {profilo.last_name}</h2>
+          <p className="text-sm text-gray-500">{profilo.email}</p>
         </div>
 
         <h3 className="mt-6 text-lg font-semibold text-center">SETTINGS</h3>
