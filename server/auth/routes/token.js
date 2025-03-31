@@ -11,7 +11,6 @@ const { comparePassword, generateToken } = require("../../utilities/auth");
  */
 app.post("/", async (req, res) => {
     const role = req?.query?.role?.toUpperCase() || "USER";
-
     const schema = Joi.object().keys({
         email: Joi.string().email().required(),
         password: Joi.string().required(),

@@ -22,7 +22,7 @@ export const createUser = (userData) => api.post("/api/users", userData)
  * @param {string} credentials.password - User's password
  * @returns {Promise<Object>} Authentication token and user data
  */
-export const login = (userRole, credentials) => api.post(`/auth/token?role=${userRole}`, credentials)
+export const login = (credentials) => api.post(`/auth/token`, credentials)
 
 /**
  * Updates a user's profile information

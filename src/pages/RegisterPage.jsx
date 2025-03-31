@@ -116,7 +116,9 @@ const RegisterPage = () => {
           
           // If a profile picture was selected, upload it
           if (profilePicture) {
-            return uploadProfilePicture(userData._id, profilePicture)
+            const profilePictureData = new FormData()
+            profilePictureData.append("profile_picture", profilePicture)
+            return uploadProfilePicture(userData._id, profilePictureData)
               .then((uploadResponse) => {
                 // Update user data with the new profile picture URL
                 userData.profile_image = uploadResponse.data.profile_image;
