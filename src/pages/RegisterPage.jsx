@@ -118,6 +118,7 @@ const RegisterPage = () => {
           if (profilePicture) {
             const profilePictureData = new FormData()
             profilePictureData.append("profile_picture", profilePicture)
+            console.log(profilePictureData.get("profile_picture"))
             return uploadProfilePicture(userData._id, profilePictureData)
               .then((uploadResponse) => {
                 // Update user data with the new profile picture URL
