@@ -39,7 +39,7 @@ const LoginPage = () => {
 
     return (
         <>
-            <div className="flex flex-col items-center gap-4 w-full max-w-lg m-30 mx-auto p-6 bg-white shadow-2xl rounded-2xl">
+            <div className="flex flex-col items-center gap-4 w-full max-w-lg m-50 mx-auto p-6 bg-white shadow-2xl rounded-2xl">
                 <div className="font-bold text-4xl">Bentornato!</div>
                 <div className="font-semibold text-xl p-4">Inserisci le tue credenziali per accedere al tuo account.</div>
                 <div className="font-semibold text-lg flex relative self-start top-2 left-2">Email</div>

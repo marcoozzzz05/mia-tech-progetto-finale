@@ -5,7 +5,6 @@ import { createUser, uploadProfilePicture } from "../services/userService";
 
 const RegisterPage = () => {
   const [fullName, setFullName] = useState("");
-  const [username, setUserName] = useState("");
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
@@ -34,7 +33,7 @@ const RegisterPage = () => {
   };
 
   const validateForm = () => {
-    if (![fullName, username, address, password, repeatPassword].every(Boolean)) {
+    if (![fullName, address, password, repeatPassword].every(Boolean)) {
       return "Compila tutti i campi!";
     }
 
@@ -157,7 +156,7 @@ const RegisterPage = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center gap-4 w-full max-w-lg mb-28 mx-auto p-6 bg-white shadow-2xl rounded-2xl">
+      <div className="flex flex-col items-center gap-4 w-full max-w-lg m-20 mx-auto p-6 bg-white shadow-2xl rounded-2xl">
         <div className="font-bold text-3xl p-4">Crea un nuovo Account</div>
         
         {/* Profile Picture Upload */}
@@ -192,19 +191,6 @@ const RegisterPage = () => {
           placeholder="Inserisci il tuo nome e cognome"
           onChange={(e) => {
             setFullName(e.target.value);
-            handleChange();
-          }}
-          className="w-full p-4 border border-gray-400 rounded-lg mb-4"
-        />
-
-        <div className="text-lg font-semibold mb-1.5 w-full relative top-3 left-2">
-          Username
-        </div>
-        <input
-          type="text"
-          placeholder="Inserisci il tuo username"
-          onChange={(e) => {
-            setUserName(e.target.value);
             handleChange();
           }}
           className="w-full p-4 border border-gray-400 rounded-lg mb-4"
