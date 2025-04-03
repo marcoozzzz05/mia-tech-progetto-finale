@@ -1,3 +1,20 @@
+/*import { useNavigate } from "react-router";
+
+const EventCard = ({ post }) => {
+    const navigate = useNavigate();
+    
+    return (
+        <div onClick={() => navigate(`/post/${post.id}`)}>
+            <img src={post.image} alt={post.title} />
+            <h3>{post.title}</h3>
+            <p>Creato da: {post.userId}</p>
+            <p>Like: {post.likes.length}</p>
+        </div>
+    );
+};
+
+export default EventCard;*/
+
 import { Heart } from "lucide-react";
 
 const group = [
@@ -9,7 +26,7 @@ const group = [
 const EventCard = ({ title, category }) => {
     return (
         <div className="w-80 rounded-2xl shadow-lg overflow-hidden bg-white border border-gray-200">
-              {/* contiene la foto dele evento piu span con  tipologia del contenuto */}
+               /contiene la foto dele evento piu span con  tipologia del contenuto/
             <div className="relative">
                 <img
                     src="https://media.istockphoto.com/id/1806011581/es/foto/j%C3%B3venes-felices-y-alegres-bailando-saltando-y-cantando-durante-el-concierto-del-grupo-favorito.jpg?s=612x612&w=0&k=20&c=Gd46vV8OOIgFzqE5hEH2LW30pNcAxGE8W6Jgd1mvHoI="
@@ -19,7 +36,7 @@ const EventCard = ({ title, category }) => {
                
                
             </div>
-          {/* contiene l'imagine con affianco il mio nome in questo caso ed il resto d'informazioni sull'evento */}
+          /contiene l'imagine con affianco il mio nome in questo caso ed il resto d'informazioni sull'evento/ 
             <div className="p-4">
                 <div className="flex items-center gap-3">
                     <img

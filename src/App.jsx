@@ -9,12 +9,12 @@ import Layout from './components/Layout';
 import LoginPage from './LoginPage';
 import LandingPage from './pages/LandingPage';
 import UserProfile from './pages/UserProfile/UserProfile';
-import PostDetailPage from './pages/PostDetailPage';
 import PostForm from "../src/components/Post/PostForm"
 import Settings from './pages/Settings/Settings';
 import LanguageCity from './pages/Settings/LanguageCity';
 import Terms from './pages/Settings/Terms';
 import EditProfile from './pages/Settings/EditProfile';
+import PostDetailPage from './pages/PostDetailPage';
 
 function App() {
 
@@ -27,7 +27,7 @@ function App() {
           <Route path='/user-profile' element={<UserProfile />} />
           <Route path="/favorite" element={<FavoritePage />} />
           <Route path="/saved-posts" element={<SavedPostsPage />} />
-          <Route path="/post-detail" element={<PostDetailPage />} />
+          <Route path="/post-detail/:postId" element={<PostDetailPage />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/language" element={<LanguageCity />} />
           <Route path="/terms" element={<Terms />} />
