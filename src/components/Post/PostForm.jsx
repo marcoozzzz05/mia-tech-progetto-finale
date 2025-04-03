@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createPost } from "../../services/postService";
 import { useNavigate } from "react-router";
+import Button1 from "../Buttons/Button1";
 
 const PostForm = ({ onPostCreated }) => {
   const storedUser = localStorage.getItem("glokal_user");
@@ -83,9 +84,7 @@ const PostForm = ({ onPostCreated }) => {
           className="w-full p-4 border border-gray-400 rounded-lg" />
 
         <div className='flex justify-center m-6'>
-          <button type="submit" disabled={loading} className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition">
-            {loading ? "Caricamento..." : "Crea Post"}
-          </button>
+          <Button1 type="submit" disabled={loading} text={"Crea post"}/>
         </div>
 
         {successMessage && <p className="text-green-500">{successMessage}</p>}
