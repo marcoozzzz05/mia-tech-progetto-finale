@@ -14,11 +14,10 @@ import Settings from './pages/Settings/Settings';
 import LanguageCity from './pages/Settings/LanguageCity';
 import Terms from './pages/Settings/Terms';
 import EditProfile from './pages/Settings/EditProfile';
-<<<<<<< HEAD
+
 import PostDetailPage from './pages/PostDetailPage';
-=======
+
 import ForgotPassword from './ForgotPassword';
->>>>>>> password
 
 function App() {
 
