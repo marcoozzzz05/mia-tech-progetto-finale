@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { Search, User, Home, Bookmark, Heart, X } from "lucide-react";
+import { useNavigate } from "react-router";
 
 const NavbarIcons = ({ isSearchOpen, setIsSearchOpen }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isloggedIn, setIsLoggedIn] = useState(false);
   const userMenuRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -31,6 +33,7 @@ const NavbarIcons = ({ isSearchOpen, setIsSearchOpen }) => {
 
   const HandleLogout = () => {
     localStorage.clear();
+    navigate("/landing-page");
   }
   return (
     <div className="flex space-x-6 items-center">
