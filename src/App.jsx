@@ -15,6 +15,7 @@ import Settings from './pages/Settings/Settings';
 import LanguageCity from './pages/Settings/LanguageCity';
 import Terms from './pages/Settings/Terms';
 import EditProfile from './pages/Settings/EditProfile';
+import ForgotPassword from './ForgotPassword';
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />          
         <Route path="/register-page" element={<RegisterPage />} />
         <Route path='/landing-page' element={<LandingPage />}/>
+        <Route path='/login/forgot-password' element={<ForgotPassword />}/>
       </Routes>
     </>
   );
