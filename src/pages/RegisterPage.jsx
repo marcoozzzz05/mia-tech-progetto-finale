@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Button1 from "../components/Buttons/Button1";
 import { Link, useNavigate } from "react-router-dom";
 import { createUser, uploadProfilePicture } from "../services/userService";
+import logo from "../assets/img/logo/Glokal_purple_logo.png";
 
 const RegisterPage = () => {
   const [fullName, setFullName] = useState("");
@@ -156,6 +157,7 @@ const RegisterPage = () => {
 
   return (
     <>
+      <img src={logo} alt="" className="w-sm flex flex-col items-center mx-auto relative top-16 right-6"/>
       <div className="flex flex-col items-center gap-4 w-full max-w-lg m-20 mx-auto p-6 bg-white shadow-2xl rounded-2xl">
         <div className="font-bold text-3xl p-4">Crea un nuovo Account</div>
         
@@ -277,7 +279,7 @@ const RegisterPage = () => {
         {message && <p className="text-red-500 mb-4">{message}</p>}
         <Button1 onClick={handleButton} text={"Registrati"} />
         <div className="font-semibold">
-          Hai già un account? <Link to="/login">Accedi</Link>
+          Hai già un account? <Link to="/login" className="hover:underline">Accedi</Link>
         </div>
       </div>
     </>
