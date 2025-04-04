@@ -73,9 +73,9 @@ const ProfileBusiness = () => {
             <div className="max-w-4xl w-full bg-white rounded-2xl shadow-lg p-6">
                 <div className="relative text-center">
                     <img
-                        src={'http://localhost:3000/assets/' + profilo.profile_image || "/path/to/default-avatar.jpg"}
+                        src={'http://localhost:3000/assets/' + profilo.profile_image }
                         alt="Avatar"
-                        className="w-24 h-24 p-1 bg-gradient-to-l from-[#6a0572] to-[#ffc300] rounded-full mx-auto"
+                        className="w-24 h-24 p-1 bg-gradient-to-l from-[#6a0572] to-[#ffc300] rounded-full mx-auto object-cover"
                     />
                     <Link to="/settings">
                         <button className="absolute ml-3 -mt-7 p-2 rounded-full">

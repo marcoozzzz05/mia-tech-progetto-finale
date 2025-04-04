@@ -43,7 +43,7 @@ const TopNavbar = () => {
       </div>
       <div className="h-20"></div>
 
-      {/* Risultati della ricerca - ora fuori dalla navbar */}
+      {/* Risultati della ricerca */}
       {searchResults && <SearchResults results={searchResults} />}
       {noResults && (
         <div className="container mx-auto px-6 mt-4 text-[#2e2e2e]">
