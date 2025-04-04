@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Search, User, Home, Bookmark, Heart, X } from "lucide-react";
+import { useNavigate } from "react-router";
 
 const NavbarIcons = ({ isSearchOpen, setIsSearchOpen }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
@@ -7,10 +8,15 @@ const NavbarIcons = ({ isSearchOpen, setIsSearchOpen }) => {
   const [isloggedIn, setIsLoggedIn] = useState(false);
   const userMenuRef = useRef(null);
 
+  const navigate = useNavigate()
+
+  const user = JSON.parse(localStorage.getItem("glokal_user"));
+  const profilePage = user && user.role == "USER" ? "/user-profile" : "/profile";
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
-        setIsUserMenuOpen(false);
+        setIsUserMenuOpen(false); 
       }
     };
 
@@ -31,6 +37,7 @@ const NavbarIcons = ({ isSearchOpen, setIsSearchOpen }) => {
 
   const HandleLogout = () => {
     localStorage.clear();
+    navigate("/landing-page")
   }
   return (
     <div className="flex space-x-6 items-center">
@@ -79,7 +86,7 @@ const NavbarIcons = ({ isSearchOpen, setIsSearchOpen }) => {
                 Login
               </span>   
               </a >)}
-              {isloggedIn && (<a href="/profile">
+              {isloggedIn && (<a href={profilePage}>
               <span className={`block bg-[#F7F1F7] px-1 py-1 m-4 rounded-full text-sm cursor-pointer ${selectedItem === "profile" ? "text-[#ffc300]" : "text-gray-800"}`} onClick={() => handleItemClick("profile")}>
                 Profilo
               </span>

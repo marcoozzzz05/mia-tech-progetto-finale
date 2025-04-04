@@ -17,10 +17,13 @@ const LandingPage = () => {
                     <div className="absolute inset-0 bg-black/50"></div>
                 </div>
 
-                <div className="relative flex items-center px-6 sm:px-8 md:px-12 py-8 z-10 w-full">
+                <div className="relative flex items-center gap-4 px-6 sm:px-8 md:px-12 py-8 z-10 w-full">
                     <img src={logo} alt="Logo Glokal" className="w-36 sm:w-50 md:w-70 mt-6 ml-4 sm:ml-4" />
-                    <button className="ml-auto bg-purple-500 px-4 sm:px-6 md:px-10 py-3 sm:py-3 rounded-md text-white hover:bg-purple-600 transition uppercase text-base sm:text-lg md:text-2xl font-bold cursor-pointer" onClick={() => navigate("/register-page")}>
+                    <button className="ml-auto bg-purple-500 px-6 sm:px-6 md:px-10 py-3 sm:py-3 rounded-md text-white hover:bg-purple-600 transition uppercase text-base sm:text-lg md:text-2xl font-bold cursor-pointer" onClick={() => navigate("/register-page")}>
                         Registrati
+                    </button>
+                    <button className="bg-yellow-500 text-black px-6 sm:px-6 md:px-10 py-3 sm:py-3 rounded-md text-lg sm:text-xl md:text-2xl font-bold uppercase hover:bg-yellow-600 transition cursor-pointer" onClick={() => navigate("/login")}>
+                        Accedi
                     </button>
                 </div>
 

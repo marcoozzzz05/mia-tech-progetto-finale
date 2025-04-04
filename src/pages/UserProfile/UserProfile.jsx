@@ -60,6 +60,11 @@ const UserProfile = () => {
       comment: "Bellissima esperienza, ma un po' affollata.",
     },
   ];
+  console.log(localStorage.getItem("glokal_user"))
+
+  if(JSON.parse(localStorage.getItem("glokal_user")).role == "BUSINESS") {
+    navigate("/profile")
+}
 
   if (loadingProfile) {
     return (
