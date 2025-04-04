@@ -21,6 +21,11 @@ const UserProfile = () => {
       comment: "Bellissima esperienza, ma un po' affollata.",
     },
   ];
+  console.log(localStorage.getItem("glokal_user"))
+
+  if(JSON.parse(localStorage.getItem("glokal_user")).role == "BUSINESS") {
+    navigate("/profile")
+}
 
   return (
     <div className="bg-gray-100 min-h-screen">
@@ -46,27 +51,27 @@ const UserProfile = () => {
         </div>
       </div>
       <div className="flex justify-center mt-10 text-[#2e2e2e]">
-        <button className={`px-4 py-2 text-lg font-semibold ${ activeTab === "saved" ? "border-b-4 border-[#ffc300]" : "text-gray-500" }`}
-            onClick={() => setActiveTab("saved")}>
-            POST SALVATI
-          </button>
-          <button className={`px-4 py-2 text-lg font-semibold ${ activeTab === "reviews" ? "border-b-4 border-[#ffc300]" : "text-gray-500" }`}
-            onClick={() => setActiveTab("reviews")}>
-            LE MIE RECENSIONI
-          </button>
-        </div>
+        <button className={`px-4 py-2 text-lg font-semibold ${activeTab === "saved" ? "border-b-4 border-[#ffc300]" : "text-gray-500"}`}
+          onClick={() => setActiveTab("saved")}>
+          POST SALVATI
+        </button>
+        <button className={`px-4 py-2 text-lg font-semibold ${activeTab === "reviews" ? "border-b-4 border-[#ffc300]" : "text-gray-500"}`}
+          onClick={() => setActiveTab("reviews")}>
+          LE MIE RECENSIONI
+        </button>
+      </div>
 
-        <div className="flex flex-wrap justify-center text-center mt-10 mb-20 gap-12 md:gap-16 cursor-pointer max-w-full">
-          {activeTab === "saved" ? (
-            [1, 2, 3].map((item) => <EventCard key={item} title="Saved Post" content="Saved post content..." />)
-            ) : userReviews.length > 0 ? (
-            userReviews.map((review, index) => (
+      <div className="flex flex-wrap justify-center text-center mt-10 mb-20 gap-12 md:gap-16 cursor-pointer max-w-full">
+        {activeTab === "saved" ? (
+          [1, 2, 3].map((item) => <EventCard key={item} title="Saved Post" content="Saved post content..." />)
+        ) : userReviews.length > 0 ? (
+          userReviews.map((review, index) => (
             <ReviewCard key={index} review={review} />
-            ))
-            ) : (
-            <p className="text-center py-10">Nessuna recensione disponibile.</p>
-            )}
-        </div>
+          ))
+        ) : (
+          <p className="text-center py-10">Nessuna recensione disponibile.</p>
+        )}
+      </div>
     </div>
   )
 }
