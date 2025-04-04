@@ -12,12 +12,13 @@ const PostForm = ({ onPostCreated }) => {
   console.log("User ID dopo il parsing:", userId);
   
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({ title: "", content: "", place: "", image: null });
+  const [formData, setFormData] = useState({ title: "", content: "", place: "--", image: null });
   const [successMessage, setSuccessMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const handleChange = (e) => {
+    console.log(formData);
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };

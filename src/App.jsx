@@ -14,6 +14,7 @@ import Settings from './pages/Settings/Settings';
 import LanguageCity from './pages/Settings/LanguageCity';
 import Terms from './pages/Settings/Terms';
 import EditProfile from './pages/Settings/EditProfile';
+import User from './pages/User';
 
 import PostDetailPage from './pages/PostDetailPage';
 
@@ -36,6 +37,7 @@ function App() {
           <Route path="/terms" element={<Terms />} />
           <Route path="/crea-post" element={<PostForm />} />
           <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/user/:userId" element={<User />} />
         </Route>        
         <Route path="/login" element={<LoginPage />} />          
         <Route path="/register-page" element={<RegisterPage />} />
