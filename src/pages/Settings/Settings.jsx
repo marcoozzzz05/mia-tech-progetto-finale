@@ -74,9 +74,9 @@ export default function Settings() {
       <div className="w-full md:w-1/3 lg:w-1/4 bg-opacity-20 p-6 rounded-lg">
         <div className="text-center">
           <img
-            src={'http://localhost:3000/assets/' + profilo.profile_image || "/path/to/default-avatar.jpg"}
+            src={'http://localhost:3000/assets/' + profilo.profile_image }
             alt="Avatar"
-            className="w-24 h-24 border-4 border-purple-800 rounded-full mx-auto"
+            className="w-24 h-24 border-4 rounded-full mx-auto object-cover"
           />
           <h2 className="text-xl font-bold mt-2">{profilo.first_name} {profilo.last_name}</h2>
           <p className="text-sm text-gray-500">{profilo.email}</p>
