@@ -1,4 +1,7 @@
 import api from "./api"
+import axios from 'axios';
+const API_BASE_URL = 'http://localhost:3000/api/posts'; // Sostituisci con l'URL di base della tua API
+
 
 /**
  * Creates a new post (business users only)
@@ -23,6 +26,19 @@ export const createPost = (data) => api.post("/api/posts", data)
  * @returns {Promise<Object>} Updated post object
  */
 export const updatePost = (postId, data) => api.put(`/api/posts/${postId}`, data)
+
+export const deletePost = async (postId) => {
+    try {
+      const response = await axios.delete(`${API_BASE_URL}/api/posts/${postId}`);
+      // La risposta dal server potrebbe contenere informazioni sul successo dell'eliminazione
+      return response.data;
+    } catch (error) {
+      console.error("Errore durante l'eliminazione del post:", error);
+      // Potresti voler rilanciare l'errore per gestirlo nel componente
+      throw error;
+    }
+  };
+  
 
 /**
  * Retrieves a specific post by ID

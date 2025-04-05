@@ -34,11 +34,10 @@ export default function Settings() {
     }
 }, [navigate]);
 
-  const handleLogout = () => {
-    // Aggiungi la logica per il logout (ad esempio, rimuovendo un token)
-    console.log("User logged out");
-    navigate("/login");
-  };
+const HandleLogout = () => {
+  localStorage.clear();
+  navigate("/landing-page")
+}
 
   const handleOptionClick = (path) => {
     if (isMobile) {
@@ -99,7 +98,7 @@ export default function Settings() {
           <Button1
             className="w-full md:w-auto bg-purple-500 py-2 rounded-full text-center text-white font-bold hover:bg-purple-600"
             text={"LOGOUT"}
-            onClick={handleLogout} // Logout
+            onClick={HandleLogout} // Logout
           />
         </div>
       </div>
