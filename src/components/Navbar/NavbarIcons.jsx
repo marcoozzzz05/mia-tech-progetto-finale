@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { Search, User, Home, Bookmark, Heart, X } from "lucide-react";
+import { Search, User, Home, Heart, X } from "lucide-react";
 import { useNavigate } from "react-router";
 
 const NavbarIcons = ({ isSearchOpen, setIsSearchOpen }) => {
@@ -59,11 +59,6 @@ const NavbarIcons = ({ isSearchOpen, setIsSearchOpen }) => {
       <a href="/favorite">
         <button className="text-white opacity-70 hover:text-[#ffc300]">
           <Heart size={24} />
-        </button>
-      </a>
-      <a href="/saved-posts">
-        <button className="text-white opacity-70 hover:text-[#ffc300]">
-          <Bookmark size={24} />
         </button>
       </a>
 

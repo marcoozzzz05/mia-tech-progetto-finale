@@ -4,7 +4,6 @@ import Home from './pages/Home/Home';
 import RegisterPage from '../src/pages/RegisterPage';
 import ProfileBusiness from './pages/ProfileBusiness/ProfileBusiness';
 import FavoritePage from './pages/Favoritepage/FavoritePage';
-import SavedPostsPage from './pages/SavedPostsPage';
 import Layout from './components/Layout';
 import LoginPage from './LoginPage';
 import LandingPage from './pages/LandingPage';
@@ -30,7 +29,6 @@ function App() {
           <Route path="/profile/*" element={<ProfileBusiness />} />
           <Route path='/user-profile' element={<UserProfile />} />
           <Route path="/favorite" element={<FavoritePage />} />
-          <Route path="/saved-posts" element={<SavedPostsPage />} />
           <Route path="/post-detail/:postId" element={<PostDetailPage />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/language" element={<LanguageCity />} />

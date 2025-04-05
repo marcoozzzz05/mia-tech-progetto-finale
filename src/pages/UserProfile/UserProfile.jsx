@@ -3,10 +3,9 @@ import { Link, useNavigate } from "react-router";
 import EventCard from "../../components/EventCard/EventCard"
 import bgImage from "../../assets/img/bg-profile.png"
 import ReviewCard from "../../components/Reviews/ReviewCard";
-import { getUserProfile, followUser } from "../../services/userService";
+import { getUserProfile } from "../../services/userService";
 import { getFollowedPosts } from "../../services/postService";
 import { Settings } from "lucide-react";
-import Button1 from "../../Button1";
 
 const UserProfile = () => {
   const [profilo, setProfilo] = useState(null);
@@ -15,6 +14,8 @@ const UserProfile = () => {
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [followerCount, setFollowerCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,6 +27,8 @@ const UserProfile = () => {
       getUserProfile(user._id)
         .then(response => {
           setProfilo(response.data);
+          setFollowerCount(response.data.followerCount);
+          setFollowingCount(response.data.followingCount);
           localStorage.setItem("glokal_user", JSON.stringify(response.data));
           setLoadingProfile(false);
         }).catch(error => {
@@ -47,16 +50,6 @@ const UserProfile = () => {
       navigate("/login");
     }
   }, [navigate]);
-
-  const handleFollow = async () => {
-    if (!profilo || !profilo._id) return;
-    try {
-      await followUser(profilo._id, JSON.parse(localStorage.getItem("glokal_user"))._id);
-      setIsFollowing(true);
-    } catch (error) {
-      console.error("Errore nel seguire l'utente:", error);
-    }
-  };
 
   const userReviews = [
     {
@@ -91,7 +84,7 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-100 min-h-screen mb-20">
       <div className="max-w-5xl mx-auto p-4">
         <div className="relative mx-auto bg-white shadow-md rounded-2xl overflow-hidden min-h-[200px] md:min-h-[280px] flex flex-col justify-end p-4">
           <div className="absolute top-0 left-0 w-full h-1/3 md:h-1/3 bg-cover bg-center" style={{ backgroundImage: `url(${bgImage})` }} />
@@ -108,18 +101,13 @@ const UserProfile = () => {
 
               <div className="flex flex-col items-start">
                 <h2 className="text-xl md:text-2xl text-[#2e2e2e] font-bold">{profilo.first_name} {profilo.last_name}</h2>
-                <p className="text-gray-600">{profilo.email}</p>
-        
-                <Button1 text={isFollowing ? "Seguito" : "Segui"}
-                  onClick={handleFollow} 
-                  disabled={isFollowing}
-                />
               </div>
             </div>
+
             <div className="flex space-x-4 justify-end gap-3 sm:gap- text-sm sm:text-base text-[#2e2e2e]">
-              <span>473 follower</span>
-              <span>467 seguiti</span>
               <span>{followedPosts.length} Post</span>
+              <span>{followerCount} follower</span>
+              <span>{followingCount} seguiti</span>
             </div>
           </div>
         </div>

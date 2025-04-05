@@ -90,17 +90,14 @@ const PostDetailPage = () => {
         </div>
 
         <div className="p-6 space-y-4">
-          {/* 2. RIGA AUTORE E CITTA' */}
           <div className="flex justify-between items-center">
-            {/* Foto profilo e nome autore */}
-            <a className="flex items-center gap-3" onClick={() => {navigate(`/user/${post.userId._id}`)}}>
-              {/* Contenitore foto profilo */}
-              <div className="shrink-0">
+            <a className="flex items-center gap-3 cursor-pointer" onClick={() => {navigate(`/user/${post.userId._id}`)}}>
+              <div className="shrink-0 rounded-full p-0.5 bg-gradient-to-l from-[#6a0572] to-[#ffc300]">
                 {post.userId?.profile_image ? (
                   <img
                     src={getImageUrl(post.userId.profile_image)}
                     alt={`${post.userId.first_name} ${post.userId.last_name}`}
-                    className="w-10 h-10 rounded-full object-cover"
+                    className="w-16 h-16 rounded-full object-cover "
                     onError={(e) => e.target.src = '/default-profile.jpg'}
                   />
                 ) : (
@@ -112,7 +109,6 @@ const PostDetailPage = () => {
                 )}
               </div>
 
-              {/* Nome completo - assicurati che questi dati esistano */}
               <div className="min-w-0">
                 <p className="font-medium truncate">
                   {post.userId?.first_name || "Nome"} {post.userId?.last_name || "Cognome"}
