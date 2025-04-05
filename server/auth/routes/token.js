@@ -19,7 +19,7 @@ app.post("/", async (req, res) => {
     try {
         const data = await schema.validateAsync(req.body);
 
-        const user = await User.findOne({ email: data.email, role }, null, { lean: true });
+        const user = await User.findOne({ email: data.email }, null, { lean: true });
 
         if (!user) return res.status(403).json({ message: "Not Authorized" });
 

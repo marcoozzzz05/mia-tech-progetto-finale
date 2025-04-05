@@ -59,3 +59,4 @@ export const uploadProfilePicture = (userId, formData) => api.post(`/api/users/$
  * @returns {Promise<Object>} Success message
  */
 export const followUser = (userId, followerId) => api.post(`/api/users/${userId}/follow`, { followerId })
+

@@ -14,6 +14,7 @@ import Settings from './pages/Settings/Settings';
 import LanguageCity from './pages/Settings/LanguageCity';
 import Terms from './pages/Settings/Terms';
 import EditProfile from './pages/Settings/EditProfile';
+import EditCard from './components/EventCard/EditCard';
 
 import PostDetailPage from './pages/PostDetailPage';
 
@@ -35,6 +36,7 @@ function App() {
           <Route path="/language" element={<LanguageCity />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/crea-post" element={<PostForm />} />
+          <Route path="/edit-post/:postId" element={<EditCard />} />
           <Route path="/edit-profile" element={<EditProfile />} />
         </Route>        
         <Route path="/login" element={<LoginPage />} />          

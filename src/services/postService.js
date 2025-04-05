@@ -29,7 +29,7 @@ export const updatePost = (postId, data) => api.put(`/api/posts/${postId}`, data
 
 export const deletePost = async (postId) => {
     try {
-      const response = await axios.delete(`${API_BASE_URL}/api/posts/${postId}`);
+      const response = await api.delete(`/api/posts/${postId}`);
       // La risposta dal server potrebbe contenere informazioni sul successo dell'eliminazione
       return response.data;
     } catch (error) {

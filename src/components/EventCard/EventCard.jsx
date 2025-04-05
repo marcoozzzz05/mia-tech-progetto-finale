@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { getPost, deletePost } from "../../services/postService";
 import { EllipsisVertical } from "lucide-react";
 
-const EventCard = ({ post }) => {
+const EventCard = ({ post, onPostDeleted } ) => {
   const navigate = useNavigate();
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const optionsRef = useRef(null);
@@ -30,13 +30,11 @@ const EventCard = ({ post }) => {
   }, []);
 
   const handleDeletePost = async () => {
-    console.log("Elimina post:", post._id);
     setIsOptionsOpen(false);
     try {
       const response = await deletePost(post._id);
-      console.log("Post eliminato con successo:", response);
-      if (onDelete) {
-        onDelete(post._id);
+      if (onPostDeleted) {
+        onPostDeleted(post._id);
       }
     } catch (error) {
       console.error("Errore durante l'eliminazione del post:", error);
@@ -82,20 +80,20 @@ const EventCard = ({ post }) => {
                 aria-labelledby="options-menu-button"
               >
                 <div className="py-1" role="none">
+                <button
+                   onClick={() => navigate(`/edit-post/${post._id}`)}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
+                    role="menuitem"
+                  >
+                    Modifica
+                  </button>
                   <button
                     onClick={handleDeletePost}
                     className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
                     role="menuitem"
                   >
-                    Cancella post
-                  </button>
-                  <button
-                    onClick={handleEditPost}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
-                    role="menuitem"
-                  >
-                    Modifica post
-                  </button>
+                    Cancella
+                  </button>                
                 </div>
               </div>
             )}
