@@ -9,8 +9,6 @@ const NavbarIcons = ({ isSearchOpen, setIsSearchOpen }) => {
   const userMenuRef = useRef(null);
   const navigate = useNavigate();
 
-  const navigate = useNavigate()
-
   const user = JSON.parse(localStorage.getItem("glokal_user"));
   const profilePage = user && user.role == "USER" ? "/user-profile" : "/profile";
 
