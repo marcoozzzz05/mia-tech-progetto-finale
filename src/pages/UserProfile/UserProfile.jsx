@@ -91,7 +91,10 @@ const UserProfile = () => {
           <div className="relative p-1 md:p-10 flex flex-row items-center justify-between">
             <div className="flex flex-row items-center space-x-6">
               <div className="relative w-32 h-32 rounded-full p-1 bg-gradient-to-l from-[#6a0572] to-[#ffc300]">
-                <img src={'http://localhost:3000/assets/' + profilo.profile_image} alt="Avatar" className="w-full h-full rounded-full object-cover" />
+                <img
+                  src={'http://localhost:3000/assets/' + profilo.profile_image || 'assets/img/Avatar.png'}
+                  alt="Avatar"
+                  className="w-full h-full rounded-full object-cover" />
                 <Link to="/settings">
                   <button className="absolute right-4 bottom-4 translate-x-1/3 translate-y-1/3 rounded-full bg-[#9b5de5]">
                     <Settings className="w-5 h-5 p-0.5 bg-[#9b5de5] rounded-full text-white hover:text-[#ffc300]" />

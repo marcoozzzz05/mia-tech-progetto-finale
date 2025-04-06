@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import { getUserProfile, followUser } from "../services/userService";
 import { getFollowedPosts, getUserPosts } from "../services/postService";
-import { UserPlus, UserCheck, Heart, Star } from "lucide-react";
+import { UserPlus, UserCheck } from "lucide-react";
 import Button1 from "../Button1";
 import EventCard from "../components/EventCard/EventCard";
 import ReviewCard from "../components/Reviews/ReviewCard";
@@ -84,7 +84,7 @@ const User = () => {
         <div className="max-w-4xl w-full bg-white rounded-2xl shadow-lg p-6">
           <div className="relative text-center">
             <img
-              src={'http://localhost:3000/assets/' + (profile.profile_image)}
+              src={'http://localhost:3000/assets/' + (profile.profile_image) || 'assets/img/Avatar.png'}
               alt="Avatar"
               className="w-32 h-32 p-1 bg-gradient-to-l from-[#6a0572] to-[#ffc300] rounded-full mx-auto object-cover"
             />
@@ -93,14 +93,6 @@ const User = () => {
 
           <div className="flex justify-around py-4 mt-4">
             <div className="flex flex-col items-center">
-              <p className="flex gap-1 items-center"><Heart className="w-4 h-4" /> {profile.likes || 0}</p>
-              <span className="text-xs text-gray-500">Likes</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <p className="flex gap-1 items-center"><Star className="w-4 h-4" /> {profile.rating?.toFixed(1) || '0.0'}</p>
-              <span className="text-xs text-gray-500">Rating</span>
-            </div>
-            <div className="flex flex-col items-center">
               <p>{posts.length}</p>
               <span className="text-xs text-gray-500">Post</span>
             </div>
@@ -108,8 +100,12 @@ const User = () => {
               <p>{followerCount}</p>
               <span className="text-xs text-gray-500">Follower</span>
             </div>
+            <div className="flex flex-col items-center">
+              <p>{profile.rating?.toFixed(1) || '0'}</p>
+              <span className="text-xs text-gray-500">Rating</span>
+            </div>
           </div>
-
+          {/*Il bottone per seguire appare solo se si visualizza il profilo di un altro utente*/}
           {currentUserId !== userId && (
             <div className="flex justify-center p-6">
               <Button1
@@ -135,7 +131,6 @@ const User = () => {
             </button>
           </div>
 
-          {/* Content */}
           <div className="flex flex-wrap justify-center text-center mt-10 mb-10 gap-12 md:gap-16 cursor-pointer max-w-full">
             {activeTab === "posts" ? (
               posts.length > 0 ? (
@@ -160,7 +155,7 @@ const User = () => {
               )
             ) : (
               <div className="w-full text-center py-10">
-                <p>Recensioni verranno mostrate qui</p>
+                <p>Ancora nessuna recensione</p>
               </div>
             )}
           </div>
@@ -179,7 +174,7 @@ const User = () => {
             <div className="flex flex-row items-center space-x-6">
               <div className="relative w-32 h-32 rounded-full p-1 bg-gradient-to-l from-[#6a0572] to-[#ffc300]">
                 <img
-                  src={'http://localhost:3000/assets/' + (profile.profile_image)}
+                  src={'http://localhost:3000/assets/' + (profile.profile_image) || 'assets/img/Avatar.png'}
                   alt="Avatar"
                   className="w-full h-full rounded-full object-cover"
                 />
@@ -188,7 +183,7 @@ const User = () => {
               <div className="flex flex-col items-start">
                 <h2 className="text-xl md:text-2xl text-[#2e2e2e] font-bold">{profile.first_name} {profile.last_name}</h2>
                 <p className="text-gray-600">{profile.email}</p>
-
+                {/*Il bottone per seguire appare solo se si visualizza il profilo di un altro utente*/}
                 {currentUserId !== userId && (
                   <Button1
                     icon={
@@ -252,7 +247,7 @@ const User = () => {
           )
         ) : (
           <div className="w-full text-center py-10">
-            <p>Recensioni verranno mostrate qui</p>
+            <p>Non ci sono ancora recensioni</p>
           </div>
         )}
       </div>
