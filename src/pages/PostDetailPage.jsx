@@ -73,7 +73,6 @@ const PostDetailPage = () => {
   return (
     <div className="max-w-4xl mx-auto mb-20 p-4">
       <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-        {/* 1. IMMAGINE DEL POST (a tutta larghezza) */}
         <div className="w-full h-80 overflow-hidden">
           {post.image ? (
             <img
@@ -116,7 +115,6 @@ const PostDetailPage = () => {
               </div>
             </a>
 
-            {/* Città a destra */}
             {post.place && (
               <span className="bg-[#F7F1F7] text-[#6a0572] px-3 py-1 rounded-full text-sm">
                 {post.place}
@@ -124,17 +122,14 @@ const PostDetailPage = () => {
             )}
           </div>
 
-          {/* 3. TITOLO (sotto la riga autore-città) */}
           <h1 className="text-2xl font-bold pt-2">
             {post.title || "Nessun titolo disponibile"}
           </h1>
 
-          {/* 4. DESCRIZIONE */}
           <p className="whitespace-pre-line text-gray-700 pb-4">
             {post.content || "Nessun contenuto disponibile"}
           </p>
 
-          {/* 5. LIKE E DATA */}
           <div className="border-t pt-4 flex justify-between items-center">
             <button
               onClick={handleLike}
