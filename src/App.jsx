@@ -14,6 +14,7 @@ import LanguageCity from './pages/Settings/LanguageCity';
 import Terms from './pages/Settings/Terms';
 import EditProfile from './pages/Settings/EditProfile';
 import User from './pages/User';
+import SearchResultsPage from './pages/SearchResultsPage';
 
 import PostDetailPage from './pages/PostDetailPage';
 
@@ -27,7 +28,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/profile/*" element={<ProfileBusiness />} />
-          <Route path='/user-profile' element={<UserProfile />} />
+          <Route path="/user-profile" element={<UserProfile />} />
           <Route path="/favorite" element={<FavoritePage />} />
           <Route path="/post-detail/:postId" element={<PostDetailPage />} />
           <Route path="/settings" element={<Settings />} />
@@ -36,6 +37,7 @@ function App() {
           <Route path="/crea-post" element={<PostForm />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/user/:userId" element={<User />} />
+          <Route path="/search-results" element={<SearchResultsPage />} />
         </Route>        
         <Route path="/login" element={<LoginPage />} />          
         <Route path="/register-page" element={<RegisterPage />} />

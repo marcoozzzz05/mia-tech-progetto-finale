@@ -1,13 +1,12 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router";
 import Navbar from "./Navbar";
 import logo from "../../assets/img/logo/Glokal_white_logo.png";
-import SearchResults from "../SearchBar/SearchResults";
 
 const TopNavbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchResults, setSearchResults] = useState(null);
-  const [noResults, setNoResults] = useState(false);
   const searchRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -25,9 +24,8 @@ const TopNavbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isSearchOpen]);
 
-  const handleSearch = (results, noResults) => {
-    setSearchResults(results);
-    setNoResults(noResults);
+  const handleSearch = (query, city) => {
+    navigate(`/search-results?query=${encodeURIComponent(query)}${city ? `&city=${city}` : ''}`);
   };
 
   return (
@@ -42,14 +40,6 @@ const TopNavbar = () => {
         />
       </div>
       <div className="h-20"></div>
-
-      {/* Risultati della ricerca */}
-      {searchResults && <SearchResults results={searchResults} />}
-      {noResults && (
-        <div className="container mx-auto px-6 mt-4 text-[#2e2e2e]">
-          <p>Nessun risultato trovato per "{noResults}"</p>
-        </div>
-      )}
     </>
   );
 };
