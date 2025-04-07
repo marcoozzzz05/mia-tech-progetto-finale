@@ -42,12 +42,6 @@ const EventCard = ({ post, onPostDeleted } ) => {
     }
   };
 
-  const handleEditPost = () => {
-    console.log("Modifica post:", post._id);
-    setIsOptionsOpen(false);
-    // Qui puoi implementare la logica per navigare alla pagina di modifica del post
-  };
-
   return (
     <div className="w-80 rounded-2xl shadow-lg overflow-hidden bg-white border border-gray-200">
       <div onClick={() => navigate(`/post-detail/${post._id}`)} className="relative cursor-pointer">

@@ -356,4 +356,24 @@ app.get("/:postId/likes", async (req, res) => {
     }
 });
 
+/**
+ * @route GET /api/posts/latest (o /api/posts)
+ * @description Get the latest posts from all users
+ * @access Public
+ * @returns {Array} Array of latest posts with populated user and comment information
+ */
+app.get("/latest", async (req, res) => {
+    try {
+        const posts = await Post.find({})
+            .populate('userId', 'first_name last_name profile_image')
+            .populate('comments.userId', 'first_name last_name profile_image')
+            .sort({ createdAt: -1 })
+            .limit(20); // Puoi regolare il limite
+        return res.status(200).json(posts);
+    } catch (err) {
+        console.error("Backend - Error fetching latest posts:", err);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
 module.exports = app;

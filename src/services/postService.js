@@ -82,3 +82,5 @@ export const getPostsByPlace = (place) => api.get(`/api/posts/place/${place}`)
  * @returns {Promise<Object>} Updated post object with likes array
  */
 export const likePost = (postId, userId) => api.post(`/api/posts/${postId}/like`, { userId })
+
+export const getLatestAllPosts = () => api.get("/api/posts/latest");
