@@ -26,16 +26,17 @@ const TopNavbar = () => {
 
   const handleSearch = (query, city) => {
     navigate(`/search-results?query=${encodeURIComponent(query)}${city ? `&city=${city}` : ''}`);
+    setIsSearchOpen(false);
   };
 
   return (
     <>
       <div className="w-full bg-[#9b5de5] shadow-lg px-4 py-2 transition-all duration-300 fixed top-0 left-0 right-0 z-50">
-        <Navbar 
-          isSearchOpen={isSearchOpen} 
-          setIsSearchOpen={setIsSearchOpen} 
-          searchRef={searchRef} 
-          logo={logo} 
+        <Navbar
+          isSearchOpen={isSearchOpen}
+          setIsSearchOpen={setIsSearchOpen}
+          searchRef={searchRef}
+          logo={logo}
           onSearch={handleSearch}
         />
       </div>
