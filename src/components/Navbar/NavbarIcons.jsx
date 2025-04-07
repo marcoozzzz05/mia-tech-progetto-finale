@@ -46,7 +46,7 @@ const NavbarIcons = ({ isSearchOpen, setIsSearchOpen }) => {
           <X size={24} />
         </button>
       ) : (
-        <button className="md:hidden text-white opacity-70 hover:text-[#ffc300]" onClick={() => setIsSearchOpen(true)}>
+        <button className="text-white opacity-70 hover:text-[#ffc300]" onClick={() => setIsSearchOpen(true)}>
           <Search size={24} />
         </button>
       )}
