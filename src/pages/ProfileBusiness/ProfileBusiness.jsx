@@ -16,6 +16,12 @@ const ProfileBusiness = () => {
     const [followerCount, setFollowerCount] = useState(0);
     const navigate = useNavigate();
 
+    const handlePostDeletion = (postId) => {
+        var newPosts = [...userPosts];
+        newPosts.splice(newPosts.findIndex(toFilter => toFilter._id === postId), 1)
+        setUserPosts(newPosts);
+    };
+
     useEffect(() => {
         const storedUser = localStorage.getItem("glokal_user");
 
@@ -160,6 +166,7 @@ const ProfileBusiness = () => {
                             userPosts.map((post) => (
                                 <EventCard
                                     key={post._id}
+                                    onPostDeleted={handlePostDeletion}                                
                                     post={{
                                         ...post,
                                         title: post.title || "Titolo non disponibile",

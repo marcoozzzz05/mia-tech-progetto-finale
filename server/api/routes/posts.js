@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express.Router();
-
+const crypto = require("crypto");
 const Joi = require("joi");
 const { User, Post } = require("../../db");
 const upload = require("../../utilities/upload");
@@ -60,24 +60,25 @@ app.post("/", upload.single('image'), async (req, res) => {
  *   - image: file (optional) - New post image
  * @returns {Object} Updated post object
  */
-app.put("/:postId", upload.single('image'), async (req, res) => {
+app.put("/:postId", async (req, res) => {
     const schema = Joi.object().keys({
         title: Joi.string(),
         content: Joi.string(),
+        image: Joi.string(),
         place: Joi.string(),
     });
 
     try {
         const data = await schema.validateAsync(req.body);
         const post = await Post.findById(req.params.postId);
-        
+
         if (!post) return res.status(404).json({ message: "Post not found" });
-        
+
         const user = await User.findOne({ _id: post.userId, role: "BUSINESS" });
         if (!user) return res.status(401).json({ message: "Only business users can edit posts" });
 
         // Handle image update if new file is uploaded
-        if (req.file) {
+        if (req.body.image && req.body.image.startsWith('data:image')) {
             // Delete old image if exists
             if (post.image) {
                 const oldImagePath = path.join(__dirname, '../../assets', post.image);
@@ -85,7 +86,15 @@ app.put("/:postId", upload.single('image'), async (req, res) => {
                     fs.unlinkSync(oldImagePath);
                 }
             }
-            data.image = req.file.filename;
+
+            let uuid = crypto.randomUUID();
+            const imageData = req.body.image.split(',');
+            const mimeType = imageData[0].substring(5, imageData[0].indexOf(';'));
+            const filename = `${uuid}.${mimeType.substring(mimeType.indexOf('/') + 1)}`;
+            const decoded = Buffer.from(imageData[1], "base64");
+            const newImagePath = path.join(__dirname, '../../assets', filename);
+            fs.writeFileSync(newImagePath, decoded);
+            data.image = filename;
         }
 
         const updatedPost = await Post.findByIdAndUpdate(
@@ -115,7 +124,7 @@ app.get("/:postId", async (req, res) => {
         const post = await Post.findById(req.params.postId)
             .populate('userId', 'first_name last_name profile_image')
             .populate('comments.userId', 'first_name last_name profile_image');
-        
+
         if (!post) return res.status(404).json({ message: "Post not found" });
         return res.status(200).json(post);
     } catch (err) {
@@ -161,7 +170,7 @@ app.get("/followed/:userId", async (req, res) => {
             .populate('comments.userId', 'first_name last_name profile_image')
             .sort({ createdAt: -1 })
             .limit(20);
-        
+
         return res.status(200).json(posts);
     } catch (err) {
         console.log(err);
@@ -188,9 +197,9 @@ app.get("/search", async (req, res) => {
                 { place: { $regex: query, $options: 'i' } }
             ]
         })
-        .populate('userId', 'first_name last_name profile_image')
-        .populate('comments.userId', 'first_name last_name profile_image')
-        .sort({ createdAt: -1 });
+            .populate('userId', 'first_name last_name profile_image')
+            .populate('comments.userId', 'first_name last_name profile_image')
+            .sort({ createdAt: -1 });
 
         return res.status(200).json(posts);
     } catch (err) {
@@ -250,6 +259,27 @@ app.post("/:postId/like", async (req, res) => {
         post.likes.push(userId);
         await post.save();
 
+        return res.status(200).json(post);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
+/**
+ * @route DELETE /api/posts/:postId
+ * @description DELETE a specific post by ID
+ * @access Public
+ * @param {string} postId - Post's ID
+ * @returns {Object}SUCESS 200
+ */
+
+app.delete("/:postId", async (req, res) => {
+    try {
+        console.log(req);
+        const post = await Post.findByIdAndDelete(req.params.postId);
+
+        if (!post) return res.status(404).json({ message: "Post not found" });
         return res.status(200).json(post);
     } catch (err) {
         console.log(err);
@@ -322,6 +352,26 @@ app.get("/:postId/likes", async (req, res) => {
         return res.status(200).json(response);
     } catch (err) {
         console.log(err);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
+/**
+ * @route GET /api/posts/latest (o /api/posts)
+ * @description Get the latest posts from all users
+ * @access Public
+ * @returns {Array} Array of latest posts with populated user and comment information
+ */
+app.get("/latest", async (req, res) => {
+    try {
+        const posts = await Post.find({})
+            .populate('userId', 'first_name last_name profile_image')
+            .populate('comments.userId', 'first_name last_name profile_image')
+            .sort({ createdAt: -1 })
+            .limit(20); // Puoi regolare il limite
+        return res.status(200).json(posts);
+    } catch (err) {
+        console.error("Backend - Error fetching latest posts:", err);
         return res.status(500).json({ message: "Internal Server Error" });
     }
 });

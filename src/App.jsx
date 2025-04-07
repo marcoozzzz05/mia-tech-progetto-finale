@@ -15,6 +15,7 @@ import Terms from './pages/Settings/Terms';
 import EditProfile from './pages/Settings/EditProfile';
 import User from './pages/User';
 import SearchResultsPage from './pages/SearchResultsPage';
+import EditCard from './components/EventCard/EditCard';
 
 import PostDetailPage from './pages/PostDetailPage';
 
@@ -35,6 +36,7 @@ function App() {
           <Route path="/language" element={<LanguageCity />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/crea-post" element={<PostForm />} />
+          <Route path="/edit-post/:postId" element={<EditCard />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/user/:userId" element={<User />} />
           <Route path="/search-results" element={<SearchResultsPage />} />

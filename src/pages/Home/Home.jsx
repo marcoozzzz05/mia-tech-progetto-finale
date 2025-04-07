@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { getPostsByPlace, likePost, getFollowedPosts } from "../../services/postService";
+import { getPostsByPlace, likePost, getFollowedPosts, getLatestAllPosts } from "../../services/postService";
 import EventCard from "../../components/EventCard/EventCard";
 import Button3 from "../../components/Buttons/Button3";
 import { Link } from "react-router-dom";
+import { getUserPosts } from "../../services/postService";
 
 function Home() {
     const [latestPosts, setLatestPosts] = useState([]);
@@ -25,46 +26,53 @@ function Home() {
     }, []);
 
     useEffect(() => {
-        if (!userId) return;
-
         setLoading({ latest: true, popular: true, nearby: true });
 
-        // Recupera tutti i post seguiti
-        getFollowedPosts(userId)
+        // Recupera gli ultimi post di TUTTI gli utenti
+        getLatestAllPosts() // <--------------------- MODIFICATO QUI
             .then(response => {
+                console.log("API Response (getLatestAllPosts):", response);
                 const allPosts = response.data;
-
-                // Ordina per data di creazione
-                const sortedByDate = [...allPosts].sort((a, b) => 
+                const sortedByDate = [...allPosts].sort((a, b) =>
                     new Date(b.createdAt) - new Date(a.createdAt)
                 );
                 setLatestPosts(sortedByDate.slice(0, 4));
+                console.log("Latest Posts after sorting:", sortedByDate.slice(0, 4));
                 setLoading(prev => ({ ...prev, latest: false }));
 
-                // Ordina per numero di like
-                const sortedByLikes = [...allPosts].sort((a, b) => 
-                    b.likes.length - a.likes.length
-                );
-                setPopularPosts(sortedByLikes.slice(0, 4));
-                setLoading(prev => ({ ...prev, popular: false }));
-            })
-            .catch(error => {
-                console.error("Errore nel recupero dei post seguiti:", error);
-                setLoading(prev => ({ ...prev, latest: false, popular: false }));
-            });
+                // Ordina per numero di like (questo continuerà a usare i post degli utenti seguiti per ora)
+                getFollowedPosts(userId)
+                    .then(response => {
+                        const followedPosts = response.data;
+                        const sortedByLikes = [...followedPosts].sort((a, b) =>
+                            b.likes.length - a.likes.length
+                        );
+                        setPopularPosts(sortedByLikes.slice(0, 4));
+                        setLoading(prev => ({ ...prev, popular: false }));
+                    })
+                    .catch(error => {
+                        console.error("Errore nel recupero dei post seguiti (per i popolari):", error);
+                        setLoading(prev => ({ ...prev, popular: false }));
+                    });
+                })
+                .catch(error => {
+                    console.error("Errore nel recupero degli ultimi post di tutti:", error);
+                    setLoading(prev => ({ ...prev, latest: false }));
+                }); // <--- HO AGGIUNTO LA PARENTESI GRAFFA MANCANTE
+        
+                // Recupera i post relativi alla città dell'utente (questo rimane invariato)
+                getPostsByPlace(userCity)
+                    .then(response => {
+                        setNearbyPosts(response.data.slice(0, 4));
+                        setLoading(prev => ({ ...prev, nearby: false }));
+                    })
+                    .catch(error => {
+                        console.error("Errore nel recupero dei post per città:", error);
+                        setLoading(prev => ({ ...prev, nearby: false }));
+                    });
+            }, [userId, userCity]);
 
-        // Recupera i post relativi alla città dell'utente
-        getPostsByPlace(userCity)
-            .then(response => {
-                setNearbyPosts(response.data.slice(0, 4));
-                setLoading(prev => ({ ...prev, nearby: false }));
-            })
-            .catch(error => {
-                console.error("Errore nel recupero dei post per città:", error);
-                setLoading(prev => ({ ...prev, nearby: false }));
-            });
-    }, [userId, userCity]);
-
+            
     const handleLike = async (postId) => {
         if (!userId) {
             console.error("Utente non autenticato");
@@ -73,14 +81,12 @@ function Home() {
 
         try {
             await likePost(postId, userId);
-            // Aggiorna lo stato per riflettere il like
-            const updatePosts = (posts) => 
-                posts.map(post => 
-                    post._id === postId 
-                        ? { ...post, likes: [...post.likes, userId] } 
+            const updatePosts = (posts) =>
+                posts.map(post =>
+                    post._id === postId
+                        ? { ...post, likes: [...post.likes, userId] }
                         : post
                 );
-
             setLatestPosts(updatePosts(latestPosts));
             setPopularPosts(updatePosts(popularPosts));
             setNearbyPosts(updatePosts(nearbyPosts));
@@ -102,22 +108,29 @@ function Home() {
             return <p className="text-gray-500 text-lg w-full">Non ci sono ancora post in questa sezione.</p>;
         }
 
-        return posts.map(post => (
-            <EventCard 
-                key={post._id} 
-                post={{
-                    ...post,
-                    title: post.title || "Titolo non disponibile",
-                    image: post.image || "Immagine non disponibile",
-                    user: post.user || {
-                        name: "Utente sconosciuto",
-                        profile_image: null
-                    },
-                    likes: post.likes || []
-                }} 
-                onLike={() => handleLike(post._id)} 
-            />
-        ));
+        return posts.map(post => {
+            console.log("Post singolo renderizzato:", post); // Log del singolo post
+            return (
+                <EventCard
+                    key={post._id}
+                    post={{
+                        ...post,
+                        title: post.title || "Titolo non disponibile",
+                        image: post.image || "Immagine non disponibile",
+                        user: post.user ? {
+                            name: `${post.user.first_name} ${post.user.last_name}`,
+                            profile_image: post.user.profile_image || 'default-avatar.jpg'
+                        } : {
+                            name: "Utente sconosciuto",
+                            profile_image: 'default-avatar.jpg'
+                        },
+                        likes: post.likes || []
+                    }}
+                    // Se vuoi gestire l'eliminazione anche dalla Home (richiederebbe un'API diversa)
+                    // onPostDeleted={/* la tua funzione per eliminare dalla Home */}
+                />
+            );
+        });
     };
 
     return (
@@ -159,61 +172,3 @@ function Home() {
 }
 
 export default Home;
-
-
-
-/*import EventCard from "../../components/EventCard/EventCard";
-import Button3 from "../../components/Buttons/Button3";
-import { Link } from "react-router";
-
-function Home() {
-    return (
-        <>
-            <div className="container mx-auto px-6 py-2">
-                <div>
-                    <h2 className="text-2xl text-[#2e2e2e] font-bold">Ultimi post aggiunti</h2>
-                </div>
-
-                <div className="flex flex-wrap justify-center text-center mt-10 mb-20 gap-12 md:gap-16 cursor-pointer max-w-full">
-                    <Link to="/post-detail">
-                        <EventCard title={"Saturday Jazz: un concerto imperdibile nel cuore di Milano"} category={"Intrattenimento"} />
-                    </Link>
-                    <Link to="/post-detail">
-                        <EventCard title={"Sandro Cappai: Stand-Up Comedy a Cagliari"} category={"Intrattenimento"} />
-                    </Link>
-                    <Link to="/post-detail">
-                        <EventCard title={"Giornate FAI di Primavera"} category={"Eventi culturali & Arte"} />
-                    </Link>
-                    <Link to="/post-detail">
-                        <EventCard title={"Amatriciana&Carbonara Festival"} category={"Ristorazione"} />
-                    </Link>
-                </div>
-                <div className="flex justify-center mb-20">
-                    <Button3 text={"Scopri di più"} />
-                </div>
-                <div>
-                    <h2 className="text-2xl text-[#2e2e2e] font-bold mt-10">Potrebbero interessarti</h2>
-                </div>
-                <div className="flex flex-wrap justify-center text-center mt-10 mb-20 gap-12 md:gap-16 cursor-pointer max-w-full">
-                    <Link to="/post-detail">
-                        <EventCard title={"Masterclass di Public Speaking: Comunica con Impatto"} category={"Educazione & Formazione"} />
-                    </Link>
-                    <Link to="/post-detail">
-                        <EventCard title={"AI e Futuro del Lavoro: Come l'Intelligenza Artificiale Sta Cambiando il Mondo"} category={"Tecnologia & Innovazione"} />
-                    </Link>
-                    <Link to="/post-detail">
-                        <EventCard title={"Maratona Urbana: Corri tra le Meraviglie della Città di Palermo"} category={"Sport & Fitness"} />
-                    </Link>
-                    <Link to="/post-detail">
-                        <EventCard title={"Hackathon 2025: Crea la Prossima Grande App!"} category={"Tecnologia & Innovazione"} />
-                    </Link>
-                </div>
-                <div className="flex justify-center mb-40">
-                    <Button3 text={"Scopri di più"} />
-                </div>
-            </div>
-        </>
-    )
-}
-
-export default Home*/
