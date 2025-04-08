@@ -54,7 +54,7 @@ const ProfileBusiness = () => {
                     setProfilo(response.data);
                     localStorage.setItem("glokal_user", JSON.stringify(response.data));
                     setLoadingProfile(false);
-                    setFollowerCount(userData.followerCount || 0);
+                    setFollowerCount(response.data.followerCount || 0);
                 })
                 .catch(error => {
                     console.error("Errore nel recupero del profilo:", error);
