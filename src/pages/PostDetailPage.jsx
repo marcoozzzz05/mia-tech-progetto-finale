@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate, Navigate } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { getPost, likePost } from "../services/postService";
 import { Heart } from "lucide-react";
-
 
 const PostDetailPage = () => {
   const { postId } = useParams();
@@ -17,7 +16,7 @@ const PostDetailPage = () => {
 
   const getImageUrl = (imagePath) => {
     if (!imagePath) return null;
-    if (imagePath.startsWith('http')) return imagePath;
+    if (imagePath.startsWith("http")) return imagePath;
     return `http://localhost:3000/assets/${imagePath}`;
   };
 
@@ -26,7 +25,6 @@ const PostDetailPage = () => {
       try {
         const response = await getPost(postId);
         const postData = response.data;
-        console.log(postData);
         if (!postData) throw new Error("Post non trovato");
 
         setPost(postData);
@@ -47,28 +45,34 @@ const PostDetailPage = () => {
     try {
       if (!currentUser._id) throw new Error("Devi effettuare il login");
 
+      // Chiamata al backend per aggiornare il like
       await likePost(postId, currentUser._id);
 
+      // Calcola il nuovo stato del like
       const newLikeStatus = !isLiked;
       setIsLiked(newLikeStatus);
-      setLikeCount(prev => newLikeStatus ? prev + 1 : prev - 1);
+      setLikeCount((prev) => (newLikeStatus ? prev + 1 : prev - 1));
 
-      setPost(prev => ({
-        ...prev,
-        likes: newLikeStatus
-          ? [...(prev.likes || []), currentUser._id]
-          : prev.likes?.filter(id => id !== currentUser._id) || []
-      }));
+      // Aggiorna localmente le informazioni del post (opzionale)
+      const updatedLikes = newLikeStatus
+        ? [...(post.likes || []), currentUser._id]
+        : post.likes?.filter((id) => id !== currentUser._id) || [];
+      setPost({ ...post, likes: updatedLikes });
+
+      // A questo punto, il DB è aggiornato e la pagina dei favoriti (che userà il backend)
+      // mostrerà il post come favorito oppure non lo mostrerà.
     } catch (err) {
       console.error("Errore nel like:", err);
-      setIsLiked(!isLiked);
-      setLikeCount(prev => isLiked ? prev + 1 : prev - 1);
+      // Puoi gestire eventuali rollback o notificare l'utente
     }
   };
 
-  if (loading) return <div className="text-center py-8">Caricamento...</div>;
-  if (error) return <div className="text-center py-8 text-red-500">Errore: {error}</div>;
-  if (!post) return <div className="text-center py-8">Post non trovato</div>;
+  if (loading)
+    return <div className="text-center py-8">Caricamento...</div>;
+  if (error)
+    return <div className="text-center py-8 text-red-500">Errore: {error}</div>;
+  if (!post)
+    return <div className="text-center py-8">Post non trovato</div>;
 
   return (
     <div className="max-w-4xl mx-auto mb-20 p-4">
@@ -79,7 +83,7 @@ const PostDetailPage = () => {
               src={getImageUrl(post.image)}
               alt={post.title || "Immagine post"}
               className="w-full h-full object-cover"
-              onError={(e) => e.target.src = '/placeholder.jpg'}
+              onError={(e) => (e.target.src = "/placeholder.jpg")}
             />
           ) : (
             <div className="w-full h-full bg-gray-100 flex items-center justify-center">
@@ -90,19 +94,27 @@ const PostDetailPage = () => {
 
         <div className="p-6 space-y-4">
           <div className="flex justify-between items-center">
-            <a className="flex items-center gap-3 cursor-pointer" onClick={() => {navigate(`/user/${post.userId._id}`)}}>
+            <a
+              className="flex items-center gap-3 cursor-pointer"
+              onClick={() => {
+                navigate(`/user/${post.userId._id}`);
+              }}
+            >
               <div className="shrink-0 rounded-full p-0.5 bg-gradient-to-l from-[#6a0572] to-[#ffc300]">
                 {post.userId?.profile_image ? (
                   <img
                     src={getImageUrl(post.userId.profile_image)}
                     alt={`${post.userId.first_name} ${post.userId.last_name}`}
-                    className="w-16 h-16 rounded-full object-cover "
-                    onError={(e) => e.target.src = '/default-profile.jpg'}
+                    className="w-16 h-16 rounded-full object-cover"
+                    onError={(e) =>
+                      (e.target.src = "/default-profile.jpg")
+                    }
                   />
                 ) : (
                   <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
                     <span className="text-gray-600 text-sm">
-                      {post.userId?.first_name?.charAt(0)}{post.userId?.last_name?.charAt(0)}
+                      {post.userId?.first_name?.charAt(0)}
+                      {post.userId?.last_name?.charAt(0)}
                     </span>
                   </div>
                 )}
@@ -110,7 +122,8 @@ const PostDetailPage = () => {
 
               <div className="min-w-0">
                 <p className="font-medium truncate">
-                  {post.userId?.first_name || "Nome"} {post.userId?.last_name || "Cognome"}
+                  {post.userId?.first_name || "Nome"}{" "}
+                  {post.userId?.last_name || "Cognome"}
                 </p>
               </div>
             </a>
@@ -133,8 +146,11 @@ const PostDetailPage = () => {
           <div className="border-t pt-4 flex justify-between items-center">
             <button
               onClick={handleLike}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg ${isLiked ? 'bg-red-100 text-red-500' : 'bg-gray-100 text-gray-700'
-                }`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
+                isLiked
+                  ? "bg-red-100 text-red-500"
+                  : "bg-gray-100 text-gray-700"
+              }`}
             >
               <Heart
                 className="h-5 w-5"

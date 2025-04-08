@@ -83,4 +83,9 @@ export const getPostsByPlace = (place) => api.get(`/api/posts/place/${place}`)
  */
 export const likePost = (postId, userId) => api.post(`/api/posts/${postId}/like`, { userId })
 
+// postService.js
+export const getFavoritePosts = (userId) =>
+  api.get(`/api/users/${userId}/favorites`);
+
+
 export const getLatestAllPosts = () => api.get("/api/posts/latest");
