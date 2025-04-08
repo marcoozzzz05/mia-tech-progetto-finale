@@ -3,7 +3,7 @@ import { getPostsByPlace, likePost, getFollowedPosts, getLatestAllPosts } from "
 import EventCard from "../../components/EventCard/EventCard";
 import Button3 from "../../components/Buttons/Button3";
 import { Link } from "react-router-dom";
-import { getUserPosts } from "../../services/postService";
+
 
 function Home() {
     const [latestPosts, setLatestPosts] = useState([]);
@@ -29,7 +29,7 @@ function Home() {
         setLoading({ latest: true, popular: true, nearby: true });
 
         // Recupera gli ultimi post di TUTTI gli utenti
-        getLatestAllPosts() // <--------------------- MODIFICATO QUI
+        getLatestAllPosts()
             .then(response => {
                 console.log("API Response (getLatestAllPosts):", response);
                 const allPosts = response.data;
@@ -58,7 +58,7 @@ function Home() {
                 .catch(error => {
                     console.error("Errore nel recupero degli ultimi post di tutti:", error);
                     setLoading(prev => ({ ...prev, latest: false }));
-                }); // <--- HO AGGIUNTO LA PARENTESI GRAFFA MANCANTE
+                }); 
         
                 // Recupera i post relativi alla città dell'utente (questo rimane invariato)
                 getPostsByPlace(userCity)
