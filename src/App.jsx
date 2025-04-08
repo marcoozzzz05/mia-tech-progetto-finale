@@ -10,8 +10,6 @@ import LandingPage from './pages/LandingPage';
 import UserProfile from './pages/UserProfile/UserProfile';
 import PostForm from "../src/components/Post/PostForm"
 import Settings from './pages/Settings/Settings';
-import LanguageCity from './pages/Settings/LanguageCity';
-import Terms from './pages/Settings/Terms';
 import EditProfile from './pages/Settings/EditProfile';
 import User from './pages/User';
 
@@ -31,8 +29,6 @@ function App() {
           <Route path="/favorite" element={<FavoritePage />} />
           <Route path="/post-detail/:postId" element={<PostDetailPage />} />
           <Route path="/settings" element={<Settings />} />
-          <Route path="/language" element={<LanguageCity />} />
-          <Route path="/terms" element={<Terms />} />
           <Route path="/crea-post" element={<PostForm />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/user/:userId" element={<User />} />
