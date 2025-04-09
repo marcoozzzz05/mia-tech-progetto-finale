@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import { getPost, likePost } from "../services/postService";
+import { updateUserProfile } from "../services/userService";
 import { Heart } from "lucide-react";
 
 const PostDetailPage = () => {
@@ -41,7 +42,39 @@ const PostDetailPage = () => {
     fetchPostData();
   }, [postId, currentUser._id]);
 
-  const handleLike = async () => {
+  const handleLike = () => {
+
+    updateLikePost();
+    updateLikeUser();
+    
+    console.log(currentUser)
+  }
+
+  const updateLikeUser = async () => {
+    try {
+      if (!currentUser._id) throw new Error("Devi effettuare il login");
+
+      // Calcola il nuovo stato del like
+      const newLikeStatus = !isLiked;
+    
+      // Aggiorna localmente le informazioni del post (opzionale)
+      const userLike = newLikeStatus
+      ? [...(currentUser.likes || []), postId]
+      : currentUser.likes?.filter((_id) => _id !==postId) || [];
+
+        // Chiamata al backend per aggiornare il like
+        await updateUserProfile( currentUser._id, userLike );
+
+      // A questo punto, il DB è aggiornato e la pagina dei favoriti (che userà il backend)
+      // mostrerà il post come favorito oppure non lo mostrerà.
+    } catch (err) {
+      console.error("Errore nel like:", err);
+      // Puoi gestire eventuali rollback o notificare l'utente
+    }
+
+  }
+
+  const updateLikePost = async () => {
     try {
       if (!currentUser._id) throw new Error("Devi effettuare il login");
 
@@ -146,11 +179,10 @@ const PostDetailPage = () => {
           <div className="border-t pt-4 flex justify-between items-center">
             <button
               onClick={handleLike}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
-                isLiked
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg ${isLiked
                   ? "bg-red-100 text-red-500"
                   : "bg-gray-100 text-gray-700"
-              }`}
+                }`}
             >
               <Heart
                 className="h-5 w-5"
