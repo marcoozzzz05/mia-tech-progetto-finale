@@ -6,6 +6,8 @@ import ReviewCard from "../../components/Reviews/ReviewCard";
 import { getUserProfile } from "../../services/userService";
 import { getFollowedPosts } from "../../services/postService";
 import { Settings } from "lucide-react";
+import UserProfileCounters from "../../components/UserProfileCounter";
+import UserProfileTabSection from "../../components/UserProfileTabSection";
 
 const UserProfile = () => {
   const [profilo, setProfilo] = useState(null);
@@ -15,16 +17,16 @@ const UserProfile = () => {
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [followerCount, setFollowerCount] = useState(0);
   const navigate = useNavigate();
-  
+
   const [followingCount, setFollowingCount] = useState(() => {
     const stored = localStorage.getItem("glokal_user");
-    if(stored) {
+    if (stored) {
       const user = JSON.parse(stored);
       return user.followingCount || 0;
     }
     return 0;
   });
-  
+
   useEffect(() => {
     const storedUser = localStorage.getItem("glokal_user");
     if (storedUser) {
@@ -111,9 +113,13 @@ const UserProfile = () => {
             </div>
 
             <div className="flex space-x-4 justify-end gap-3 sm:gap- text-sm sm:text-base text-[#2e2e2e]">
-              <span>{followedPosts.length} Post</span>
-              <span>{followerCount} Follower</span>
-              <span>{followingCount} Seguiti</span>
+              <UserProfileCounters
+                profileUserId={profilo._id}
+                currentUserId={profilo._id}
+                initialFollowers={followerCount}
+                initialFollowing={followingCount}
+                initialPosts={followedPosts.length}
+              />
             </div>
           </div>
         </div>
@@ -130,37 +136,17 @@ const UserProfile = () => {
       </div>
 
       <div className="flex flex-wrap justify-center text-center mt-10 mb-10 gap-12 md:gap-16 cursor-pointer max-w-full">
-        {activeTab === "saved" ? (
-          loadingPosts ? (
-            <div className="w-full flex justify-center py-10">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#6a0572]"></div>
-            </div>
-          ) : followedPosts.length > 0 ? (
-            followedPosts.map((post) => (
-              <EventCard
-                key={post._id}
-                post={{
-                  ...post,
-                  title: post.title || "Titolo non disponibile",
-                  image: post.image || "Immagine non disponibile",
-                  user: {
-                    name: `${profilo.first_name} ${profilo.last_name}`,
-                    profile_image: profilo.profile_image
-                  },
-                  likes: post.likes || [],
-                }}
-              />
-            ))
-          ) : (
-            <div className="w-full text-center py-10">
-              <p className="mb-4">Nessun post salavato</p>
-            </div>
-          )
-        ) : userReviews.length > 0 ? (
-          userReviews.map((review, index) => <ReviewCard key={index} review={review} />)
-        ) : (
-          <p className="text-center py-10">Nessuna recensione disponibile.</p>
-        )}
+        <UserProfileTabSection
+          user={profilo}
+          initialTab="saved"
+          defaultPosts={followedPosts}
+          defaultReviews={userReviews}
+          onPostDeleted={(postId) => {
+            // Aggiorna lo stato nella pagina madre se necessario
+            const updatedPosts = followedPosts.filter(post => post._id !== postId);
+            setFollowedPosts(updatedPosts);
+          }}
+        />
       </div>
     </div>
   )

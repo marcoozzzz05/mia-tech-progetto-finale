@@ -3,7 +3,7 @@ import Button1 from "../../Button1";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import EventCard from "../../components/EventCard/EventCard";
-import ReviewCard from "../../components/Reviews/ReviewCard";
+import ProfileCounters from "../../components/ProfileCounters";
 import { getUserProfile } from "../../services/userService";
 import { getUserPosts } from "../../services/postService";
 
@@ -13,19 +13,11 @@ const ProfileBusiness = () => {
   const [userPosts, setUserPosts] = useState([]);
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
+  const [currentUserId, setCurrentUserId] = useState(null);
   const navigate = useNavigate();
 
-  const [followerCount, setFollowerCount] = useState(() => {
-    const stored = localStorage.getItem("glokal_user");
-    if (stored) {
-      const user = JSON.parse(stored);
-      return user.followerCount || 0;
-    }
-    return 0;
-  });
-
   const handlePostDeletion = (postId) => {
-    let newPosts = [...userPosts];
+    const newPosts = [...userPosts];
     newPosts.splice(newPosts.findIndex(toFilter => toFilter._id === postId), 1);
     setUserPosts(newPosts);
   };
@@ -40,6 +32,7 @@ const ProfileBusiness = () => {
 
     try {
       const user = JSON.parse(storedUser);
+      setCurrentUserId(user._id);
 
       if (!user?._id) {
         console.error("ID utente non valido nel localStorage");
@@ -54,13 +47,11 @@ const ProfileBusiness = () => {
 
       setProfilo(user);
 
-      // Carica i dati aggiornati del profilo
       getUserProfile(user._id)
         .then(response => {
           const serverUser = response.data;
           const localUser = JSON.parse(localStorage.getItem("glokal_user"));
 
-          // Combina i dati del server con quelli locali per i follower
           const mergedUser = {
             ...serverUser,
             followers: localUser?.followers || serverUser.followers || [],
@@ -68,7 +59,6 @@ const ProfileBusiness = () => {
           };
 
           setProfilo(mergedUser);
-          setFollowerCount(mergedUser.followerCount);
           localStorage.setItem("glokal_user", JSON.stringify(mergedUser));
           setLoadingProfile(false);
         })
@@ -77,7 +67,6 @@ const ProfileBusiness = () => {
           setLoadingProfile(false);
         });
 
-      // Carica i post dell'utente
       setLoadingPosts(true);
       getUserPosts(user._id)
         .then(response => {
@@ -94,12 +83,6 @@ const ProfileBusiness = () => {
       navigate("/login");
     }
   }, [navigate]);
-
-  const userReviews = [
-    { eventId: "1", eventName: "Jacob", rating: 5, comment: "La migliore pizza di Milano!" },
-    { eventId: "2", eventName: "Daniel", rating: 5, comment: "Cena eccezionale con Vincent!" },
-    { eventId: "3", eventName: "Or", rating: 3, comment: "Desserts un po' costosi..." },
-  ];
 
   if (loadingProfile) {
     return (
@@ -132,23 +115,17 @@ const ProfileBusiness = () => {
             </button>
           </Link>
           <h2 className="text-2xl font-bold mt-2">{profilo.first_name} {profilo.last_name}</h2>
-          <p className="text-sm text-gray-500">{profilo.metadata.business_name}</p>
+          <p className="text-sm text-gray-500">{profilo.metadata?.business_name}</p>
         </div>
 
-        <div className="flex justify-around py-4 mt-4">
-          <div className="flex flex-col items-center">
-            <p>{userPosts.length}</p>
-            <span className="text-xs text-gray-500">Post</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <p>{followerCount}</p>
-            <span className="text-xs text-gray-500">Follower</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <p>{profilo.rating || 0}</p>
-            <span className="text-xs text-gray-500">Rating</span>
-          </div>
-        </div>
+        <ProfileCounters
+          profileUserId={profilo._id}
+          currentUserId={currentUserId}
+          initialFollowers={profilo.followers?.length || profilo.followerCount || 0}
+          initialPosts={userPosts.length}
+          initialRating={profilo.rating}
+          isBusiness={true}
+        />
 
         <div className="flex justify-center gap-4 p-6">
           <Link to="/crea-post">
@@ -199,10 +176,8 @@ const ProfileBusiness = () => {
                 <p className="mb-4">Nessun post creato ancora.</p>
               </div>
             )
-          ) : userReviews.length > 0 ? (
-            userReviews.map((review, index) => <ReviewCard key={index} review={review} />)
-          ) : (
-            <p className="text-center py-10">Nessuna recensione disponibile.</p>
+          ) :  (
+            <p className="text-center py-10">Ancora nessuna recensione.</p>
           )}
         </div>
       </div>
