@@ -53,18 +53,6 @@ const User = () => {
     fetchUserData();
   }, [userId, navigate]);
 
-  const handleFollow = async () => {
-    if (!currentUserId || !profile) return;
-
-    try {
-      await followUser(profile._id, currentUserId);
-      setIsFollowing(prev => !prev);
-      setFollowerCount(prev => isFollowing ? prev - 1 : prev + 1);
-    } catch (error) {
-      console.error("Errore nel following user: ", error);
-    }
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -105,16 +93,6 @@ const User = () => {
               <span className="text-xs text-gray-500">Rating</span>
             </div>
           </div>
-          {/*Il bottone per seguire appare solo se si visualizza il profilo di un altro utente*/}
-          {currentUserId !== userId && (
-            <div className="flex justify-center p-6">
-              <Button1
-                icon={isFollowing ? <UserCheck className="w-5 h-5" /> : <UserPlus className="w-5 h-5" />}
-                onClick={handleFollow}
-                className={isFollowing ? "bg-gray-200" : "bg-[#6a0572] text-white"}
-              />
-            </div>
-          )}
 
           <div className="flex justify-center mt-10 text-gray-700">
             <button
@@ -183,22 +161,9 @@ const User = () => {
               <div className="flex flex-col items-start">
                 <h2 className="text-xl md:text-2xl text-[#2e2e2e] font-bold">{profile.first_name} {profile.last_name}</h2>
                 <p className="text-gray-600">{profile.email}</p>
-                {/*Il bottone per seguire appare solo se si visualizza il profilo di un altro utente*/}
-                {currentUserId !== userId && (
-                  <Button1
-                    icon={
-                      isFollowing ? (
-                        <UserCheck className="w-5 h-5" />
-                      ) : (
-                        <UserPlus className="w-5 h-5" />
-                      )
-                    }
-                    onClick={handleFollow}
-                    className={isFollowing ? "bg-gray-200" : "bg-[#6a0572] text-white"}
-                  />
-                )}
               </div>
             </div>
+            
             <div className="flex space-x-4 justify-end gap-3 sm:gap- text-sm sm:text-base text-[#2e2e2e]">
               <span>{posts.length} Post</span>
               <span>{followerCount} follower</span>
