@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import { getUserProfile, followUser } from "../services/userService";
 import { getFollowedPosts, getUserPosts } from "../services/postService";
-import { UserPlus, UserCheck } from "lucide-react";
 import Button1 from "../Button1";
 import EventCard from "../components/EventCard/EventCard";
 import ReviewCard from "../components/Reviews/ReviewCard";
@@ -14,9 +13,17 @@ const User = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isFollowing, setIsFollowing] = useState(false);
-  const [followerCount, setFollowerCount] = useState(0);
   const [currentUserId, setCurrentUserId] = useState(null);
   const navigate = useNavigate();
+
+  const [followerCount, setFollowerCount] = useState(() => {
+    const stored = localStorage.getItem("glokal_user");
+    if (stored) {
+      const user = JSON.parse(stored);
+      return user.followerCount || 0;
+    }
+    return 0;
+  });
 
   useEffect(() => {
     const storedUser = localStorage.getItem("glokal_user");
@@ -24,6 +31,7 @@ const User = () => {
       navigate("/login");
       return;
     }
+
     const user = JSON.parse(storedUser);
     setCurrentUserId(user._id);
 
@@ -31,27 +39,111 @@ const User = () => {
       try {
         const profileResponse = await getUserProfile(userId);
         const userData = profileResponse.data;
-        setProfile(userData);
-        setFollowerCount(userData.followerCount || 0);
-        setIsFollowing(userData.followers?.includes(user._id) || false);
+        const localUser = JSON.parse(localStorage.getItem("glokal_user"));
 
-        if (userData.role === "USER") {
-          const postsResponse = await getFollowedPosts(userId);
-          setPosts(postsResponse.data);
-        } else {
-          const postsResponse = await getUserPosts(userId);
-          setPosts(postsResponse.data);
+        // Sincronizza con i dati locali
+        if (localUser && localUser.following) {
+          const isFollowingUser = localUser.following.includes(userId);
+          setIsFollowing(isFollowingUser);
+
+          // Se stiamo seguendo l'utente ma il server non lo sa
+          if (isFollowingUser && (!userData.followers || !userData.followers.includes(user._id))) {
+            userData = {
+              ...userData,
+              followers: [...(userData.followers || []), user._id],
+              followerCount: (userData.followerCount || 0) + 1
+            };
+          }
         }
 
+        setProfile(userData);
+        setFollowerCount(userData.followerCount || 0);
+        setIsFollowing(isFollowingUser);
+
+        const postsResponse = userData.role === "USER"
+          ? await getFollowedPosts(userId)
+          : await getUserPosts(userId);
+
+        setPosts(postsResponse.data);
         setLoading(false);
       } catch (error) {
-        console.error("Errore nel fetching dei dati: ", error);
-        navigate("/");
+        console.error("Errore nel caricamento profilo utente:", error);
+        setLoading(false);
       }
     };
 
     fetchUserData();
   }, [userId, navigate]);
+
+
+  const handleFollowToggle = async () => {
+    try {
+      const storedUser = JSON.parse(localStorage.getItem("glokal_user"));
+      const updatedStoredUser = { ...storedUser };
+      const updatedProfile = { ...profile };
+
+      let newFollowing = [...(updatedStoredUser.following || [])];
+      let newFollowers = [...(updatedProfile.followers || [])];
+
+      if (isFollowing) {
+        // Rimuove il follow
+        newFollowers = newFollowers.filter(id => id !== currentUserId);
+        newFollowing = newFollowing.filter(id => id !== updatedProfile._id);
+      } else {
+        // Aggiunge il follow
+        newFollowers.push(currentUserId);
+        newFollowing.push(updatedProfile._id);
+      }
+
+      // Aggiorna prima il server
+      const response = await followUser(updatedProfile._id, currentUserId);
+      console.log("Follow aggiornato sul server:", response);
+
+      // Poi aggiorna lo stato locale solo se la chiamata API ha successo
+      updatedStoredUser.following = newFollowing;
+      updatedStoredUser.followingCount = newFollowing.length;
+      updatedProfile.followers = newFollowers;
+      updatedProfile.followerCount = newFollowers.length;
+
+      localStorage.setItem("glokal_user", JSON.stringify(updatedStoredUser));
+      setProfile(updatedProfile);
+      setFollowerCount(updatedProfile.followerCount);
+      setIsFollowing(!isFollowing);
+    } catch (err) {
+      console.error("Errore aggiornamento follow:", err);
+
+      // Se l'errore è "Already following" e stiamo cercando di seguire
+      if (err.response?.data?.message === "Already following this user" && !isFollowing) {
+        // Forza l'aggiornamento dello stato locale
+        const storedUser = JSON.parse(localStorage.getItem("glokal_user"));
+        const updatedStoredUser = { ...storedUser };
+        const updatedProfile = { ...profile };
+
+        updatedStoredUser.following = [...(updatedStoredUser.following || []), updatedProfile._id];
+        updatedStoredUser.followingCount = (updatedStoredUser.following || []).length;
+        updatedProfile.followers = [...(updatedProfile.followers || []), currentUserId];
+        updatedProfile.followerCount = (updatedProfile.followers || []).length;
+
+        localStorage.setItem("glokal_user", JSON.stringify(updatedStoredUser));
+        setProfile(updatedProfile);
+        setFollowerCount(updatedProfile.followerCount);
+        setIsFollowing(true);
+      }
+    }
+  };
+
+  const renderFollowButton = () => {
+    if (!currentUserId || currentUserId === userId) return null;
+
+    return (
+      <div className="mt-4 ml-4">
+        <Button1
+          text={isFollowing ? "Già seguito" : "Segui"}
+          onClick={handleFollowToggle}
+        />
+      </div>
+    );
+  };
 
   if (loading) {
     return (
@@ -92,6 +184,10 @@ const User = () => {
               <p>{profile.rating?.toFixed(1) || '0'}</p>
               <span className="text-xs text-gray-500">Rating</span>
             </div>
+          </div>
+
+          <div className="flex flex-col items-center">
+            {renderFollowButton()}
           </div>
 
           <div className="flex justify-center mt-10 text-gray-700">
@@ -161,9 +257,10 @@ const User = () => {
               <div className="flex flex-col items-start">
                 <h2 className="text-xl md:text-2xl text-[#2e2e2e] font-bold">{profile.first_name} {profile.last_name}</h2>
                 <p className="text-gray-600">{profile.email}</p>
+                {renderFollowButton()}
               </div>
             </div>
-            
+
             <div className="flex space-x-4 justify-end gap-3 sm:gap- text-sm sm:text-base text-[#2e2e2e]">
               <span>{posts.length} Post</span>
               <span>{followerCount} follower</span>

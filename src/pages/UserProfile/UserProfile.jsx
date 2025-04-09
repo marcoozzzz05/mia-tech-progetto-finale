@@ -13,11 +13,18 @@ const UserProfile = () => {
   const [followedPosts, setFollowedPosts] = useState([]);
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [loadingPosts, setLoadingPosts] = useState(true);
-  const [isFollowing, setIsFollowing] = useState(false);
   const [followerCount, setFollowerCount] = useState(0);
-  const [followingCount, setFollowingCount] = useState(0);
   const navigate = useNavigate();
-
+  
+  const [followingCount, setFollowingCount] = useState(() => {
+    const stored = localStorage.getItem("glokal_user");
+    if(stored) {
+      const user = JSON.parse(stored);
+      return user.followingCount || 0;
+    }
+    return 0;
+  });
+  
   useEffect(() => {
     const storedUser = localStorage.getItem("glokal_user");
     if (storedUser) {
@@ -26,26 +33,22 @@ const UserProfile = () => {
 
       getUserProfile(user._id)
         .then(response => {
-          setProfilo(response.data);
-          setFollowerCount(response.data.followerCount);
-          setFollowingCount(response.data.followingCount);
-          localStorage.setItem("glokal_user", JSON.stringify(response.data));
+          const localUser = JSON.parse(localStorage.getItem("glokal_user"));
+          const responseUser = response.data;
+
+          // Preserva following e followingCount da localStorage
+          responseUser.following = localUser.following || [];
+          responseUser.followingCount = localUser.followingCount || 0;
+
+          setProfilo(responseUser);
+          setFollowerCount(responseUser.followerCount || 0);
+          setFollowingCount(responseUser.followingCount || 0);
+          localStorage.setItem("glokal_user", JSON.stringify(responseUser));
           setLoadingProfile(false);
         }).catch(error => {
           console.error("Errore nel recupero del profilo: ", error);
           setLoadingProfile(false);
-        });
-
-      setLoadingPosts(true);
-      getFollowedPosts(user._id)
-        .then(response => {
-          console.log("Post ricevuti: ", response.data);
-          setFollowedPosts(response.data);
-          setLoadingPosts(false);
-        }).catch(error => {
-          console.error("Errore nel recupero dei post: ", error);
-          setLoadingPosts(false);
-        });
+        })
     } else {
       navigate("/login");
     }
@@ -109,8 +112,8 @@ const UserProfile = () => {
 
             <div className="flex space-x-4 justify-end gap-3 sm:gap- text-sm sm:text-base text-[#2e2e2e]">
               <span>{followedPosts.length} Post</span>
-              <span>{followerCount} follower</span>
-              <span>{followingCount} seguiti</span>
+              <span>{followerCount} Follower</span>
+              <span>{followingCount} Seguiti</span>
             </div>
           </div>
         </div>
