@@ -3,10 +3,11 @@ import { Link, useNavigate } from "react-router";
 import { getPost, deletePost } from "../../services/postService";
 import { EllipsisVertical } from "lucide-react";
 
-const EventCard = ({ post, onPostDeleted } ) => {
+const EventCard = ({ post, onPostDeleted }) => {
   const navigate = useNavigate();
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const optionsRef = useRef(null);
+  const [myPost, setMyPost] = useState(false)
 
   if (!post) {
     return <p>Caricamento...</p>;
@@ -24,6 +25,10 @@ const EventCard = ({ post, onPostDeleted } ) => {
 
   useEffect(() => {
     document.addEventListener("mousedown", handleOutsideClick);
+    const glokalUser = JSON.parse(localStorage.getItem("glokal_user"))
+    if (glokalUser._id == post.userId._id){
+     setMyPost(true) 
+    };
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
@@ -42,6 +47,8 @@ const EventCard = ({ post, onPostDeleted } ) => {
     }
   };
 
+  const fullName = post.userId?.first_name + " " + post.userId?.last_name
+
   return (
     <div className="w-80 rounded-2xl shadow-lg overflow-hidden bg-white border border-gray-200">
       <div onClick={() => navigate(`/post-detail/${post._id}`)} className="relative cursor-pointer">
@@ -55,16 +62,16 @@ const EventCard = ({ post, onPostDeleted } ) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img
-              src={'http://localhost:3000/assets/' + (post.user?.profile_image || 'default-avatar.jpg')}
+              src={'http://localhost:3000/assets/' + (post.userId?.profile_image || 'default-avatar.jpg')}
               alt="Organizer"
               className="w-10 h-10 rounded-full border"
             />
-            <span className="font-semibold text-sm">{post.user?.name || "Utente sconosciuto"}</span>
+            <span className="font-semibold text-sm">{fullName || "Utente sconosciuto"}</span>
           </div>
           <div className="relative">
-            <button onClick={toggleOptions} className="focus:outline-none">
+            { myPost && <button onClick={toggleOptions} className="focus:outline-none">
               <EllipsisVertical className="w-5 h-5 text-gray-500 cursor-pointer" />
-            </button>
+            </button> }
             {isOptionsOpen && (
               <div
                 ref={optionsRef}
@@ -74,8 +81,8 @@ const EventCard = ({ post, onPostDeleted } ) => {
                 aria-labelledby="options-menu-button"
               >
                 <div className="py-1" role="none">
-                <button
-                   onClick={() => navigate(`/edit-post/${post._id}`)}
+                  <button
+                    onClick={() => navigate(`/edit-post/${post._id}`)}
                     className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
                     role="menuitem"
                   >
@@ -87,7 +94,7 @@ const EventCard = ({ post, onPostDeleted } ) => {
                     role="menuitem"
                   >
                     Cancella
-                  </button>                
+                  </button>
                 </div>
               </div>
             )}
