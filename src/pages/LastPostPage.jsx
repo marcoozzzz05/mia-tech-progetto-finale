@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getLatestAllPosts, likePost } from "../../services/postService";
-import EventCard from "../../components/EventCard/EventCard";
+import { getLatestAllPosts, likePost } from "../services/postService";
+import EventCard from "../components/EventCard/EventCard";
 import { Link } from "react-router";
 
 function LastPostPage() {
@@ -16,7 +16,7 @@ function LastPostPage() {
             setUserCity(userData.city);
         }
 
-        getLatestAllPosts()
+        getLatestAllPosts(30)
             .then(response => {
                 setPosts(response.data);
             })

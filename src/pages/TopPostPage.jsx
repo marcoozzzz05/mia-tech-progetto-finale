@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getFeaturedPosts, likePost } from "../../services/postService";
-import EventCard from "../../components/EventCard/EventCard";
+import { getFeaturedPosts, likePost } from "../services/postService";
+import EventCard from "../components/EventCard/EventCard";
 import { Link } from "react-router";
 
 function TopPostPage() {
@@ -16,7 +16,7 @@ function TopPostPage() {
             setUserCity(userData.city);
         }
 
-        getFeaturedPosts()
+        getFeaturedPosts(30)
             .then(response => {
                 setPosts(response.data);
             })

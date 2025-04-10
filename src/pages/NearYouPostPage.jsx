@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { getPostsByPlace, likePost } from "../../services/postService";
-import EventCard from "../../components/EventCard/EventCard";
+import { getPostsByPlace, likePost } from "../services/postService";
+import EventCard from "../components/EventCard/EventCard";
 import { Link } from "react-router";
 
 function NearYouPostPage() {
@@ -17,7 +17,7 @@ function NearYouPostPage() {
         }
 
         if (userCity) {
-            getPostsByPlace(userCity)
+            getPostsByPlace(userCity, 30)
                 .then(response => {
                     setPosts(response.data);
                 })
@@ -84,7 +84,7 @@ function NearYouPostPage() {
 
     return (
         <div className="container mx-auto mb-20 px-6 py-2">
-            <h2 className="text-2xl text-[#2e2e2e] font-bold">Vicino a te - {userCity}</h2>
+            <h2 className="text-2xl text-[#2e2e2e] font-bold">Vicino a te {userCity}</h2>
             <div className="flex flex-wrap justify-center text-center mt-10 mb-20 gap-12 md:gap-16 cursor-pointer max-w-full">
                 {renderPosts()}
             </div>

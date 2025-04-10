@@ -15,10 +15,10 @@ import User from './pages/User';
 import SearchResultsPage from './pages/SearchResultsPage';
 import EditCard from './components/EventCard/EditCard';
 import PostDetailPage from './pages/PostDetailPage';
-import ForgotPassword from './ForgotPassword';
 import LastPostPage from './pages/LastPostPage';
-import NearYouPostPage from './pages/NearYouPostPage';
 import TopPostPage from './pages/TopPostPage';
+import NearYouPostPage from './pages/NearYouPostPage';
+import ForgotPassword from './ForgotPassword';
 
 function App() {
 
@@ -40,11 +40,11 @@ function App() {
           <Route path="/last-posts" element={<LastPostPage />} />
           <Route path="/top-posts" element={<TopPostPage />} />
           <Route path="/near-you-posts" element={<NearYouPostPage />} />
-        </Route>
-        <Route path="/login" element={<LoginPage />} />
+        </Route>        
+        <Route path="/login" element={<LoginPage />} />          
         <Route path="/register-page" element={<RegisterPage />} />
-        <Route path='/landing-page' element={<LandingPage />} />
-        <Route path='/login/forgot-password' element={<ForgotPassword />} />
+        <Route path='/landing-page' element={<LandingPage />}/>
+        <Route path='/login/forgot-password' element={<ForgotPassword />}/>
       </Routes>
     </>
   );
