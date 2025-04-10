@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPostsByPlace, likePost, getFollowedPosts, getLatestAllPosts } from "../../services/postService";
+import { getPostsByPlace, likePost, getFeaturedPosts, getLatestAllPosts } from "../../services/postService";
 import EventCard from "../../components/EventCard/EventCard";
 import Button3 from "../../components/Buttons/Button3";
 import { Link } from "react-router-dom";
@@ -10,6 +10,7 @@ function Home() {
     const [popularPosts, setPopularPosts] = useState([]);
     const [nearbyPosts, setNearbyPosts] = useState([]);
     const [userCity, setUserCity] = useState("MILANO");
+    const [initialized, setInitialized] = useState(false);
     const [userId, setUserId] = useState(null);
     const [loading, setLoading] = useState({
         latest: true,
@@ -26,53 +27,54 @@ function Home() {
     }, []);
 
     useEffect(() => {
-        setLoading({ latest: true, popular: true, nearby: true });
 
-        // Recupera gli ultimi post di TUTTI gli utenti
-        getLatestAllPosts()
-            .then(response => {
-                console.log("API Response (getLatestAllPosts):", response);
-                const allPosts = response.data;
-                const sortedByDate = [...allPosts].sort((a, b) =>
-                    new Date(b.createdAt) - new Date(a.createdAt)
-                );
-                setLatestPosts(sortedByDate.slice(0, 4));
-                console.log("Latest Posts after sorting:", sortedByDate.slice(0, 4));
-                setLoading(prev => ({ ...prev, latest: false }));
-
-                // Ordina per numero di like (questo continuerà a usare i post degli utenti seguiti per ora)
-                getFollowedPosts(userId)
-                    .then(response => {
-                        const followedPosts = response.data;
-                        const sortedByLikes = [...followedPosts].sort((a, b) =>
-                            b.likes.length - a.likes.length
-                        );
-                        setPopularPosts(sortedByLikes.slice(0, 4));
-                        setLoading(prev => ({ ...prev, popular: false }));
-                    })
-                    .catch(error => {
-                        console.error("Errore nel recupero dei post seguiti (per i popolari):", error);
-                        setLoading(prev => ({ ...prev, popular: false }));
-                    });
+        if (!initialized) {
+            setInitialized(true);
+            // Recupera gli ultimi post di TUTTI gli utenti
+            getLatestAllPosts(4)
+                .then(response => {
+                    const allPosts = response.data;
+                    setLatestPosts(allPosts);
                 })
                 .catch(error => {
                     console.error("Errore nel recupero degli ultimi post di tutti:", error);
+                })
+                .finally(() => {
                     setLoading(prev => ({ ...prev, latest: false }));
-                }); 
-        
-                // Recupera i post relativi alla città dell'utente (questo rimane invariato)
-                getPostsByPlace(userCity)
-                    .then(response => {
-                        setNearbyPosts(response.data.slice(0, 4));
-                        setLoading(prev => ({ ...prev, nearby: false }));
-                    })
-                    .catch(error => {
-                        console.error("Errore nel recupero dei post per città:", error);
-                        setLoading(prev => ({ ...prev, nearby: false }));
-                    });
-            }, [userId, userCity]);
+                });
 
-            
+                getFeaturedPosts(4)
+                .then(response => {
+                    const featuredPosts = response.data;
+                    setPopularPosts(featuredPosts);
+                })
+                .catch(error => {
+                    console.error("Errore nel recupero dei post seguiti (per i popolari):", error);
+                })
+                .finally(() => {                   
+                    setLoading(prev => ({ ...prev, popular: false }));
+                });
+
+        }
+
+        if (userCity) {
+            // Recupera i post relativi alla città dell'utente (questo rimane invariato)
+            getPostsByPlace(userCity)
+                .then(response => {
+                    setNearbyPosts(response.data.slice(0, 4));
+                })
+                .catch(error => {
+                    console.error("Errore nel recupero dei post per città:", error);
+                })
+                .finally(() => {                                   
+                    setLoading(prev => ({ ...prev, nearby: false }));
+                });
+        }
+
+
+    }, [userId, userCity]);
+
+
     const handleLike = async (postId) => {
         if (!userId) {
             console.error("Utente non autenticato");
@@ -126,8 +128,8 @@ function Home() {
                         },
                         likes: post.likes || []
                     }}
-                    // Se vuoi gestire l'eliminazione anche dalla Home (richiederebbe un'API diversa)
-                    // onPostDeleted={/* la tua funzione per eliminare dalla Home */}
+                // Se vuoi gestire l'eliminazione anche dalla Home (richiederebbe un'API diversa)
+                // onPostDeleted={/* la tua funzione per eliminare dalla Home */}
                 />
             );
         });

@@ -81,11 +81,23 @@ export const getPostsByPlace = (place) => api.get(`/api/posts/place/${place}`)
  * @param {string} userId - ID of the user liking the post
  * @returns {Promise<Object>} Updated post object with likes array
  */
-export const likePost = (postId, userId) => api.post(`/api/posts/${postId}/like`, { userId })
+export const likePost = (postId, userId) => api.post(`/api/posts/${postId}/like`, { userId });
+
+
+/**
+ * dislikes a post
+ * @param {string} postId - ID of the post to dislike
+ * @param {string} userId - ID of the user disliking the post
+ * @returns {Promise<Object>} Updated post object with likes array
+ */
+export const dislikePost = (postId, userId) => api.delete(`/api/posts/${postId}/like/${userId}`)
 
 // postService.js
 export const getFavoritePosts = (userId) =>
   api.get(`/api/users/${userId}/favorites`);
 
 
-export const getLatestAllPosts = () => api.get("/api/posts/latest");
+export const getLatestAllPosts = (limit = 10) => api.get("/api/posts/latest?limit=" + limit);
+
+
+export const getFeaturedPosts = (limit = 10) => api.get("/api/posts/featured?limit=" + limit);

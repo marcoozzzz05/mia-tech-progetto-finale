@@ -121,11 +121,34 @@ app.put("/:postId", async (req, res) => {
  */
 app.get("/latest", async (req, res) => {
     try {
+        let limit = req. query.limit || 10;
         const posts = await Post.find({})
             .populate('userId', 'first_name last_name profile_image')
             .populate('comments.userId', 'first_name last_name profile_image')
             .sort({ createdAt: -1 })
-            .limit(20); // Puoi regolare il limite
+            .limit(limit); // Puoi regolare il limite
+        return res.status(200).json(posts);
+    } catch (err) {
+        console.error("Backend - Error fetching latest posts:", err);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
+
+/**
+ * @route GET /api/posts/featured
+ * @description Get the most liked posts
+ * @access Public
+ * @returns {Array} Array of most liked posts
+ */
+app.get("/featured", async (req, res) => {
+    try {
+        let limit = req. query.limit || 10;
+        const posts = await Post.find({})
+            .populate('userId', 'first_name last_name profile_image')
+            .populate('comments.userId', 'first_name last_name profile_image')
+            .sort({ likes: -1 })
+            .limit(limit); // Puoi regolare il limite
         return res.status(200).json(posts);
     } catch (err) {
         console.error("Backend - Error fetching latest posts:", err);
@@ -310,7 +333,7 @@ app.delete("/:postId", async (req, res) => {
 });
 
 /**
- * @route DELETE /api/posts/:postId/like
+ * @route DELETE /api/posts/:postId/like/:userId
  * @description Unlike a post
  * @access Public
  * @param {string} postId - Post's ID
@@ -319,9 +342,9 @@ app.delete("/:postId", async (req, res) => {
  * }
  * @returns {Object} Updated post object with likes array
  */
-app.delete("/:postId/like", async (req, res) => {
+app.delete("/:postId/like/:userId", async (req, res) => {
     try {
-        const { userId } = req.body;
+        const { userId } = req.params;
         if (!userId) {
             return res.status(400).json({ message: "User ID is required" });
         }

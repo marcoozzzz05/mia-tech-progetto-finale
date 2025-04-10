@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express.Router();
-
+const mongoose = require('mongoose');
 const Joi = require("joi");
 const { hashPassword } = require("../../utilities/auth");
 const { User, Post } = require("../../db");
@@ -132,6 +132,26 @@ app.put("/:userId", async (req, res) => {
         console.log(err);
         return res.status(500).json({ message: "Internal Server Error" });
     }
+});
+
+/**
+ * @route GET /api/users/:userId/favorites
+ * @description gets user favorite posts
+ * @access Public
+ * @param {string} userId - User's ID
+ * @body {
+ *   first_name: string (optional),
+ *   last_name: string (optional),
+ *   email: string (optional),
+ *   metadata: object (optional)
+ * }
+ * @returns {Object} list of user liked posts
+ */
+app.get("/:userId/favorites", async (req, res) => {
+    const posts = await Post.find({ likes: { $in: new mongoose.Types.ObjectId(req.params.userId) } })
+        .populate('userId', 'first_name last_name profile_image')
+        .populate('comments.userId', 'first_name last_name profile_image');
+    return res.status(200).json(posts);
 });
 
 /**

@@ -68,7 +68,7 @@ const FavoritePage = () => {
           <div
             key={post._id}
             className="bg-white rounded-xl shadow-md overflow-hidden cursor-pointer"
-            onClick={() => navigate(`/post/${post._id}`)}
+            onClick={() => navigate(`/post-detail/${post._id}`)}
           >
             {post.image && (
               <img

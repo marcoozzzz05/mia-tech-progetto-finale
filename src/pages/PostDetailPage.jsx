@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
-import { getPost, likePost } from "../services/postService";
+import { dislikePost, getPost, likePost } from "../services/postService";
 import { updateUserProfile } from "../services/userService";
 import { Heart } from "lucide-react";
 
@@ -43,27 +43,26 @@ const PostDetailPage = () => {
   }, [postId, currentUser._id]);
 
   const handleLike = () => {
-
-    updateLikePost();
-    updateLikeUser();
-    
-    console.log(currentUser)
+    if(isLiked) {
+      handleDislikePost();
+    } else {
+      updateLikePost();
+    }
   }
 
-  const updateLikeUser = async () => {
+  const handleDislikePost = async () => {
     try {
       if (!currentUser._id) throw new Error("Devi effettuare il login");
 
-      // Calcola il nuovo stato del like
-      const newLikeStatus = !isLiked;
-    
-      // Aggiorna localmente le informazioni del post (opzionale)
-      const userLike = newLikeStatus
-      ? [...(currentUser.likes || []), postId]
-      : currentUser.likes?.filter((_id) => _id !==postId) || [];
+      // Chiamata al backend per aggiornare il like
+      await dislikePost(postId, currentUser._id);
 
-        // Chiamata al backend per aggiornare il like
-        await updateUserProfile( currentUser._id, userLike );
+      setIsLiked(false);
+      setLikeCount((prev) =>  prev - 1);
+
+      // Aggiorna localmente le informazioni del post (opzionale)
+      const updatedLikes = post.likes?.filter((id) => id !== currentUser._id) || [];
+      setPost({ ...post, likes: updatedLikes });
 
       // A questo punto, il DB è aggiornato e la pagina dei favoriti (che userà il backend)
       // mostrerà il post come favorito oppure non lo mostrerà.
@@ -71,8 +70,7 @@ const PostDetailPage = () => {
       console.error("Errore nel like:", err);
       // Puoi gestire eventuali rollback o notificare l'utente
     }
-
-  }
+  };
 
   const updateLikePost = async () => {
     try {
