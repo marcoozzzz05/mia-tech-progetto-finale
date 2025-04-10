@@ -6,6 +6,7 @@ import EventCard from "../components/EventCard/EventCard";
 import ProfileCounters from "../components/ProfileCounters";
 import UserProfileCounters from "../components/UserProfileCounter";
 import UserProfileTabSection from "../components/UserProfileTabSection";
+import Avatar from "../assets/img/Avatar.png";
 
 const User = () => {
   const { userId } = useParams();
@@ -78,7 +79,7 @@ const User = () => {
         <div className="max-w-4xl w-full bg-white rounded-2xl shadow-lg p-6">
           <div className="relative text-center">
             <img
-              src={`http://localhost:3000/assets/${profile.profile_image}` || 'assets/img/Avatar.png'}
+              src={`http://localhost:3000/assets/${profile.profile_image}` || Avatar}
               alt="Avatar"
               className="w-32 h-32 p-1 bg-gradient-to-l from-[#6a0572] to-[#ffc300] rounded-full mx-auto object-cover"
             />
@@ -153,7 +154,7 @@ const User = () => {
             <div className="flex flex-row items-center space-x-6">
               <div className="relative w-32 h-32 rounded-full p-1 bg-gradient-to-l from-[#6a0572] to-[#ffc300]">
                 <img
-                  src={`http://localhost:3000/assets/${profile.profile_image}` || 'assets/img/Avatar.png'}
+                  src={`http://localhost:3000/assets/${profile.profile_image}` || Avatar}
                   alt="Avatar"
                   className="w-full h-full rounded-full object-cover"
                 />
