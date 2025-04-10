@@ -14,9 +14,10 @@ import EditProfile from './pages/Settings/EditProfile';
 import User from './pages/User';
 import SearchResultsPage from './pages/SearchResultsPage';
 import EditCard from './components/EventCard/EditCard';
-
 import PostDetailPage from './pages/PostDetailPage';
-
+import LastPostPage from './pages/LastPostPage';
+import TopPostPage from './pages/TopPostPage';
+import NearYouPostPage from './pages/NearYouPostPage';
 import ForgotPassword from './ForgotPassword';
 
 function App() {
@@ -36,6 +37,9 @@ function App() {
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/user/:userId" element={<User />} />
           <Route path="/search-results" element={<SearchResultsPage />} />
+          <Route path="/last-posts" element={<LastPostPage />} />
+          <Route path="/top-posts" element={<TopPostPage />} />
+          <Route path="/near-you-posts" element={<NearYouPostPage />} />
         </Route>        
         <Route path="/login" element={<LoginPage />} />          
         <Route path="/register-page" element={<RegisterPage />} />

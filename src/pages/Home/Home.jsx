@@ -143,7 +143,7 @@ function Home() {
                 {renderPosts(latestPosts, loading.latest)}
             </div>
             <div className="flex justify-center mb-20">
-                <Link to="">
+                <Link to="/last-posts">
                     <Button3 text={"Scopri di più"} />
                 </Link>
             </div>
@@ -154,7 +154,7 @@ function Home() {
                 {renderPosts(popularPosts, loading.popular)}
             </div>
             <div className="flex justify-center mb-20">
-                <Link to="">
+                <Link to="/top-posts">
                     <Button3 text={"Scopri di più"} />
                 </Link>
             </div>
@@ -165,7 +165,7 @@ function Home() {
                 {renderPosts(nearbyPosts, loading.nearby)}
             </div>
             <div className="flex justify-center mb-20">
-                <Link to="">
+                <Link to="/near-you-posts">
                     <Button3 text={"Scopri di più"} />
                 </Link>
             </div>
