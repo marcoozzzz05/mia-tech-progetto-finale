@@ -34,7 +34,7 @@ export default function Settings() {
             <img
               src={profilo.profile_image ? `http://localhost:3000/assets/${profilo.profile_image}` : "/default-avatar.png"}
               alt="Avatar"
-              className="w-24 h-24 rounded-full object-cover border-4"
+              className="w-24 h-24 rounded-full object-cover bg-gradient-to-l from-[#6a0572] to-[#ffc300] p-1"
             />
             <h2 className="mt-4 text-xl font-semibold">{profilo.first_name} {profilo.last_name}</h2>
             <p className="text-gray-500">{profilo.email}</p>

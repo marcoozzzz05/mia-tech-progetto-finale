@@ -3,6 +3,7 @@ import { getPostsByPlace, likePost, getFeaturedPosts, getLatestAllPosts } from "
 import EventCard from "../../components/EventCard/EventCard";
 import Button3 from "../../components/Buttons/Button3";
 import { Link } from "react-router-dom";
+import Avatar from "../../assets/img/Avatar.png";
 
 
 function Home() {
@@ -121,10 +122,10 @@ function Home() {
                         image: post.image || "Immagine non disponibile",
                         user: post.user ? {
                             name: `${post.user.first_name} ${post.user.last_name}`,
-                            profile_image: post.user.profile_image || 'default-avatar.jpg'
+                            profile_image: post.user.profile_image || Avatar
                         } : {
                             name: "Utente sconosciuto",
-                            profile_image: 'default-avatar.jpg'
+                            profile_image: Avatar
                         },
                         likes: post.likes || []
                     }}

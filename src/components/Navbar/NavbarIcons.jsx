@@ -41,28 +41,28 @@ const NavbarIcons = ({ isSearchOpen, setIsSearchOpen }) => {
   return (
     <div className="flex space-x-6 items-center">
       {isSearchOpen ? (
-        <button className="text-white opacity-70 hover:text-[#ffc300]" onClick={() => setIsSearchOpen(false)}>
+        <button className="text-white opacity-70 hover:text-[#ffc300] cursor-pointer" onClick={() => setIsSearchOpen(false)}>
           <X size={24} />
         </button>
       ) : (
-        <button className="text-white opacity-70 hover:text-[#ffc300]" onClick={() => setIsSearchOpen(true)}>
+        <button className="text-white opacity-70 hover:text-[#ffc300] cursor-pointer" onClick={() => setIsSearchOpen(true)}>
           <Search size={24} />
         </button>
       )}
 
       <a href="/">
-        <button className="text-white opacity-70 hover:text-[#ffc300]">
+        <button className="text-white opacity-70 hover:text-[#ffc300] cursor-pointer">
           <Home size={24} />
         </button>
       </a>
       <a href="/favorite">
-        <button className="text-white opacity-70 hover:text-[#ffc300]">
+        <button className="text-white opacity-70 hover:text-[#ffc300] cursor-pointer">
           <Heart size={24} />
         </button>
       </a>
 
       <div className="relative" ref={userMenuRef}>
-        <button className="text-white opacity-70 hover:text-[#ffc300]" onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}>
+        <button className="text-white opacity-70 hover:text-[#ffc300] cursor-pointer" onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}>
           <User size={24} />
         </button>
 

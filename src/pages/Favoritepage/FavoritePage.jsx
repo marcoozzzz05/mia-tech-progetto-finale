@@ -61,7 +61,7 @@ const FavoritePage = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-6 mb-20">
       <h1 className="text-2xl font-bold mb-4">I tuoi preferiti</h1>
       <div className="grid gap-4 md:grid-cols-2">
         {favorites.map((post) => (

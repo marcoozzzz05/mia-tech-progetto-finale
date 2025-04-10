@@ -166,7 +166,7 @@ const SearchBar = ({ onSearch }) => {
         <Search className="text-[#6a0572]" />
         <input
           type="text"
-          placeholder="Cerca eventi, categorie, luoghi..."
+          placeholder="Cerca..."
           value={query}
           onChange={handleChange}
           onClick={handleClick}
