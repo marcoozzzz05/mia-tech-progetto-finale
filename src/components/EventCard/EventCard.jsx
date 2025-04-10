@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { getPost, deletePost } from "../../services/postService";
 import { EllipsisVertical } from "lucide-react";
+import Avatar from '../../assets/img/Avatar.png'
 
 const EventCard = ({ post, onPostDeleted }) => {
   const navigate = useNavigate();
@@ -62,9 +63,9 @@ const EventCard = ({ post, onPostDeleted }) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img
-              src={'http://localhost:3000/assets/' + (post.userId?.profile_image || 'default-avatar.jpg')}
+              src={'http://localhost:3000/assets/' + (post.userId?.profile_image || Avatar)}
               alt="Organizer"
-              className="w-10 h-10 rounded-full border"
+              className="w-10 h-10 rounded-full bg-gradient-to-l from-[#6a0572] to-[#ffc300] p-0.5 object-cover"
             />
             <span className="font-semibold text-sm">{fullName || "Utente sconosciuto"}</span>
           </div>

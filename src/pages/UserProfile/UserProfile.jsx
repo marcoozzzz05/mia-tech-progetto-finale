@@ -8,6 +8,7 @@ import { getFollowedPosts } from "../../services/postService";
 import { Settings } from "lucide-react";
 import UserProfileCounters from "../../components/UserProfileCounter";
 import UserProfileTabSection from "../../components/UserProfileTabSection";
+import Avatar from '../../assets/img/Avatar.png';
 
 const UserProfile = () => {
   const [profilo, setProfilo] = useState(null);
@@ -97,7 +98,7 @@ const UserProfile = () => {
             <div className="flex flex-row items-center space-x-6">
               <div className="relative w-32 h-32 rounded-full p-1 bg-gradient-to-l from-[#6a0572] to-[#ffc300]">
                 <img
-                  src={'http://localhost:3000/assets/' + profilo.profile_image || 'assets/img/Avatar.png'}
+                  src={'http://localhost:3000/assets/' + profilo.profile_image || Avatar}
                   alt="Avatar"
                   className="w-full h-full rounded-full object-cover" />
                 <Link to="/settings">
