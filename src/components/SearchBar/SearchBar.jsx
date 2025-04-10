@@ -47,7 +47,7 @@ const SearchBar = ({ onSearch }) => {
 
   useEffect(() => {
     // Carica suggerimenti basati su query
-    if (query.length > 2) {
+    if (query.length > 3) {
       fetchSuggestions();
     } else {
       setSuggestions([]);
@@ -56,11 +56,13 @@ const SearchBar = ({ onSearch }) => {
 
   const fetchSuggestions = async () => {
     try {
-      const response = await searchPosts(query);
+      const encodeQuery = encodeURIComponent(query);
+      const response = await searchPosts(encodeQuery);
       const uniqueTitles = [...new Set(response.data.map(post => post.title))];
       setSuggestions(uniqueTitles.slice(0, 5));
     } catch (error) {
       console.error("Error fetching suggestions:", error);
+      console.error(error.response ? error.response.data : error.message);
     }
   };
 
@@ -80,28 +82,46 @@ const SearchBar = ({ onSearch }) => {
   const executeSearch = async (searchTerm) => {
     try {
       let results;
-
-      if (selectedCity) {
-        // Ricerca con filtro città
+      const hasQuery = searchTerm.trim() !== "";
+      const hasCity = selectedCity !== null;
+  
+      //Solo città
+      if (!hasQuery && hasCity) {
+        results = await getPostsByPlace(selectedCity);
+        results = results.data;
+      } 
+      //Query + città
+      else if (hasQuery && hasCity) {
         results = await getPostsByPlace(selectedCity);
         results = results.data.filter(post =>
           post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           post.content.toLowerCase().includes(searchTerm.toLowerCase())
         );
-      } else {
-        // Ricerca generale
+      }
+      //Solo query
+      else if (hasQuery && !hasCity) {
         results = await searchPosts(searchTerm);
         results = results.data;
       }
-
-      navigate(`/search-results?query=${encodeURIComponent(searchTerm)}${selectedCity ? `&city=${selectedCity}` : ''}`);
-
+      //Nessun parametro (non dovrebbe accadere)
+      else {
+        results = [];
+      }
+  
+      let queryString = "";
+      if (hasQuery) queryString += `query=${encodeURIComponent(searchTerm)}`;
+      if (hasCity) queryString += `${hasQuery ? '&' : ''}city=${selectedCity}`;
+  
+      navigate(`/search-results?${queryString}`);
       saveSearch(searchTerm);
       setQuery("");
       setShowPopup(false);
     } catch (error) {
       console.error("Search error:", error);
-      onSearch(null, searchTerm);
+      // Naviga comunque alla pagina risultati con i parametri
+      let queryString = `query=${encodeURIComponent(searchTerm)}`;
+      if (selectedCity) queryString += `&city=${selectedCity}`;
+      navigate(`/search-results?${queryString}`);
     }
   };
 

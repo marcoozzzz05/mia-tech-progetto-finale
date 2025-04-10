@@ -6,7 +6,6 @@ import EventCard from "../components/EventCard/EventCard";
 const SearchResultsPage = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [noResults, setNoResults] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCity, setSelectedCity] = useState(null);
   const location = useLocation();
@@ -17,14 +16,13 @@ const SearchResultsPage = () => {
     const query = searchParams.get("query");
     const city = searchParams.get("city");
 
-    if (!query) {
-      navigate("/");
-      return;
-    }
+    // Normalizza i parametri (converte "null" string in null)
+    const normalizedQuery = query && query !== "null" ? query : null;
+    const normalizedCity = city && city !== "null" ? city : null;
 
-    setSearchQuery(query);
-    setSelectedCity(city || null);
-    fetchResults(query, city);
+    setSearchQuery(normalizedQuery || "");
+    setSelectedCity(normalizedCity);
+    fetchResults(normalizedQuery, normalizedCity);
   }, [location.search]);
 
   const fetchResults = async (query, city) => {
@@ -32,30 +30,65 @@ const SearchResultsPage = () => {
       setLoading(true);
       let response;
 
-      if (city) {
+      const hasQuery = query && query.trim() !== "";
+      const hasCity = city && city.trim() !== "";
+
+      // Caso 1: Ricerca solo per città
+      if (!hasQuery && hasCity) {
         response = await getPostsByPlace(city);
-        response.data = response.data.filter(post =>
+        response.data = response.data || [];
+      }
+      // Caso 2: Ricerca per query + città
+      else if (hasQuery && hasCity) {
+        response = await getPostsByPlace(city);
+        response.data = (response.data || []).filter(post =>
           post.title?.toLowerCase().includes(query.toLowerCase()) ||
           post.content?.toLowerCase().includes(query.toLowerCase())
         );
-      } else {
+      }
+      // Caso 3: Ricerca solo per query
+      else if (hasQuery && !hasCity) {
         response = await searchPosts(query);
+        response.data = response.data || [];
+      }
+      // Caso 4: Nessun parametro valido
+      else {
+        response = { data: [] };
       }
 
-      if (!response.data || response.data.length === 0) {
-        setNoResults(true);
-        setResults([]);
-      } else {
-        setResults(response.data);
-        setNoResults(false);
-      }
+      setResults(response.data);
     } catch (error) {
       console.error("Errore nel recupero risultati di ricerca: ", error);
-      setNoResults(true);
       setResults([]);
     } finally {
       setLoading(false);
     }
+  };
+
+  const getResultsTitle = () => {
+    if (searchQuery && selectedCity) {
+      return `Risultati della ricerca per "${searchQuery}" a ${selectedCity}`;
+    }
+    if (searchQuery) {
+      return `Risultati della ricerca per "${searchQuery}"`;
+    }
+    if (selectedCity) {
+      return `Eventi a ${selectedCity}`;
+    }
+    return "Tutti gli eventi";
+  };
+
+  const getNoResultsMessage = () => {
+    if (searchQuery && selectedCity) {
+      return `Nessun risultato trovato per "${searchQuery}" a ${selectedCity}`;
+    }
+    if (searchQuery) {
+      return `Nessun risultato trovato per "${searchQuery}"`;
+    }
+    if (selectedCity) {
+      return `Nessun evento trovato a ${selectedCity}`;
+    }
+    return "Nessun evento disponibile";
   };
 
   if (loading) {
@@ -69,12 +102,11 @@ const SearchResultsPage = () => {
   return (
     <div className="container mx-auto px-6 mt-8 mb-20">
       <h2 className="text-2xl font-bold text-[#2e2e2e] mb-6">
-        Risultati della ricerca per "{searchQuery}"
-        {selectedCity && ` a ${selectedCity}`}
+        {getResultsTitle()}
       </h2>
 
-      {noResults ? (
-        <p>Nessun risultato trovato per "{searchQuery}"{selectedCity && ` a ${selectedCity}`}</p>
+      {results.length === 0 ? (
+        <p>{getNoResultsMessage()}</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {results.map((post) => (
