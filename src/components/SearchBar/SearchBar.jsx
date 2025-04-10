@@ -1,14 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { Search, MapPin, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { searchPosts, getPostsByPlace } from "../../services/postService";
+import { getPostsByPlace } from "../../services/postService";
 
 const SearchBar = ({ onSearch }) => {
   const [recentSearches, setRecentSearches] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
   const [showPopup, setShowPopup] = useState(false);
-  const [noResults, setNoResults] = useState(false);
   const [selectedCity, setSelectedCity] = useState(null);
   const [locationPopup, setLocationPopup] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
@@ -46,7 +44,6 @@ const SearchBar = ({ onSearch }) => {
   }, [popupRef, locationRef]);
 
   useEffect(() => {
-    // Carica suggerimenti basati su query
     if (query.length > 3) {
       fetchSuggestions();
     } else {
@@ -56,13 +53,20 @@ const SearchBar = ({ onSearch }) => {
 
   const fetchSuggestions = async () => {
     try {
-      const encodeQuery = encodeURIComponent(query);
-      const response = await searchPosts(encodeQuery);
-      const uniqueTitles = [...new Set(response.data.map(post => post.title))];
+      const lowerQuery = query.toLowerCase();
+      let allPosts = [];
+      for (const city of cities.map(c => c.value)) {
+        const res = await getPostsByPlace(city);
+        allPosts = allPosts.concat(res.data || []);
+      }
+      const filtered = allPosts.filter(post =>
+        post.title?.toLowerCase().includes(lowerQuery) ||
+        post.content?.toLowerCase().includes(lowerQuery)
+      );
+      const uniqueTitles = [...new Set(filtered.map(post => post.title))];
       setSuggestions(uniqueTitles.slice(0, 5));
     } catch (error) {
-      console.error("Error fetching suggestions:", error);
-      console.error(error.response ? error.response.data : error.message);
+      console.error("Errore nel recupero suggerimenti:", error);
     }
   };
 
@@ -81,44 +85,43 @@ const SearchBar = ({ onSearch }) => {
 
   const executeSearch = async (searchTerm) => {
     try {
-      let results;
+      let results = [];
       const hasQuery = searchTerm.trim() !== "";
       const hasCity = selectedCity !== null;
-  
-      //Solo città
+
       if (!hasQuery && hasCity) {
-        results = await getPostsByPlace(selectedCity);
-        results = results.data;
-      } 
-      //Query + città
-      else if (hasQuery && hasCity) {
-        results = await getPostsByPlace(selectedCity);
-        results = results.data.filter(post =>
-          post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          post.content.toLowerCase().includes(searchTerm.toLowerCase())
+        const res = await getPostsByPlace(selectedCity);
+        results = res.data || [];
+      } else if (hasQuery && hasCity) {
+        const res = await getPostsByPlace(selectedCity);
+        results = (res.data || []).filter(post =>
+          post.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          post.content?.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      } else if (hasQuery && !hasCity) {
+        const allCities = cities.map(c => c.value);
+        let allPosts = [];
+        for (const city of allCities) {
+          const res = await getPostsByPlace(city);
+          allPosts = allPosts.concat(res.data || []);
+        }
+        results = allPosts.filter(post =>
+          post.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          post.content?.toLowerCase().includes(searchTerm.toLowerCase())
         );
       }
-      //Solo query
-      else if (hasQuery && !hasCity) {
-        results = await searchPosts(searchTerm);
-        results = results.data;
-      }
-      //Nessun parametro (non dovrebbe accadere)
-      else {
-        results = [];
-      }
-  
+
       let queryString = "";
       if (hasQuery) queryString += `query=${encodeURIComponent(searchTerm)}`;
       if (hasCity) queryString += `${hasQuery ? '&' : ''}city=${selectedCity}`;
-  
-      navigate(`/search-results?${queryString}`);
+
       saveSearch(searchTerm);
       setQuery("");
       setShowPopup(false);
+      navigate(`/search-results?${queryString}`);
     } catch (error) {
       console.error("Search error:", error);
-      // Naviga comunque alla pagina risultati con i parametri
+      setShowPopup(false);
       let queryString = `query=${encodeURIComponent(searchTerm)}`;
       if (selectedCity) queryString += `&city=${selectedCity}`;
       navigate(`/search-results?${queryString}`);
@@ -126,7 +129,7 @@ const SearchBar = ({ onSearch }) => {
   };
 
   const handleKeyDown = (event) => {
-    if (event.key === "Enter" && query.trim() !== "") {
+    if (event.key === "Enter") {
       event.preventDefault();
       executeSearch(query.trim());
     }
@@ -147,11 +150,13 @@ const SearchBar = ({ onSearch }) => {
 
   const handleRecentSearchClick = (searchTerm) => {
     setQuery(searchTerm);
+    setShowPopup(false);
     executeSearch(searchTerm);
   };
 
   const handleSuggestionClick = (suggestion) => {
     setQuery(suggestion);
+    setShowPopup(false);
     executeSearch(suggestion);
   };
 
