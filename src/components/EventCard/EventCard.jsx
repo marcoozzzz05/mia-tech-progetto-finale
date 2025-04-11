@@ -1,21 +1,22 @@
 import { useState, useRef, useEffect } from "react";
-import { Link, useNavigate } from "react-router";
-import { getPost, deletePost } from "../../services/postService";
+import { Link, useNavigate } from "react-router-dom"; // ✅ CORRETTO QUI
+import { deletePost } from "../../services/postService";
 import { EllipsisVertical } from "lucide-react";
-import Avatar from '../../assets/img/Avatar.png'
+import Avatar from "../../assets/img/Avatar.png";
 
 const EventCard = ({ post, onPostDeleted }) => {
   const navigate = useNavigate();
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const optionsRef = useRef(null);
-  const [myPost, setMyPost] = useState(false)
+  const [myPost, setMyPost] = useState(false);
 
-  if (!post) {
+  // 🔒 Controllo: se il post non è ancora pronto
+  if (!post || !post.userId) {
     return <p>Caricamento...</p>;
   }
 
   const toggleOptions = () => {
-    setIsOptionsOpen(!isOptionsOpen);
+    setIsOptionsOpen((prev) => !prev);
   };
 
   const handleOutsideClick = (event) => {
@@ -26,35 +27,39 @@ const EventCard = ({ post, onPostDeleted }) => {
 
   useEffect(() => {
     document.addEventListener("mousedown", handleOutsideClick);
-    const glokalUser = JSON.parse(localStorage.getItem("glokal_user"))
-    if (glokalUser._id == post.userId._id){
-     setMyPost(true) 
-    };
+    const glokalUser = JSON.parse(localStorage.getItem("glokal_user"));
+    
+    if (glokalUser && glokalUser._id === post.userId._id) {
+      setMyPost(true);
+    }
+
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, []);
+  }, [post]);
 
   const handleDeletePost = async () => {
     setIsOptionsOpen(false);
     try {
-      const response = await deletePost(post._id);
+      await deletePost(post._id);
       if (onPostDeleted) {
         onPostDeleted(post._id);
       }
     } catch (error) {
       console.error("Errore durante l'eliminazione del post:", error);
-      // Gestisci l'errore qui (es. mostrando un messaggio all'utente)
     }
   };
 
-  const fullName = post.userId?.first_name + " " + post.userId?.last_name
+  const fullName = `${post.userId.first_name} ${post.userId.last_name}`;
 
   return (
     <div className="w-80 rounded-2xl shadow-lg overflow-hidden bg-white border border-gray-200">
-      <div onClick={() => navigate(`/post-detail/${post._id}`)} className="relative cursor-pointer">
+      <div
+        onClick={() => navigate(`/post-detail/${post._id}`)}
+        className="relative cursor-pointer"
+      >
         <img
-          src={'http://localhost:3000/assets/' + post.image}
+          src={`http://localhost:3000/assets/${post.image}`}
           alt={post.title}
           className="w-full h-48 object-cover"
         />
@@ -63,36 +68,38 @@ const EventCard = ({ post, onPostDeleted }) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img
-              src={'http://localhost:3000/assets/' + (post.userId?.profile_image || Avatar)}
+              src={
+                post.userId.profile_image
+                  ? `http://localhost:3000/assets/${post.userId.profile_image}`
+                  : Avatar
+              }
               alt="Organizer"
               className="w-10 h-10 rounded-full bg-gradient-to-l from-[#6a0572] to-[#ffc300] p-0.5 object-cover"
             />
             <span className="font-semibold text-sm">{fullName || "Utente sconosciuto"}</span>
           </div>
           <div className="relative">
-            { myPost && <button onClick={toggleOptions} className="focus:outline-none">
-              <EllipsisVertical className="w-5 h-5 text-gray-500 cursor-pointer" />
-            </button> }
+            {myPost && (
+              <button onClick={toggleOptions} className="focus:outline-none">
+                <EllipsisVertical className="w-5 h-5 text-gray-500 cursor-pointer" />
+              </button>
+            )}
             {isOptionsOpen && (
               <div
                 ref={optionsRef}
-                className="absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10"
+                className="absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10"
                 role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="options-menu-button"
               >
-                <div className="py-1" role="none">
+                <div className="py-1">
                   <button
                     onClick={() => navigate(`/edit-post/${post._id}`)}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
-                    role="menuitem"
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Modifica
                   </button>
                   <button
                     onClick={handleDeletePost}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
-                    role="menuitem"
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Cancella
                   </button>

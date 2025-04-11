@@ -1,21 +1,21 @@
 import { useState, useRef, useEffect } from "react";
 import { Search, User, Home, Heart, X } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom"; // ✅ usa react-router-dom
 
 const NavbarIcons = ({ isSearchOpen, setIsSearchOpen }) => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [isloggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const userMenuRef = useRef(null);
   const navigate = useNavigate();
 
   const user = JSON.parse(localStorage.getItem("glokal_user"));
-  const profilePage = user && user.role == "USER" ? "/user-profile" : "/profile";
+  const profilePage = user?.role === "USER" ? "/user-profile" : "/profile";
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
-        setIsUserMenuOpen(false); 
+        setIsUserMenuOpen(false);
       }
     };
 
@@ -26,18 +26,20 @@ const NavbarIcons = ({ isSearchOpen, setIsSearchOpen }) => {
   useEffect(() => {
     const storedUser = localStorage.getItem("glokal_user");
     if (storedUser) {
-        setIsLoggedIn(true);  
-    } 
-}, []);
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const handleItemClick = (item) => {
     setSelectedItem(item);
   };
 
-  const HandleLogout = () => {
+  const handleLogout = () => {
     localStorage.clear();
-    navigate("/landing-page")
-  }
+    setSelectedItem("logout");
+    navigate("/landing-page");
+  };
+
   return (
     <div className="flex space-x-6 items-center">
       {isSearchOpen ? (
@@ -55,6 +57,7 @@ const NavbarIcons = ({ isSearchOpen, setIsSearchOpen }) => {
           <Home size={24} />
         </button>
       </a>
+
       <a href="/favorite">
         <button className="text-white opacity-70 hover:text-[#ffc300] cursor-pointer">
           <Heart size={24} />
@@ -69,27 +72,52 @@ const NavbarIcons = ({ isSearchOpen, setIsSearchOpen }) => {
         {isUserMenuOpen && (
           <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg">
             <div className="p-4">
-            {!isloggedIn && (<a href="/register-page">
-              <span className={`block bg-[#F7F1F7] px-1 py-1 m-4 rounded-full text-sm cursor-pointer ${selectedItem === "register" ? "text-[#ffc300]" : "text-gray-800"
-                }`} onClick={() => handleItemClick("register")}>
-                Registrati
-              </span>
-              </a>)}
-              {!isloggedIn && (<a href="/login">
-              <span className={`block bg-[#F7F1F7] px-1 py-1 m-4 rounded-full text-sm cursor-pointer ${selectedItem === "login" ? "text-[#ffc300]" : "text-gray-800"}`} onClick={() => handleItemClick("login")}>
-                Login
-              </span>   
-              </a >)}
-              {isloggedIn && (<a href={profilePage}>
-              <span className={`block bg-[#F7F1F7] px-1 py-1 m-4 rounded-full text-sm cursor-pointer ${selectedItem === "profile" ? "text-[#ffc300]" : "text-gray-800"}`} onClick={() => handleItemClick("profile")}>
-                Profilo
-              </span>
-              </a>)}
-              {isloggedIn && (<a href="" onClick={HandleLogout}>
-              <span className={`block bg-[#F7F1F7] px-1 py-1 m-4 rounded-full text-sm cursor-pointer ${selectedItem === "profile" ? "text-[#ffc300]" : "text-gray-800"}`} onClick={() => handleItemClick("profile")}>
-                Logout
-              </span>
-              </a>)}
+              {!isLoggedIn && (
+                <a href="/register-page">
+                  <span
+                    className={`block bg-[#F7F1F7] px-1 py-1 m-4 rounded-full text-sm cursor-pointer ${
+                      selectedItem === "register" ? "text-[#ffc300]" : "text-gray-800"
+                    }`}
+                    onClick={() => handleItemClick("register")}
+                  >
+                    Registrati
+                  </span>
+                </a>
+              )}
+              {!isLoggedIn && (
+                <a href="/login">
+                  <span
+                    className={`block bg-[#F7F1F7] px-1 py-1 m-4 rounded-full text-sm cursor-pointer ${
+                      selectedItem === "login" ? "text-[#ffc300]" : "text-gray-800"
+                    }`}
+                    onClick={() => handleItemClick("login")}
+                  >
+                    Login
+                  </span>
+                </a>
+              )}
+              {isLoggedIn && (
+                <a href={profilePage}>
+                  <span
+                    className={`block bg-[#F7F1F7] px-1 py-1 m-4 rounded-full text-sm cursor-pointer ${
+                      selectedItem === "profile" ? "text-[#ffc300]" : "text-gray-800"
+                    }`}
+                    onClick={() => handleItemClick("profile")}
+                  >
+                    Profilo
+                  </span>
+                </a>
+              )}
+              {isLoggedIn && (
+                <span
+                  className={`block bg-[#F7F1F7] px-1 py-1 m-4 rounded-full text-sm cursor-pointer ${
+                    selectedItem === "logout" ? "text-[#ffc300]" : "text-gray-800"
+                  }`}
+                  onClick={handleLogout}
+                >
+                  Logout
+                </span>
+              )}
             </div>
           </div>
         )}
